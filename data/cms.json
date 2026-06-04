@@ -1,0 +1,523 @@
+{
+  "categories": [
+    {
+      "id": "excavators",
+      "name": "Excavators",
+      "type": "product"
+    },
+    {
+      "id": "bulldozers",
+      "name": "Bulldozers",
+      "type": "product"
+    },
+    {
+      "id": "wheel-loaders",
+      "name": "Wheel Loaders",
+      "type": "product"
+    },
+    {
+      "id": "cranes",
+      "name": "Cranes",
+      "type": "product"
+    },
+    {
+      "id": "concrete-mixers",
+      "name": "Concrete Mixers",
+      "type": "product"
+    },
+    {
+      "id": "road-rollers",
+      "name": "Road Rollers",
+      "type": "product"
+    },
+    {
+      "id": "dump-trucks",
+      "name": "Dump Trucks",
+      "type": "product"
+    },
+    {
+      "id": "compactors",
+      "name": "Compactors",
+      "type": "product"
+    },
+    {
+      "id": "construction",
+      "name": "Construction & Earthmoving",
+      "type": "service"
+    },
+    {
+      "id": "transport",
+      "name": "Transport & Fleet",
+      "type": "service"
+    },
+    {
+      "id": "energy",
+      "name": "Energy & Power",
+      "type": "service"
+    },
+    {
+      "id": "mining",
+      "name": "Mining & Quarrying",
+      "type": "service"
+    }
+  ],
+  "products": [
+    {
+      "slug": "hydraulic-pump-assemblies",
+      "title": "Hydraulic Pump Assemblies",
+      "label": "Excavator Parts",
+      "image": "/images/products/hydraulic-pump.jpg",
+      "desc": "High-pressure hydraulic pumps and valve blocks for excavators and backhoes. Engineered for long duty cycles on heavy construction sites.",
+      "specs": [
+        "CAT · Komatsu · JCB",
+        "OEM & aftermarket"
+      ],
+      "overview": [
+        "TransHub supplies complete hydraulic pump assemblies and valve blocks for excavators, backhoes, and tracked loaders used on demanding construction sites.",
+        "Our parts are sourced from certified manufacturers and tested to meet OEM pressure ratings, ensuring reliable boom, arm, and swing circuit performance."
+      ],
+      "features": [
+        "High-pressure rated for continuous duty cycles",
+        "Compatible with major excavator brands",
+        "OEM and cost-effective aftermarket options",
+        "Pre-shipment pressure testing available",
+        "Export documentation and packaging support"
+      ],
+      "applications": [
+        "Earthmoving",
+        "Demolition",
+        "Utility trenching",
+        "Port handling"
+      ]
+    },
+    {
+      "slug": "undercarriage-track-chains",
+      "title": "Undercarriage Track Chains",
+      "label": "Bulldozer Parts",
+      "image": "/images/products/track-chains.jpg",
+      "desc": "Track chains, sprockets, idlers, and rollers for bulldozers and tracked excavators. Heat-treated steel for abrasion resistance.",
+      "specs": [
+        "D6 · D8 · PC200 series",
+        "Export-ready packaging"
+      ],
+      "overview": [
+        "We provide full undercarriage solutions including track chains, sprockets, idlers, and bottom rollers for bulldozers and tracked excavators.",
+        "Components are heat-treated for abrasion resistance in quarry, mining, and heavy civil environments where downtime is costly."
+      ],
+      "features": [
+        "Forged link pins and bushings",
+        "Matched sprocket and idler sets",
+        "Extended wear life in abrasive soils",
+        "Bulk supply for fleet operators",
+        "Model-specific fitment support"
+      ],
+      "applications": [
+        "Bulldozing",
+        "Site grading",
+        "Quarry extraction",
+        "Land reclamation"
+      ]
+    },
+    {
+      "slug": "loader-bucket-teeth-adapters",
+      "title": "Loader Bucket Teeth & Adapters",
+      "label": "Wheel Loader Parts",
+      "image": "/images/products/bucket-teeth.jpg",
+      "desc": "Replaceable bucket teeth, adapters, and cutting edges for wheel loaders and front-end loaders used in quarry and site work.",
+      "specs": [
+        "Forged alloy steel",
+        "Quick-fit adapters"
+      ],
+      "overview": [
+        "Replaceable bucket teeth, adapters, and cutting edges keep wheel loaders productive in quarry, aggregate, and construction material handling.",
+        "TransHub stocks standard and heavy-duty profiles with quick-fit adapter systems to minimize machine downtime during change-outs."
+      ],
+      "features": [
+        "Forged alloy steel construction",
+        "Quick-change adapter systems",
+        "Standard and penetration tooth profiles",
+        "Cutting edges and side cutters available",
+        "Volume pricing for fleet accounts"
+      ],
+      "applications": [
+        "Quarry loading",
+        "Aggregate yards",
+        "Material stockpiling",
+        "Road base handling"
+      ]
+    },
+    {
+      "slug": "crane-wire-rope-sheaves",
+      "title": "Crane Wire Rope & Sheaves",
+      "label": "Crane Components",
+      "image": "/images/products/crane-parts.jpg",
+      "desc": "Wire ropes, hook blocks, sheave assemblies, and safety latches for tower cranes and mobile cranes on high-rise projects.",
+      "specs": [
+        "Mobile & tower cranes",
+        "Load-tested certified"
+      ],
+      "overview": [
+        "Our crane component range covers wire ropes, hook blocks, sheave assemblies, and safety latches for tower and mobile crane operations.",
+        "All load-bearing items are supplied with traceability documentation and can be matched to your crane model and duty classification."
+      ],
+      "features": [
+        "Rotation-resistant wire rope options",
+        "Load-tested hook blocks and latches",
+        "Sheave assemblies with bearing kits",
+        "Compliance with site safety standards",
+        "Scheduled replacement programs"
+      ],
+      "applications": [
+        "High-rise construction",
+        "Infrastructure lifting",
+        "Industrial plant erection",
+        "Port crane maintenance"
+      ]
+    },
+    {
+      "slug": "diesel-engine-overhaul-kits",
+      "title": "Diesel Engine Overhaul Kits",
+      "label": "Engine Parts",
+      "image": "/images/products/engine-parts.jpg",
+      "desc": "Piston kits, gaskets, liners, and turbocharger parts for diesel engines powering excavators, loaders, and dump trucks.",
+      "specs": [
+        "Cummins · Deutz · Perkins",
+        "Full gasket sets"
+      ],
+      "overview": [
+        "Complete diesel engine overhaul kits including pistons, liners, gaskets, and turbocharger components for construction machinery power units.",
+        "We support major engine platforms used in excavators, wheel loaders, and articulated dump trucks worldwide."
+      ],
+      "features": [
+        "Full top-end and bottom-end kit options",
+        "Genuine and premium aftermarket lines",
+        "Turbocharger and fuel system parts",
+        "Technical cross-reference assistance",
+        "Scheduled rebuild kit bundling"
+      ],
+      "applications": [
+        "Fleet rebuild programs",
+        "Field overhauls",
+        "Rental fleet maintenance",
+        "Mining equipment rebuilds"
+      ]
+    },
+    {
+      "slug": "hydraulic-cylinder-seal-kits",
+      "title": "Hydraulic Cylinder Seal Kits",
+      "label": "Hydraulic Parts",
+      "image": "/images/products/hydraulic-seals.jpg",
+      "desc": "Seal kits, rod wipers, and cylinder repair parts for boom, arm, and bucket cylinders across all major machinery brands.",
+      "specs": [
+        "NBR · PU · Viton options",
+        "Bulk order available"
+      ],
+      "overview": [
+        "Seal kits and cylinder repair components for boom, arm, bucket, and lift cylinders across all major heavy equipment brands.",
+        "Material options include NBR, polyurethane, and Viton for standard and high-temperature hydraulic applications."
+      ],
+      "features": [
+        "Complete rod and piston seal sets",
+        "Wiper and wear ring combinations",
+        "High-temperature compound options",
+        "Bulk kits for workshop stock",
+        "Cross-reference by cylinder part number"
+      ],
+      "applications": [
+        "Hydraulic rebuild workshops",
+        "On-site cylinder repair",
+        "Fleet preventive maintenance",
+        "Rental equipment turnaround"
+      ]
+    },
+    {
+      "slug": "concrete-mixer-drum-liners",
+      "title": "Concrete Mixer Drum Liners",
+      "label": "Concrete Equipment",
+      "image": "/images/products/concrete-mixer.jpg",
+      "desc": "Wear-resistant drum liners, mixing blades, and discharge chute parts for transit mixers and stationary batch plants.",
+      "specs": [
+        "Transit & stationary mixers",
+        "Custom fabrication"
+      ],
+      "overview": [
+        "Wear-resistant drum liners, mixing blades, and discharge chute components for transit mixers and stationary batch plants.",
+        "TransHub supports ready-mix producers and equipment rebuilders with custom-fabricated liner profiles and fast replacement cycles."
+      ],
+      "features": [
+        "Abrasion-resistant liner materials",
+        "Mixing blade and fin replacements",
+        "Discharge chute wear parts",
+        "Custom fabrication to drum spec",
+        "Scheduled wear-part supply contracts"
+      ],
+      "applications": [
+        "Ready-mix concrete",
+        "Precast batch plants",
+        "Infrastructure pours",
+        "Drum refurbishing workshops"
+      ]
+    },
+    {
+      "slug": "road-roller-drum-kits",
+      "title": "Road Roller Drum Kits",
+      "label": "Compaction Parts",
+      "image": "/images/products/road-roller.jpg",
+      "desc": "Vibration drum assemblies, bearing kits, and scraper blades for single and double drum rollers on road construction.",
+      "specs": [
+        "Smooth & padfoot drums",
+        "Field service support"
+      ],
+      "overview": [
+        "Vibration drum assemblies, bearing kits, and scraper blades for single-drum and double-drum rollers on road and site compaction work.",
+        "Our parts help contractors maintain consistent compaction performance throughout long highway and infrastructure projects."
+      ],
+      "features": [
+        "Smooth and padfoot drum components",
+        "Vibration bearing and seal kits",
+        "Scraper blade and mount hardware",
+        "Field service parts availability",
+        "Model-matched drum assemblies"
+      ],
+      "applications": [
+        "Highway construction",
+        "Airfield paving",
+        "Sub-base compaction",
+        "Site preparation"
+      ]
+    },
+    {
+      "slug": "transmission-gearbox-parts",
+      "title": "Transmission & Gearbox Parts",
+      "label": "Powertrain",
+      "image": "/images/products/gearbox-parts.jpg",
+      "desc": "Clutch plates, torque converters, planetary gears, and final drive components for loaders, dozers, and graders.",
+      "specs": [
+        "ZF · Allison · Dana",
+        "Reman & new stock"
+      ],
+      "overview": [
+        "Powertrain components including clutch plates, torque converters, planetary gears, and final drives for loaders, dozers, and motor graders.",
+        "We supply remanufactured and new-stock options from leading transmission manufacturers to keep heavy fleets operational."
+      ],
+      "features": [
+        "Torque converter and clutch kits",
+        "Planetary gear and bearing sets",
+        "Final drive and differential parts",
+        "Remanufactured exchange units",
+        "Technical fitment verification"
+      ],
+      "applications": [
+        "Loader powertrain rebuilds",
+        "Dozer drivetrain repair",
+        "Grader transmission service",
+        "Fleet exchange programs"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "slug": "construction-equipment",
+      "title": "Construction equipment, Earthmoving, Industrial, and Port",
+      "image": "/images/services/construction-equipment.jpg",
+      "summary": "Supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling equipment used on major construction and industrial projects.",
+      "overview": [
+        "TransHub supports contractors, rental fleets, and industrial operators with construction equipment supply and spare parts logistics across earthmoving, industrial, and port applications.",
+        "From yellow machines on civil sites to material handlers at port terminals, we connect you with the right equipment and components through a global supplier network."
+      ],
+      "capabilities": [
+        "Excavators, loaders, and dozers",
+        "Port cranes and material handlers",
+        "OEM and aftermarket spare parts",
+        "Cross-border shipping and customs support",
+        "Fleet procurement consulting"
+      ],
+      "industries": [
+        "Civil construction",
+        "Industrial plants",
+        "Port terminals",
+        "Infrastructure projects"
+      ]
+    },
+    {
+      "slug": "trucks-transport",
+      "title": "Trucks for Transport and Distribution of Materials",
+      "image": "/images/services/trucks.jpg",
+      "summary": "Heavy-duty trucks and distribution fleets for moving construction materials, aggregates, and bulk goods across regional and international routes.",
+      "overview": [
+        "We help material producers and logistics companies source trucks built for transport and distribution of construction materials, aggregates, and bulk cargo.",
+        "TransHub coordinates vehicle procurement, parts supply, and delivery logistics so your distribution network stays reliable and cost-effective."
+      ],
+      "capabilities": [
+        "Semi-trucks and rigid haulers",
+        "Tipper and bulk material bodies",
+        "Fleet parts and maintenance supply",
+        "Route-ready export documentation",
+        "Dealer and manufacturer sourcing"
+      ],
+      "industries": [
+        "Aggregate distribution",
+        "Building materials",
+        "Bulk cargo",
+        "Regional freight"
+      ]
+    },
+    {
+      "slug": "buses-transport",
+      "title": "Buses for people transport companies",
+      "image": "/images/services/buses.jpg",
+      "summary": "Coach and transit buses for passenger transport operators, including procurement support and aftermarket parts for fleet maintenance.",
+      "overview": [
+        "TransHub works with people transport companies to source modern coach and transit buses suited to intercity, tourism, and corporate shuttle operations.",
+        "We also supply maintenance parts and fleet support services to keep passenger operations safe, compliant, and on schedule."
+      ],
+      "capabilities": [
+        "Intercity and tourism coaches",
+        "Transit and shuttle bus sourcing",
+        "Fleet maintenance parts supply",
+        "Operator procurement advisory",
+        "International delivery coordination"
+      ],
+      "industries": [
+        "Public transport",
+        "Tourism operators",
+        "Corporate shuttles",
+        "Private charter fleets"
+      ]
+    },
+    {
+      "slug": "energy-engines-generators",
+      "title": "Energy | Engines and Generators",
+      "image": "/images/services/engines.jpg",
+      "summary": "Industrial engines, generator sets, and power system components for construction sites, mines, and remote operations.",
+      "overview": [
+        "Our energy division covers industrial diesel engines, generator sets, and supporting components for construction sites, mining camps, and remote power needs.",
+        "TransHub sources new and remanufactured power units with the parts and service support required for continuous operation in harsh environments."
+      ],
+      "capabilities": [
+        "Diesel generator sets",
+        "Industrial engine platforms",
+        "Overhaul and service parts",
+        "Mobile power for job sites",
+        "Backup power solutions"
+      ],
+      "industries": [
+        "Construction sites",
+        "Mining operations",
+        "Remote facilities",
+        "Industrial backup power"
+      ]
+    },
+    {
+      "slug": "mining-quarrying",
+      "title": "Mining and Quarrying equipment",
+      "image": "/images/services/mining.jpg",
+      "summary": "Heavy mining trucks, excavators, and wear parts for open-pit mining and quarry extraction operations worldwide.",
+      "overview": [
+        "TransHub supplies mining and quarrying equipment including ultra-class haul trucks, large excavators, and high-wear components for extraction operations.",
+        "We understand the uptime demands of open-pit mines and aggregate quarries and deliver parts and machinery through resilient global logistics channels."
+      ],
+      "capabilities": [
+        "Mining haul trucks and excavators",
+        "High-wear ground engaging tools",
+        "Undercarriage and powertrain parts",
+        "Quarry plant equipment sourcing",
+        "Critical spares expediting"
+      ],
+      "industries": [
+        "Open-pit mining",
+        "Aggregate quarries",
+        "Mineral extraction",
+        "Bulk material processing"
+      ]
+    }
+  ],
+  "blogs": [
+    {
+      "slug": "offered-coverage-flexibility",
+      "title": "Offered Coverage Flexibility in logistic Exports & Imports",
+      "image": "/images/blog/featured-air.jpg",
+      "date": "07 Nov, 2025",
+      "author": "Adam Smith",
+      "cat": "Logistics",
+      "excerpt": "Flexible export and import coverage for modern supply chains.",
+      "body": [
+        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
+        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
+        "Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative."
+      ],
+      "featured": true
+    },
+    {
+      "slug": "advantages-digital-supply",
+      "title": "The Advantages of a Digital Supply Strategy",
+      "image": "/images/blog/digital-supply.jpg",
+      "date": "07 Nov, 2025",
+      "author": "Adam Smith",
+      "cat": "Technology",
+      "excerpt": "How digital tools improve visibility and control across your network.",
+      "body": [
+        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
+        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
+        "Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative."
+      ]
+    },
+    {
+      "slug": "get-hired-supply-chain",
+      "title": "How To Get Hired In Supply Chain & Logistics?",
+      "image": "/images/blog/supply-chain.jpg",
+      "date": "07 Nov, 2025",
+      "author": "Adam Smith",
+      "cat": "Career",
+      "excerpt": "Career paths and skills for logistics professionals.",
+      "body": [
+        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
+        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
+        "Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative."
+      ],
+      "highlight": true
+    },
+    {
+      "slug": "future-of-freight",
+      "title": "The Future of Road Freight in a Digital World",
+      "image": "/images/services/road.jpg",
+      "date": "15 Oct, 2025",
+      "author": "Sarah Chen",
+      "cat": "Freight",
+      "excerpt": "Road freight trends shaping the next decade.",
+      "body": [
+        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
+        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
+        "Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative."
+      ]
+    },
+    {
+      "slug": "green-logistics",
+      "title": "Green Logistics: Sustainable Transport Solutions",
+      "image": "/images/services/rail.jpg",
+      "date": "01 Oct, 2025",
+      "author": "James Wilson",
+      "cat": "Sustainability",
+      "excerpt": "Sustainable practices for greener logistics operations.",
+      "body": [
+        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
+        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
+        "Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative."
+      ]
+    },
+    {
+      "slug": "cold-chain-management",
+      "title": "Cold Chain Management Best Practices",
+      "image": "/images/services/sea.jpg",
+      "date": "20 Sep, 2025",
+      "author": "Priya Sharma",
+      "cat": "Warehousing",
+      "excerpt": "Keeping temperature-sensitive cargo safe end to end.",
+      "body": [
+        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
+        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
+        "Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative."
+      ]
+    }
+  ]
+}

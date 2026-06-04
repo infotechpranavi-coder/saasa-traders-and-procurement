@@ -1,0 +1,72 @@
+import type { BlogPost } from '@/types/cms'
+
+const defaultBody = [
+  'Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.',
+  'From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.',
+  'Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative.',
+]
+
+export const seedBlogs: BlogPost[] = [
+  {
+    slug: 'offered-coverage-flexibility',
+    title: 'Offered Coverage Flexibility in logistic Exports & Imports',
+    image: '/images/blog/featured-air.jpg',
+    date: '07 Nov, 2025',
+    author: 'Adam Smith',
+    cat: 'Logistics',
+    excerpt: 'Flexible export and import coverage for modern supply chains.',
+    body: defaultBody,
+    featured: true,
+  },
+  {
+    slug: 'advantages-digital-supply',
+    title: 'The Advantages of a Digital Supply Strategy',
+    image: '/images/blog/digital-supply.jpg',
+    date: '07 Nov, 2025',
+    author: 'Adam Smith',
+    cat: 'Technology',
+    excerpt: 'How digital tools improve visibility and control across your network.',
+    body: defaultBody,
+  },
+  {
+    slug: 'get-hired-supply-chain',
+    title: 'How To Get Hired In Supply Chain & Logistics?',
+    image: '/images/blog/supply-chain.jpg',
+    date: '07 Nov, 2025',
+    author: 'Adam Smith',
+    cat: 'Career',
+    excerpt: 'Career paths and skills for logistics professionals.',
+    body: defaultBody,
+    highlight: true,
+  },
+  {
+    slug: 'future-of-freight',
+    title: 'The Future of Road Freight in a Digital World',
+    image: '/images/services/road.jpg',
+    date: '15 Oct, 2025',
+    author: 'Sarah Chen',
+    cat: 'Freight',
+    excerpt: 'Road freight trends shaping the next decade.',
+    body: defaultBody,
+  },
+  {
+    slug: 'green-logistics',
+    title: 'Green Logistics: Sustainable Transport Solutions',
+    image: '/images/services/rail.jpg',
+    date: '01 Oct, 2025',
+    author: 'James Wilson',
+    cat: 'Sustainability',
+    excerpt: 'Sustainable practices for greener logistics operations.',
+    body: defaultBody,
+  },
+  {
+    slug: 'cold-chain-management',
+    title: 'Cold Chain Management Best Practices',
+    image: '/images/services/sea.jpg',
+    date: '20 Sep, 2025',
+    author: 'Priya Sharma',
+    cat: 'Warehousing',
+    excerpt: 'Keeping temperature-sensitive cargo safe end to end.',
+    body: defaultBody,
+  },
+]
