@@ -1,4 +1,5 @@
 import { revalidatePath } from 'next/cache'
+import { CMS_DEFAULT_AUTHOR } from '@/lib/brand'
 import { readCms, writeCms } from '@/lib/cms'
 import { slugify } from '@/lib/slugify'
 import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from '@/types/cms'
@@ -189,7 +190,7 @@ function normalizeBlog(body: BlogPost, fallbackSlug?: string): BlogPost | null {
     title,
     image: body.image?.trim() || '/images/blog/featured-air.jpg',
     date: body.date?.trim() || new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-    author: body.author?.trim() || 'TransHub Team',
+    author: body.author?.trim() || CMS_DEFAULT_AUTHOR,
     cat: body.cat?.trim() || 'Logistics',
     excerpt: body.excerpt?.trim() || '',
     body: body.body?.length ? body.body : [''],

@@ -25,8 +25,8 @@ const slides = [
   {
     image: '/images/stats-ship.jpg',
     badge: 'EST. 2024 • SEA FREIGHT',
-    line1: 'One Track',
-    line2: 'Express',
+    line1: 'SAASA B2E',
+    line2: 'Trades',
     desc: 'Ocean freight and container shipping backed by decades of expertise across global ports and trade lanes.',
   },
 ]

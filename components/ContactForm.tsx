@@ -2,6 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { ArrowUpRight, Clock, Mail, MapPin, Phone } from 'lucide-react'
+import { COMPANY_EMAIL } from '@/lib/brand'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
 
 interface ContactForm {
@@ -33,7 +34,7 @@ export default function ContactForm() {
   const info = [
     { icon: MapPin, title: 'Our Location', desc: '123 Street, New York, USA' },
     { icon: Phone, title: 'Phone Number', desc: '+92 8208 383 727' },
-    { icon: Mail, title: 'Email Address', desc: 'info@transhub.com' },
+    { icon: Mail, title: 'Email Address', desc: COMPANY_EMAIL },
     { icon: Clock, title: 'Working Hours', desc: 'Mon - Sat: 9AM - 7PM' },
   ]
 

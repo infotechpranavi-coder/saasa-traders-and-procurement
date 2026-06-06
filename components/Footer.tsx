@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import BrandLogo from './BrandLogo'
+import { COMPANY_NAME } from '@/lib/brand'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import type { SocialName } from '@/types'
 
@@ -47,16 +49,9 @@ export default function Footer() {
           <div className="grid md:grid-cols-4 gap-10">
             {/* Brand */}
             <div className="reveal">
-              <Link href="/" className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 bg-primary flex items-center justify-center" style={{clipPath:'polygon(50% 0%,0% 100%,100% 100%)'}}>
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 17h20L12 2z"/></svg>
-                </div>
-                <div>
-                  <span className="footer-brand-name">
-                    <span className="text-white">Trans</span><span className="text-primary">Hub</span>
-                  </span>
-                  <p className="text-xs tracking-widest text-gray-500 font-medium -mt-1">ONE TRACK EXPRESS</p>
-                </div>
+              <Link href="/" className="flex flex-col items-start gap-2 mb-5">
+                <BrandLogo className="brand-logo brand-logo--nav" />
+                <span className="footer-brand-name text-white">{COMPANY_NAME}</span>
               </Link>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
                 Our dedication lies in embracing challenges and pioneering innovation within the more attractive advertising sector.
@@ -121,7 +116,7 @@ export default function Footer() {
       <div className="relative border-t border-gray-800 py-5">
         <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-gray-500 text-sm">
-            Copyright © 2026 <span className="text-primary font-bold">Transhub</span> All Rights Reserved.
+            Copyright © 2026 <span className="text-primary font-bold">{COMPANY_NAME}</span> All Rights Reserved.
           </p>
           <div className="flex gap-4 text-sm text-gray-500">
             <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>

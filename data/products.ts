@@ -30,7 +30,7 @@ export const products: Product[] = [
     desc: 'High-pressure hydraulic pumps and valve blocks for excavators and backhoes. Engineered for long duty cycles on heavy construction sites.',
     specs: ['CAT · Komatsu · JCB', 'OEM & aftermarket'],
     overview: [
-      'TransHub supplies complete hydraulic pump assemblies and valve blocks for excavators, backhoes, and tracked loaders used on demanding construction sites.',
+      'SAASA B2E TRADES supplies complete hydraulic pump assemblies and valve blocks for excavators, backhoes, and tracked loaders used on demanding construction sites.',
       'Our parts are sourced from certified manufacturers and tested to meet OEM pressure ratings, ensuring reliable boom, arm, and swing circuit performance.',
     ],
     features: [
@@ -71,7 +71,7 @@ export const products: Product[] = [
     specs: ['Forged alloy steel', 'Quick-fit adapters'],
     overview: [
       'Replaceable bucket teeth, adapters, and cutting edges keep wheel loaders productive in quarry, aggregate, and construction material handling.',
-      'TransHub stocks standard and heavy-duty profiles with quick-fit adapter systems to minimize machine downtime during change-outs.',
+      'SAASA B2E TRADES stocks standard and heavy-duty profiles with quick-fit adapter systems to minimize machine downtime during change-outs.',
     ],
     features: [
       'Forged alloy steel construction',
@@ -151,7 +151,7 @@ export const products: Product[] = [
     specs: ['Transit & stationary mixers', 'Custom fabrication'],
     overview: [
       'Wear-resistant drum liners, mixing blades, and discharge chute components for transit mixers and stationary batch plants.',
-      'TransHub supports ready-mix producers and equipment rebuilders with custom-fabricated liner profiles and fast replacement cycles.',
+      'SAASA B2E TRADES supports ready-mix producers and equipment rebuilders with custom-fabricated liner profiles and fast replacement cycles.',
     ],
     features: [
       'Abrasion-resistant liner materials',

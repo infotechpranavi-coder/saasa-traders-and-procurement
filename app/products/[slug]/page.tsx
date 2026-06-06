@@ -9,8 +9,8 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const product = await getProductBySlug(params.slug)
-  if (!product) return { title: 'Product Not Found - TransHub' }
-  return { title: `${product.title} - TransHub Products` }
+  if (!product) return { title: 'Product Not Found - SAASA B2E TRADES' }
+  return { title: `${product.title} - SAASA B2E TRADES Products` }
 }
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {

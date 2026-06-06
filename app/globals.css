@@ -66,6 +66,62 @@ h1, h2, h3, h4, h5 {
   font-weight: 800;
 }
 
+/* Brand logo — uses trimmed saasa-logo-nav.png (no square padding) */
+.brand-logo {
+  display: block;
+  width: auto;
+  object-fit: contain;
+  object-position: left center;
+  flex-shrink: 0;
+}
+
+.nav-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.brand-logo--nav {
+  height: 34px;
+  width: auto;
+}
+
+@media (min-width: 640px) {
+  .brand-logo--nav {
+    height: 42px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .brand-logo--nav {
+    height: 46px;
+  }
+}
+
+.brand-logo--hero {
+  height: 34px;
+  width: auto;
+}
+
+@media (min-width: 640px) {
+  .brand-logo--hero {
+    height: 42px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .brand-logo--hero {
+    height: 46px;
+  }
+}
+
+.brand-logo--dashboard {
+  width: 120px;
+  max-height: 40px;
+  filter: brightness(0) invert(1);
+}
+
 .hp-title {
   font-family: var(--font-ui);
   font-weight: 800;

@@ -3,8 +3,9 @@ import type { Metadata } from 'next'
 import PageLayout from '../../components/PageLayout'
 import PageHero from '../../components/PageHero'
 import { SectionLabelIcon } from '../../components/icons/LogisticsIcons'
+import { COMPANY_NAME } from '@/lib/brand'
 
-export const metadata: Metadata = { title: 'About Us - TransHub' }
+export const metadata: Metadata = { title: `About Us - ${COMPANY_NAME}` }
 
 const team = [
   { name: 'Michael Torres', role: 'CEO & Founder', image: '/images/testimonials/jacob.jpg' },
@@ -33,7 +34,7 @@ export default function AboutPage() {
             </div>
             <h2 className="hp-title mb-6">25+ Years of Logistics Excellence</h2>
             <p className="hp-body mb-4">
-              Founded in 1999, TransHub began as a small regional carrier with just 10 trucks and a vision to transform the logistics industry. Over the past 25 years, we have grown into a global powerhouse serving over 150 countries.
+              Founded in 1999, SAASA B2E TRADES began as a regional trading firm with a vision to connect businesses through reliable equipment and logistics. Over the past 25 years, we have grown into a global powerhouse serving over 150 countries.
             </p>
             <p className="hp-body mb-8">
               Our global logistics expertise, advanced supply chain technology and customized solutions help businesses of all sizes optimize their operations and deliver exceptional results.
@@ -50,7 +51,7 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="relative col-span-2 h-52 overflow-hidden rounded-[22px]">
-              <Image src="/images/about/main.jpg" alt="TransHub operations" fill className="object-cover" sizes="50vw" />
+              <Image src="/images/about/main.jpg" alt="SAASA B2E TRADES operations" fill className="object-cover" sizes="50vw" />
             </div>
             <div className="relative h-44 overflow-hidden rounded-[22px]">
               <Image src="/images/about/truck.jpg" alt="Fleet truck" fill className="object-cover" sizes="25vw" />

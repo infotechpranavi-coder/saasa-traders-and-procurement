@@ -4,9 +4,10 @@ import type { Metadata } from 'next'
 import PageLayout from '../../components/PageLayout'
 import PageHero from '../../components/PageHero'
 import { SectionLabelIcon } from '../../components/icons/LogisticsIcons'
+import { COMPANY_NAME } from '@/lib/brand'
 import { getProductCategories, getProducts } from '@/lib/cms'
 
-export const metadata: Metadata = { title: 'Products - TransHub' }
+export const metadata: Metadata = { title: `Products - ${COMPANY_NAME}` }
 export const dynamic = 'force-dynamic'
 
 export default async function ProductsPage() {
@@ -28,7 +29,7 @@ export default async function ProductsPage() {
               Genuine Parts for Heavy Equipment
             </h2>
             <p className="hp-lead mt-4 max-w-2xl mx-auto">
-              TransHub supplies construction machinery parts and components for excavators, bulldozers, loaders, cranes, and
+              SAASA B2E TRADES supplies construction machinery parts and components for excavators, bulldozers, loaders, cranes, and
               road-building equipment — sourced globally and delivered to your job site on time.
             </p>
           </div>

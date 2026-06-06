@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import BrandLogo from './BrandLogo'
+import { COMPANY_NAME, COMPANY_TAGLINE } from '@/lib/brand'
 import type { NavItem, NavbarVariant } from '@/types'
 
 interface NavbarProps {
@@ -66,7 +68,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   ]
 
   const solidNavContent = (
-    <div className="flex h-[72px] items-center justify-between gap-4 px-5 lg:h-[80px] lg:px-8">
+    <div className="flex h-[80px] items-center justify-between gap-4 px-5 lg:h-[88px] lg:px-8">
       <NavContent navItems={navItems} mode="solid" mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
     </div>
   )
@@ -152,7 +154,7 @@ function NavInner({
   const solidOpacity = blend
 
   return (
-    <div className="relative w-full h-[72px] lg:h-[80px]">
+    <div className="relative w-full h-[80px] lg:h-[88px]">
       <div
         className="absolute inset-0 flex items-center justify-between gap-4 px-5 lg:px-8 hero-nav-layer"
         style={{ opacity: floatingOpacity, pointerEvents: blend > 0.4 ? 'none' : 'auto' }}
@@ -187,16 +189,24 @@ function NavContent({
 
   return (
     <>
-      <Link href="/" className="flex items-center gap-3 shrink-0">
-        <LogoMark />
-        <div>
+      <Link href="/" className="flex items-center gap-3 sm:gap-4 shrink-0">
+        <span className="nav-logo-wrap min-w-[180px] sm:min-w-[220px]">
+          <BrandLogo
+            variant="nav"
+            className={floating ? 'brand-logo brand-logo--hero' : 'brand-logo brand-logo--nav'}
+            priority
+          />
+        </span>
+        <div className="min-w-0 max-w-[130px] sm:max-w-[145px] lg:max-w-[160px]">
           <span
-            className={`site-logo-text text-[22px] lg:text-2xl leading-none tracking-tight ${floating ? 'text-white' : 'text-[#0A0E1A]'}`}
+            className={`site-logo-text block text-[10px] sm:text-[11px] lg:text-[12px] leading-tight tracking-tight ${floating ? 'text-white' : 'text-[#0A0E1A]'}`}
           >
-            TransHub
+            {COMPANY_NAME}
           </span>
-          <p className={`text-[10px] lg:text-[11px] tracking-[0.2em] font-medium mt-0.5 ${floating ? 'text-white/60' : 'text-gray-500'}`}>
-            ONE TRACK EXPRESS
+          <p
+            className={`hidden sm:block text-[7.5px] lg:text-[8.5px] tracking-[0.08em] font-medium mt-1 uppercase leading-tight ${floating ? 'text-white/55' : 'text-gray-500'}`}
+          >
+            {COMPANY_TAGLINE}
           </p>
         </div>
       </Link>
@@ -262,17 +272,6 @@ function NavContent({
         </svg>
       </button>
     </>
-  )
-}
-
-function LogoMark() {
-  return (
-    <div className="w-11 h-11 flex items-center justify-center shrink-0">
-      <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M6 30L21 8L36 30H29L21 19L13 30H6Z" fill="#F15A24" />
-        <path d="M12 30L21 16L30 30H25L21 23L17 30H12Z" fill="#F15A24" />
-      </svg>
-    </div>
   )
 }
 

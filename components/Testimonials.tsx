@@ -21,7 +21,7 @@ const testimonials = [
   },
   {
     quote:
-      'I was initially hesitant about switching logistics providers, but Transhub customer support team made the transition logistic seamless. They were incredibly helpful and available to answer my questions.',
+      'I was initially hesitant about switching logistics providers, but the SAASA B2E TRADES customer support team made the transition seamless. They were incredibly helpful and available to answer my questions.',
     name: 'Jacob Jones',
     role: 'Marketing Manager',
     avatar: '/images/testimonials/jacob.jpg',

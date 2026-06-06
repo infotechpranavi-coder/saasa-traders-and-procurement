@@ -3,7 +3,9 @@ import PageLayout from '../../components/PageLayout'
 import PageHero from '../../components/PageHero'
 import ContactForm from '../../components/ContactForm'
 
-export const metadata: Metadata = { title: 'Contact Us - TransHub' }
+import { COMPANY_NAME } from '@/lib/brand'
+
+export const metadata: Metadata = { title: `Contact Us - ${COMPANY_NAME}` }
 
 export default function ContactPage() {
   return (

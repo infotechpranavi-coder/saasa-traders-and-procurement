@@ -16,7 +16,7 @@ const tabContent: Record<TabKey, string> = {
   'Our Vision':
     "Our vision is to become the world's most trusted logistics partner, leveraging cutting-edge technology and sustainable practices to connect businesses globally.",
   'Our History':
-    'Founded in 1999, TransHub began as a small regional carrier and has grown into a global logistics powerhouse serving over 150 countries with a fleet of 5,000+ vehicles.',
+    'Founded in 1999, SAASA B2E TRADES began as a regional trading firm and has grown into a global B2E partner serving over 150 countries with construction machinery, vehicles, and logistics solutions.',
 }
 
 function ExperienceRibbon() {

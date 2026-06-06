@@ -1,9 +1,9 @@
 import type { BlogPost } from '@/types/cms'
 
 const defaultBody = [
-  'Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. TransHub helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.',
+  'Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.',
   'From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.',
-  'Contact our team to learn how TransHub can support your next shipment, fleet expansion, or global trade initiative.',
+  'Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative.',
 ]
 
 export const seedBlogs: BlogPost[] = [

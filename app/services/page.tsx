@@ -4,7 +4,9 @@ import PageHero from '../../components/PageHero'
 import ExpertiseServicesGrid from '../../components/ExpertiseServicesGrid'
 import { getServices } from '@/lib/cms'
 
-export const metadata: Metadata = { title: 'Services - TransHub' }
+import { COMPANY_NAME } from '@/lib/brand'
+
+export const metadata: Metadata = { title: `Services - ${COMPANY_NAME}` }
 export const dynamic = 'force-dynamic'
 
 export default async function ServicesPage() {

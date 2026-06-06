@@ -16,7 +16,7 @@ export const expertiseServices: ExpertiseService[] = [
     summary:
       'Supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling equipment used on major construction and industrial projects.',
     overview: [
-      'TransHub supports contractors, rental fleets, and industrial operators with construction equipment supply and spare parts logistics across earthmoving, industrial, and port applications.',
+      'SAASA B2E TRADES supports contractors, rental fleets, and industrial operators with construction equipment supply and spare parts logistics across earthmoving, industrial, and port applications.',
       'From yellow machines on civil sites to material handlers at port terminals, we connect you with the right equipment and components through a global supplier network.',
     ],
     capabilities: [
@@ -36,7 +36,7 @@ export const expertiseServices: ExpertiseService[] = [
       'Heavy-duty trucks and distribution fleets for moving construction materials, aggregates, and bulk goods across regional and international routes.',
     overview: [
       'We help material producers and logistics companies source trucks built for transport and distribution of construction materials, aggregates, and bulk cargo.',
-      'TransHub coordinates vehicle procurement, parts supply, and delivery logistics so your distribution network stays reliable and cost-effective.',
+      'SAASA B2E TRADES coordinates vehicle procurement, parts supply, and delivery logistics so your distribution network stays reliable and cost-effective.',
     ],
     capabilities: [
       'Semi-trucks and rigid haulers',
@@ -54,7 +54,7 @@ export const expertiseServices: ExpertiseService[] = [
     summary:
       'Coach and transit buses for passenger transport operators, including procurement support and aftermarket parts for fleet maintenance.',
     overview: [
-      'TransHub works with people transport companies to source modern coach and transit buses suited to intercity, tourism, and corporate shuttle operations.',
+      'SAASA B2E TRADES works with people transport companies to source modern coach and transit buses suited to intercity, tourism, and corporate shuttle operations.',
       'We also supply maintenance parts and fleet support services to keep passenger operations safe, compliant, and on schedule.',
     ],
     capabilities: [
@@ -74,7 +74,7 @@ export const expertiseServices: ExpertiseService[] = [
       'Industrial engines, generator sets, and power system components for construction sites, mines, and remote operations.',
     overview: [
       'Our energy division covers industrial diesel engines, generator sets, and supporting components for construction sites, mining camps, and remote power needs.',
-      'TransHub sources new and remanufactured power units with the parts and service support required for continuous operation in harsh environments.',
+      'SAASA B2E TRADES sources new and remanufactured power units with the parts and service support required for continuous operation in harsh environments.',
     ],
     capabilities: [
       'Diesel generator sets',
@@ -92,7 +92,7 @@ export const expertiseServices: ExpertiseService[] = [
     summary:
       'Heavy mining trucks, excavators, and wear parts for open-pit mining and quarry extraction operations worldwide.',
     overview: [
-      'TransHub supplies mining and quarrying equipment including ultra-class haul trucks, large excavators, and high-wear components for extraction operations.',
+      'SAASA B2E TRADES supplies mining and quarrying equipment including ultra-class haul trucks, large excavators, and high-wear components for extraction operations.',
       'We understand the uptime demands of open-pit mines and aggregate quarries and deliver parts and machinery through resilient global logistics channels.',
     ],
     capabilities: [

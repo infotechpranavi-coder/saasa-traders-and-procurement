@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import BrandLogo from '@/components/BrandLogo'
+import { CMS_DEFAULT_AUTHOR, COMPANY_NAME } from '@/lib/brand'
 import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from '@/types/cms'
 import { parseLines } from '@/lib/utils'
 import {
@@ -47,7 +49,7 @@ const emptyBlog = (): BlogPost => ({
   title: '',
   image: '/images/blog/featured-air.jpg',
   date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-  author: 'TransHub Team',
+  author: CMS_DEFAULT_AUTHOR,
   cat: 'Logistics',
   excerpt: '',
   body: [''],
@@ -211,7 +213,10 @@ export default function DashboardApp({
     return (
       <div className="dashboard-shell site-typography flex min-h-screen items-center justify-center px-4">
         <form onSubmit={login} className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-          <h1 className="hp-title text-2xl mb-1">TransHub Admin</h1>
+          <div className="mb-5 flex justify-center">
+            <BrandLogo className="brand-logo brand-logo--nav mx-auto" />
+          </div>
+          <h1 className="hp-title text-2xl mb-1 text-center">{COMPANY_NAME} Admin</h1>
           <p className="hp-body text-sm mb-6">Sign in to manage products, services, categories, and blog posts.</p>
           <label className="block text-sm font-semibold text-gray-700 mb-1">Password</label>
           <input
@@ -240,7 +245,8 @@ export default function DashboardApp({
     <div className="dashboard-shell site-typography min-h-screen">
       <header className="dashboard-header">
         <div className="flex items-center gap-3">
-          <span className="site-logo-text text-xl text-white">TransHub Dashboard</span>
+          <BrandLogo className="brand-logo brand-logo--dashboard" />
+          <span className="site-logo-text text-xl text-white">{COMPANY_NAME} Dashboard</span>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/" className="text-sm text-white/80 hover:text-white">

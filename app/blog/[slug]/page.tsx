@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getBlogBySlug(params.slug)
-  if (!post) return { title: 'Post Not Found - TransHub' }
-  return { title: `${post.title} - TransHub Blog` }
+  if (!post) return { title: 'Post Not Found - SAASA B2E TRADES' }
+  return { title: `${post.title} - SAASA B2E TRADES Blog` }
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {

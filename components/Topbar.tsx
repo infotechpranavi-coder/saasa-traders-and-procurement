@@ -1,5 +1,6 @@
 'use client'
 
+import { COMPANY_EMAIL } from '@/lib/brand'
 import type { SocialName } from '@/types'
 
 export default function Topbar() {
@@ -11,9 +12,9 @@ export default function Topbar() {
             <PhoneIcon />
             Phone: +92 8208 383 727
           </a>
-          <a href="mailto:info@transhub.com" className="flex items-center gap-2 hover:opacity-85 transition-opacity whitespace-nowrap">
+          <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-2 hover:opacity-85 transition-opacity whitespace-nowrap">
             <MailIcon />
-            Email: info@transhub.com
+            Email: {COMPANY_EMAIL}
           </a>
           <span className="flex items-center gap-2 whitespace-nowrap">
             <PinIcon />

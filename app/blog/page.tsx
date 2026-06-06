@@ -7,7 +7,9 @@ import PageHero from '../../components/PageHero'
 import { SectionLabelIcon } from '../../components/icons/LogisticsIcons'
 import { getBlogs } from '@/lib/cms'
 
-export const metadata: Metadata = { title: 'Blog - TransHub' }
+import { COMPANY_NAME } from '@/lib/brand'
+
+export const metadata: Metadata = { title: `Blog - ${COMPANY_NAME}` }
 export const dynamic = 'force-dynamic'
 
 export default async function BlogPage() {

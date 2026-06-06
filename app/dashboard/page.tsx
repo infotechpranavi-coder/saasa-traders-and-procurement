@@ -3,7 +3,7 @@ import DashboardApp from '@/components/dashboard/DashboardApp'
 import { getDashboardData } from '@/app/dashboard/actions'
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard - TransHub',
+  title: 'Admin Dashboard - SAASA B2E TRADES',
   robots: { index: false, follow: false },
 }
 
