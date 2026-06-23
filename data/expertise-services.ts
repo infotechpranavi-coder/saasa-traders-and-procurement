@@ -12,7 +12,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'construction-equipment',
     title: 'Construction equipment, Earthmoving, Industrial, and Port',
-    image: '/images/services/construction-equipment.jpg',
+    image: '/statsic/jcb.jpg',
     summary:
       'Supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling equipment used on major construction and industrial projects.',
     overview: [
@@ -31,7 +31,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'trucks-transport',
     title: 'Trucks for Transport and Distribution of Materials',
-    image: '/images/services/trucks.jpg',
+    image: '/statsic/batchmix.jpeg',
     summary:
       'Heavy-duty trucks and distribution fleets for moving construction materials, aggregates, and bulk goods across regional and international routes.',
     overview: [
@@ -50,7 +50,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'buses-transport',
     title: 'Buses for people transport companies',
-    image: '/images/services/buses.jpg',
+    image: '/statsic/road roller.jpg',
     summary:
       'Coach and transit buses for passenger transport operators, including procurement support and aftermarket parts for fleet maintenance.',
     overview: [
@@ -69,7 +69,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'energy-engines-generators',
     title: 'Energy | Engines and Generators',
-    image: '/images/services/engines.jpg',
+    image: '/statsic/drum mix.jpeg',
     summary:
       'Industrial engines, generator sets, and power system components for construction sites, mines, and remote operations.',
     overview: [
@@ -88,7 +88,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'mining-quarrying',
     title: 'Mining and Quarrying equipment',
-    image: '/images/services/mining.jpg',
+    image: '/statsic/bitumen soreder.jpg',
     summary:
       'Heavy mining trucks, excavators, and wear parts for open-pit mining and quarry extraction operations worldwide.',
     overview: [

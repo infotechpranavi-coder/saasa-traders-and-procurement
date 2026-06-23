@@ -1,16 +1,17 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import Image from 'next/image'
 import { Play } from 'lucide-react'
+import CmsImage from './CmsImage'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { LogisticsIcon, type LogisticsIconName } from './icons/LogisticsIcons'
+import { SITE_IMAGES } from '@/lib/site-content'
 
 const features: { icon: LogisticsIconName; title: string; desc: string }[] = [
-  { icon: 'ship', title: 'Shipping Services', desc: 'Save money by optimizing your shipments.' },
-  { icon: 'map', title: 'distributions Plan', desc: 'Save money by optimizing your shipments.' },
-  { icon: 'location', title: 'GPS tracking', desc: 'Save money by optimizing your shipments.' },
-  { icon: 'refresh', title: 'Flexible Shipment', desc: 'Save money by optimizing your shipments.' },
+  { icon: 'package', title: 'Equipment Procurement', desc: 'Source construction, mining, and industrial machinery from verified global suppliers.' },
+  { icon: 'cargo', title: 'Parts & Components', desc: 'Genuine and aftermarket parts for excavators, loaders, cranes, and road equipment.' },
+  { icon: 'globe', title: 'Global Sourcing', desc: 'Cross-border trading with documentation, compliance, and delivery coordination.' },
+  { icon: 'refresh', title: 'Repeat Supply', desc: 'Ongoing procurement support so your fleets and projects stay supplied.' },
 ]
 
 function CargoContainer() {
@@ -69,9 +70,9 @@ function SolutionsVisual() {
 
       {/* Port / ship — top left */}
       <div className="absolute left-0 top-0 z-[2] h-[52%] w-[64%] overflow-hidden rounded-[18px] shadow-[0_14px_36px_rgba(0,0,0,0.14)]">
-        <Image
-          src="/images/solutions/port.jpg"
-          alt="Cargo ship at port with cranes"
+        <CmsImage
+          src={SITE_IMAGES.solutions.primary}
+          alt="Drum mix plant equipment"
           fill
           className="object-cover object-center"
           sizes="300px"
@@ -80,11 +81,11 @@ function SolutionsVisual() {
 
       {/* Truck — bottom right, overlapping */}
       <div className="absolute bottom-0 right-0 z-[3] h-[70%] w-[50%] overflow-hidden rounded-[18px] border-[5px] border-white shadow-[0_18px_42px_rgba(0,0,0,0.18)]">
-        <Image
-          src="/images/solutions/truck.jpg"
-          alt="Semi truck on highway"
+        <CmsImage
+          src={SITE_IMAGES.solutions.secondary}
+          alt="JCB construction machinery"
           fill
-          className="object-cover object-[18%_center]"
+          className="object-cover object-center"
           sizes="240px"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#ff6633]/25 via-transparent to-[#001a33]/15" />
@@ -120,7 +121,7 @@ export default function Solutions() {
 
           <div className="reveal-right">
             <h2 className="hp-title mb-8">
-              Logistics service outsourcing&apos;s advantages in 2025
+              Why businesses choose SAASA B2E for procurement &amp; trading
             </h2>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-2 sm:gap-y-4">

@@ -1,39 +1,40 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight, ArrowRight } from 'lucide-react'
+import CmsImage from './CmsImage'
+import { SITE_IMAGES } from '@/lib/site-content'
 
 const SLIDE_MS = 6000
 
 const slides = [
   {
-    image: '/images/hero-port.jpg',
-    badge: 'EST. 2024 • GLOBAL LOGISTICS',
-    line1: 'Global',
-    line2: 'Logistics',
-    desc: 'Experience seamless freight solutions. Premium transport services that redefine reliability through world-class delivery.',
+    image: SITE_IMAGES.hero.equipment,
+    badge: 'EST. 2024 • PROCUREMENT & TRADING',
+    line1: 'Heavy',
+    line2: 'Equipment',
+    desc: 'Source construction machinery, earthmoving equipment, and industrial assets through a trusted B2E trading partner.',
   },
   {
-    image: '/images/hero-truck.jpg',
-    badge: 'EST. 2024 • ROAD FREIGHT',
-    line1: 'Smart',
-    line2: 'Transport',
-    desc: 'Streamlining your logistics with transportation solutions, timely deliveries and exceptional service worldwide.',
+    image: SITE_IMAGES.hero.machinery,
+    badge: 'EST. 2024 • FLEET SUPPLY',
+    line1: 'Earthmoving',
+    line2: 'Machinery',
+    desc: 'Procure excavators, loaders, dozers, cranes, and road-building equipment through a trusted B2E trading partner.',
   },
   {
-    image: '/images/stats-ship.jpg',
-    badge: 'EST. 2024 • SEA FREIGHT',
-    line1: 'SAASA B2E',
-    line2: 'Trades',
-    desc: 'Ocean freight and container shipping backed by decades of expertise across global ports and trade lanes.',
+    image: SITE_IMAGES.hero.parts,
+    badge: 'EST. 2024 • GENUINE PARTS',
+    line1: 'Machinery',
+    line2: 'Parts',
+    desc: 'Genuine and aftermarket parts for excavators, loaders, cranes, and road-building equipment — supplied on time.',
   },
 ]
 
 const stats = [
+  { value: '150+', label: 'PRODUCT LINES' },
   { value: '25+', label: 'YEARS' },
-  { value: '98%', label: 'ACCURACY' },
   { value: '2K+', label: 'CLIENTS' },
 ]
 
@@ -131,7 +132,7 @@ export default function Hero() {
               className={`hero-cinematic-bg ${index === activeSlide ? 'hero-cinematic-bg--active' : ''}`}
               aria-hidden={index !== activeSlide}
             >
-              <Image
+              <CmsImage
                 src={item.image}
                 alt=""
                 fill
@@ -160,8 +161,8 @@ export default function Hero() {
                   Free Quote
                   <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
                 </Link>
-                <Link href="/services" className="hero-cinematic-btn hero-cinematic-btn--outline">
-                  View Services
+                <Link href="/products" className="hero-cinematic-btn hero-cinematic-btn--outline">
+                  View Products
                   <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
                 </Link>
               </div>

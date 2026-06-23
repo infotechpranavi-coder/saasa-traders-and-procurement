@@ -1,32 +1,13 @@
 'use client'
 
-import Image from 'next/image'
+import CmsImage from './CmsImage'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
+import type { CustomerReview } from '@/types/cms'
 
-const testimonials = [
-  {
-    quote:
-      'The transport company provides reliable service and delivers on time. Vehicles are well maintained and staff behavior is professional. A good experience. Customer support is helpful, though response time faster.',
-    name: 'Sarah Williams',
-    role: 'Marketing Manager',
-    avatar: '/images/testimonials/sarah.jpg',
-  },
-  {
-    quote:
-      'Good transport company with safe handling of goods and timely delivery. Vehicles are well maintained and staff behavior is professional. They were incredibly helpful and available to answer my questions.',
-    name: 'Bessie Cooper',
-    role: 'Marketing Manager',
-    avatar: '/images/testimonials/bessie.jpg',
-  },
-  {
-    quote:
-      'I was initially hesitant about switching logistics providers, but the SAASA B2E TRADES customer support team made the transition seamless. They were incredibly helpful and available to answer my questions.',
-    name: 'Jacob Jones',
-    role: 'Marketing Manager',
-    avatar: '/images/testimonials/jacob.jpg',
-  },
-]
+interface TestimonialsProps {
+  reviews: CustomerReview[]
+}
 
 function StarRating() {
   return (
@@ -40,8 +21,10 @@ function StarRating() {
   )
 }
 
-export default function Testimonials() {
+export default function Testimonials({ reviews }: TestimonialsProps) {
   const { ref } = useScrollReveal()
+
+  if (!reviews.length) return null
 
   return (
     <section ref={ref} className="testimonials-section py-20 md:py-24">
@@ -49,14 +32,14 @@ export default function Testimonials() {
         <div className="text-center mb-12 md:mb-14 reveal">
           <div className="section-label justify-center mb-3">
             <SectionLabelIcon className="text-primary" />
-            ABOUT OUR COMPANY
+            CLIENT FEEDBACK
           </div>
-          <h2 className="testimonials-heading">What Our Client Say&apos;s about us</h2>
+          <h2 className="testimonials-heading">What Our Clients Say About Us</h2>
         </div>
 
-        <div className="grid gap-10 md:grid-cols-3 md:gap-7 lg:gap-9">
-          {testimonials.map((testimonial, index) => (
-            <article key={testimonial.name} className={`reveal delay-${(index + 1) * 100}`}>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 md:gap-7 lg:gap-9">
+          {reviews.map((testimonial, index) => (
+            <article key={testimonial.slug} className={`reveal delay-${(index % 3) + 1}00`}>
               <div className="testimonial-bubble-wrap">
                 <div className="testimonial-card">
                   <span className="testimonial-watermark" aria-hidden>
@@ -76,13 +59,13 @@ export default function Testimonials() {
               </div>
 
               <div className="testimonial-author">
-                <div className="testimonial-avatar">
-                  <Image
-                    src={testimonial.avatar}
+                <div className="testimonial-avatar relative overflow-hidden">
+                  <CmsImage
+                    src={testimonial.image}
                     alt={testimonial.name}
-                    width={80}
-                    height={80}
-                    className="h-full w-full rounded-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="80px"
                   />
                 </div>
                 <div>

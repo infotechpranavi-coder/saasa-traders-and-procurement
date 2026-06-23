@@ -2,6 +2,7 @@ export interface Product {
   slug: string
   title: string
   label: string
+  categoryId?: string
   image: string
   desc: string
   specs: string[]
@@ -19,14 +20,30 @@ export const productCategories = [
   'Road Rollers',
   'Dump Trucks',
   'Compactors',
+  'Engine Parts',
+  'Powertrain & Hydraulics',
 ]
+
+/** Maps product slug → category id for seed/CMS migration */
+export const productCategoryMap: Record<string, string> = {
+  'hydraulic-pump-assemblies': 'excavators',
+  'undercarriage-track-chains': 'bulldozers',
+  'loader-bucket-teeth-adapters': 'wheel-loaders',
+  'crane-wire-rope-sheaves': 'cranes',
+  'diesel-engine-overhaul-kits': 'engine-parts',
+  'hydraulic-cylinder-seal-kits': 'powertrain-hydraulics',
+  'concrete-mixer-drum-liners': 'concrete-mixers',
+  'road-roller-drum-kits': 'road-rollers',
+  'transmission-gearbox-parts': 'powertrain-hydraulics',
+}
 
 export const products: Product[] = [
   {
     slug: 'hydraulic-pump-assemblies',
     title: 'Hydraulic Pump Assemblies',
     label: 'Excavator Parts',
-    image: '/images/products/hydraulic-pump.jpg',
+    categoryId: 'excavators',
+    image: '/statsic/jcb.jpg',
     desc: 'High-pressure hydraulic pumps and valve blocks for excavators and backhoes. Engineered for long duty cycles on heavy construction sites.',
     specs: ['CAT · Komatsu · JCB', 'OEM & aftermarket'],
     overview: [
@@ -46,7 +63,8 @@ export const products: Product[] = [
     slug: 'undercarriage-track-chains',
     title: 'Undercarriage Track Chains',
     label: 'Bulldozer Parts',
-    image: '/images/products/track-chains.jpg',
+    categoryId: 'bulldozers',
+    image: '/statsic/jcb.jpg',
     desc: 'Track chains, sprockets, idlers, and rollers for bulldozers and tracked excavators. Heat-treated steel for abrasion resistance.',
     specs: ['D6 · D8 · PC200 series', 'Export-ready packaging'],
     overview: [
@@ -66,7 +84,8 @@ export const products: Product[] = [
     slug: 'loader-bucket-teeth-adapters',
     title: 'Loader Bucket Teeth & Adapters',
     label: 'Wheel Loader Parts',
-    image: '/images/products/bucket-teeth.jpg',
+    categoryId: 'wheel-loaders',
+    image: '/statsic/jcb.jpg',
     desc: 'Replaceable bucket teeth, adapters, and cutting edges for wheel loaders and front-end loaders used in quarry and site work.',
     specs: ['Forged alloy steel', 'Quick-fit adapters'],
     overview: [
@@ -86,7 +105,8 @@ export const products: Product[] = [
     slug: 'crane-wire-rope-sheaves',
     title: 'Crane Wire Rope & Sheaves',
     label: 'Crane Components',
-    image: '/images/products/crane-parts.jpg',
+    categoryId: 'cranes',
+    image: '/statsic/drum mix.jpeg',
     desc: 'Wire ropes, hook blocks, sheave assemblies, and safety latches for tower cranes and mobile cranes on high-rise projects.',
     specs: ['Mobile & tower cranes', 'Load-tested certified'],
     overview: [
@@ -106,7 +126,8 @@ export const products: Product[] = [
     slug: 'diesel-engine-overhaul-kits',
     title: 'Diesel Engine Overhaul Kits',
     label: 'Engine Parts',
-    image: '/images/products/engine-parts.jpg',
+    categoryId: 'engine-parts',
+    image: '/statsic/batchmix.jpeg',
     desc: 'Piston kits, gaskets, liners, and turbocharger parts for diesel engines powering excavators, loaders, and dump trucks.',
     specs: ['Cummins · Deutz · Perkins', 'Full gasket sets'],
     overview: [
@@ -126,7 +147,8 @@ export const products: Product[] = [
     slug: 'hydraulic-cylinder-seal-kits',
     title: 'Hydraulic Cylinder Seal Kits',
     label: 'Hydraulic Parts',
-    image: '/images/products/hydraulic-seals.jpg',
+    categoryId: 'powertrain-hydraulics',
+    image: '/statsic/bitumen soreder.jpg',
     desc: 'Seal kits, rod wipers, and cylinder repair parts for boom, arm, and bucket cylinders across all major machinery brands.',
     specs: ['NBR · PU · Viton options', 'Bulk order available'],
     overview: [
@@ -146,7 +168,8 @@ export const products: Product[] = [
     slug: 'concrete-mixer-drum-liners',
     title: 'Concrete Mixer Drum Liners',
     label: 'Concrete Equipment',
-    image: '/images/products/concrete-mixer.jpg',
+    categoryId: 'concrete-mixers',
+    image: '/statsic/batchmix.jpeg',
     desc: 'Wear-resistant drum liners, mixing blades, and discharge chute parts for transit mixers and stationary batch plants.',
     specs: ['Transit & stationary mixers', 'Custom fabrication'],
     overview: [
@@ -166,7 +189,8 @@ export const products: Product[] = [
     slug: 'road-roller-drum-kits',
     title: 'Road Roller Drum Kits',
     label: 'Compaction Parts',
-    image: '/images/products/road-roller.jpg',
+    categoryId: 'road-rollers',
+    image: '/statsic/road roller.jpg',
     desc: 'Vibration drum assemblies, bearing kits, and scraper blades for single and double drum rollers on road construction.',
     specs: ['Smooth & padfoot drums', 'Field service support'],
     overview: [
@@ -186,7 +210,8 @@ export const products: Product[] = [
     slug: 'transmission-gearbox-parts',
     title: 'Transmission & Gearbox Parts',
     label: 'Powertrain',
-    image: '/images/products/gearbox-parts.jpg',
+    categoryId: 'powertrain-hydraulics',
+    image: '/statsic/drum mix.jpeg',
     desc: 'Clutch plates, torque converters, planetary gears, and final drive components for loaders, dozers, and graders.',
     specs: ['ZF · Allison · Dana', 'Reman & new stock'],
     overview: [

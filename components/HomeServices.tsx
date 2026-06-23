@@ -1,7 +1,7 @@
-import { getServices } from '@/lib/cms'
-import Services from './Services'
+import { getHomepageExpertiseItems } from '@/lib/cms'
+import HomeExpertise from './HomeExpertise'
 
 export default async function HomeServices() {
-  const services = await getServices()
-  return <Services services={services} />
+  const items = await getHomepageExpertiseItems()
+  return <HomeExpertise items={items} />
 }

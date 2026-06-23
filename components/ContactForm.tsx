@@ -2,7 +2,8 @@
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { ArrowUpRight, Clock, Mail, MapPin, Phone } from 'lucide-react'
-import { COMPANY_EMAIL } from '@/lib/brand'
+import { COMPANY_EMAIL, COMPANY_ADDRESS, COMPANY_PHONE } from '@/lib/brand'
+import { CONTACT_SERVICE_OPTIONS } from '@/lib/site-content'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
 
 interface ContactForm {
@@ -32,8 +33,8 @@ export default function ContactForm() {
   }
 
   const info = [
-    { icon: MapPin, title: 'Our Location', desc: '123 Street, New York, USA' },
-    { icon: Phone, title: 'Phone Number', desc: '+92 8208 383 727' },
+    { icon: MapPin, title: 'Our Location', desc: COMPANY_ADDRESS },
+    { icon: Phone, title: 'Phone Number', desc: COMPANY_PHONE },
     { icon: Mail, title: 'Email Address', desc: COMPANY_EMAIL },
     { icon: Clock, title: 'Working Hours', desc: 'Mon - Sat: 9AM - 7PM' },
   ]
@@ -49,7 +50,8 @@ export default function ContactForm() {
             </div>
             <h2 className="hp-title mb-6">We&apos;d Love to Hear From You</h2>
             <p className="hp-lead mb-10">
-              Have a question about our logistics services? Our team is ready to help you find the perfect solution for your shipping needs.
+              Need construction equipment, machinery parts, trucks, or industrial products sourced and delivered?
+              Our procurement team is ready to quote your requirements.
             </p>
 
             {info.map((item) => (
@@ -100,11 +102,10 @@ export default function ContactForm() {
                 onChange={handleChange}
                 className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-500 transition-colors focus:border-primary focus:outline-none"
               >
-                <option value="">Select Service</option>
-                <option>Sea Transport</option>
-                <option>Road Freight</option>
-                <option>Air Freight</option>
-                <option>Rail Logistics</option>
+                <option value="">Select requirement</option>
+                {CONTACT_SERVICE_OPTIONS.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
               </select>
               <textarea
                 name="message"

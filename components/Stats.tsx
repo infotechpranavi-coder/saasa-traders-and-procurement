@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
+import CmsImage from './CmsImage'
+import { SITE_IMAGES } from '@/lib/site-content'
 
 const stats = [
-  { value: '98%', label: 'Faster Order Processing' },
-  { value: '97%', label: 'Fulfillment Accuracy' },
-  { value: '20.0 K', label: 'Orders Shipped Annually' },
+  { value: '150+', label: 'Products & Equipment Lines' },
+  { value: '25+', label: 'Years Trading Experience' },
+  { value: '40+', label: 'Procurement Categories' },
 ]
 
 export default function Stats() {
@@ -45,12 +46,12 @@ export default function Stats() {
           className="stats-bg-layer absolute -inset-x-[2%] -top-[22%] -bottom-[22%] will-change-transform"
           style={{ transform: `translate3d(0, ${parallaxY}px, 0)` }}
         >
-          <Image
-            src="/images/stats-ship.jpg"
-            alt="Container ship at sea"
+          <CmsImage
+            src={SITE_IMAGES.stats}
+            alt="Batch mix plant at construction site"
             fill
             priority
-            className="object-cover object-[center_42%]"
+            className="object-cover object-center"
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-[#001a33]/10" />

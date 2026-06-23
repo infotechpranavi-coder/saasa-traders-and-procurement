@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { MapPin, Phone } from 'lucide-react'
 import BrandLogo from './BrandLogo'
-import { COMPANY_NAME } from '@/lib/brand'
+import { COMPANY_NAME, COMPANY_ADDRESS, COMPANY_PHONE, COMPANY_PHONE_TEL, COMPANY_DESCRIPTION } from '@/lib/brand'
+import { FOOTER_QUICK_LINKS, FOOTER_SERVICES } from '@/lib/site-content'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import type { SocialName } from '@/types'
 
@@ -53,9 +55,22 @@ export default function Footer() {
                 <BrandLogo className="brand-logo brand-logo--nav" />
                 <span className="footer-brand-name text-white">{COMPANY_NAME}</span>
               </Link>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Our dedication lies in embracing challenges and pioneering innovation within the more attractive advertising sector.
+              <p className="text-gray-400 text-sm leading-relaxed mb-5">
+                {COMPANY_DESCRIPTION}
               </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-start gap-3 text-sm text-gray-400">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                  <span>{COMPANY_ADDRESS}</span>
+                </div>
+                <a
+                  href={`tel:${COMPANY_PHONE_TEL}`}
+                  className="flex items-center gap-3 text-sm text-gray-400 hover:text-primary transition-colors"
+                >
+                  <Phone className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                  <span>{COMPANY_PHONE}</span>
+                </a>
+              </div>
               <div className="flex gap-3">
                 {(['facebook', 'twitter', 'instagram', 'linkedin'] as const).map((s) => (
                   <a key={s} href="#"
@@ -70,10 +85,10 @@ export default function Footer() {
             <div className="reveal delay-100">
               <h4 className="mb-2">Quick Links</h4>
               <div className="w-8 h-1 bg-primary mb-5"/>
-              {['About Us','Our Services','Project','FAQ\'s','Our Blog','Contact Us'].map(l => (
-                <Link key={l} href="#"
+              {FOOTER_QUICK_LINKS.map((item) => (
+                <Link key={item.label} href={item.href}
                   className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all">
-                  {l}
+                  {item.label}
                 </Link>
               ))}
             </div>
@@ -82,10 +97,10 @@ export default function Footer() {
             <div className="reveal delay-200">
               <h4 className="mb-2">Our Services</h4>
               <div className="w-8 h-1 bg-primary mb-5"/>
-              {['Ship Fright Shipping','Less Than Truckload','Container Freight','Adult Health','Rail Freight Shipping','Air Fright Trucking'].map(l => (
-                <Link key={l} href="#"
+              {FOOTER_SERVICES.map((item) => (
+                <Link key={item.label} href={item.href}
                   className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all">
-                  {l}
+                  {item.label}
                 </Link>
               ))}
             </div>

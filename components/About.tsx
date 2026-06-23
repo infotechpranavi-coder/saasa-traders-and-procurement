@@ -1,22 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight, Phone } from 'lucide-react'
+import CmsImage from './CmsImage'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
+import { COMPANY_PHONE, COMPANY_PHONE_TEL } from '@/lib/brand'
+import { SITE_IMAGES } from '@/lib/site-content'
 
 const tabs = ['Our Mission', 'Our Vision', 'Our History'] as const
 type TabKey = (typeof tabs)[number]
 
 const tabContent: Record<TabKey, string> = {
   'Our Mission':
-    'Logistic & transport Group is a forward-thinking real estate consultancy and investment advisory firm with over 25 years of industry experience. We specialize in delivering strategic guidance, project development support,',
+    'To connect contractors, miners, fleet operators, and industrial businesses with reliable equipment, genuine parts, and trading partners — delivering procurement solutions that keep projects moving.',
   'Our Vision':
-    "Our vision is to become the world's most trusted logistics partner, leveraging cutting-edge technology and sustainable practices to connect businesses globally.",
+    'To be Africa’s most trusted B2E procurement and trading company for construction machinery, vehicles, mining equipment, and industrial products.',
   'Our History':
-    'Founded in 1999, SAASA B2E TRADES began as a regional trading firm and has grown into a global B2E partner serving over 150 countries with construction machinery, vehicles, and logistics solutions.',
+    'SAASA B2E TRADES has grown from a regional trading firm into a procurement partner serving construction, mining, transport, and energy sectors with equipment supply and parts sourcing across global markets.',
 }
 
 function ExperienceRibbon() {
@@ -38,12 +40,12 @@ function BestServicesSeal() {
         </defs>
         <text fill="#fff" fontSize="8.5" fontWeight="700" letterSpacing="1.1">
           <textPath href="#aboutSealTop" startOffset="50%" textAnchor="middle">
-            Best Logistic
+            Best Procurement
           </textPath>
         </text>
         <text fill="#fff" fontSize="8.5" fontWeight="700" letterSpacing="1.1">
           <textPath href="#aboutSealBottom" startOffset="50%" textAnchor="middle">
-            Services
+            & Trading
           </textPath>
         </text>
       </svg>
@@ -63,22 +65,13 @@ function AboutCollage() {
 
       {/* Bottom-left — truck / transport scene */}
       <div className="absolute bottom-0 left-0 z-[1] h-[46%] w-[78%] overflow-hidden rounded-[28px] shadow-[0_16px_40px_rgba(0,0,0,0.14)]">
-        <Image
-          src="/images/about/truck.jpg"
-          alt="Freight truck on highway"
+        <CmsImage
+          src={SITE_IMAGES.about.secondary}
+          alt="Road roller on construction site"
           fill
           className="object-cover object-center"
           sizes="420px"
         />
-        {/* Small airplane accent in sky */}
-        <svg
-          className="absolute right-[18%] top-[8%] z-[2] h-7 w-7 text-white/90 drop-shadow-md"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden
-        >
-          <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
-        </svg>
       </div>
 
       {/* Foreground orange container — bottom-left overlap */}
@@ -94,11 +87,11 @@ function AboutCollage() {
 
       {/* Top-right — main portrait */}
       <div className="absolute right-0 top-0 z-[2] h-[74%] w-[58%] overflow-hidden rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.16)]">
-        <Image
-          src="/images/about/main.jpg"
-          alt="Logistics professional with safety gear"
+        <CmsImage
+          src={SITE_IMAGES.about.main}
+          alt="JCB excavator and earthmoving equipment"
           fill
-          className="object-cover object-top"
+          className="object-cover object-center"
           sizes="320px"
         />
         <ExperienceRibbon />
@@ -106,9 +99,9 @@ function AboutCollage() {
 
       {/* Bottom-right — circular port inset */}
       <div className="absolute bottom-[4%] right-0 z-[3] h-[128px] w-[128px] overflow-hidden rounded-full border-[6px] border-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] sm:h-[138px] sm:w-[138px]">
-        <Image
-          src="/images/about/port-circle.jpg"
-          alt="Shipping containers at port"
+        <CmsImage
+          src={SITE_IMAGES.about.accent}
+          alt="Drum mix asphalt plant"
           fill
           className="object-cover"
           sizes="138px"
@@ -141,12 +134,12 @@ export default function About() {
             </div>
 
             <h2 className="hp-title mb-5 max-w-[560px]">
-              Our services increase the productivity of your work.
+              Your partner for equipment procurement and industrial trading.
             </h2>
 
             <p className="hp-lead mb-7 max-w-[560px]">
-              Our global logistics expertise, advanced supply chain technology &amp; customized logistics solutions
-              will help you analyze, develop, and implement successful
+              From construction machinery and spare parts to trucks, buses, mining equipment, and power systems —
+              we source, trade, and deliver the products your operation depends on.
             </p>
 
             <div className="mb-7 flex flex-wrap gap-2.5">
@@ -164,13 +157,13 @@ export default function About() {
 
             <div className="mb-6 flex gap-4 border-t border-gray-200 pt-6">
               <div className="relative h-[88px] w-[130px] shrink-0 overflow-hidden rounded-[14px] shadow-md sm:h-[92px] sm:w-[140px]">
-                <Image src="/images/about/tab.jpg" alt="" fill className="object-cover" sizes="140px" />
+                <CmsImage src={SITE_IMAGES.about.tab} alt="Bitumen spreader" fill className="object-cover" sizes="140px" />
               </div>
               <p className="hp-body">{tabContent[activeTab]}</p>
             </div>
 
             <p className="hp-emphasis mb-8">
-              We specialize in delivering strategic guidance, project development support,
+              We manage supplier selection, import coordination, and delivery so your team can focus on the project.
             </p>
 
             <div className="flex flex-wrap items-center gap-5">
@@ -188,7 +181,9 @@ export default function About() {
                 </div>
                 <div>
                   <p className="hp-label-sm">Call Us Any Time:</p>
-                  <p className="hp-subtitle text-[#ff5a1f]">148 359 505 285</p>
+                  <a href={`tel:${COMPANY_PHONE_TEL}`} className="hp-subtitle text-[#ff5a1f] hover:underline">
+                    {COMPANY_PHONE}
+                  </a>
                 </div>
               </div>
             </div>

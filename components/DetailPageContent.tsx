@@ -1,5 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
+import CmsImage from './CmsImage'
+import type { ProductCompany } from '@/types/cms'
 
 interface DetailPageContentProps {
   image: string
@@ -10,6 +11,7 @@ interface DetailPageContentProps {
   listItems: string[]
   secondaryTitle: string
   secondaryItems: string[]
+  companies?: ProductCompany[]
   backHref: string
   backLabel: string
 }
@@ -23,78 +25,81 @@ export default function DetailPageContent({
   listItems,
   secondaryTitle,
   secondaryItems,
-  backHref,
-  backLabel,
+  companies = [],
 }: DetailPageContentProps) {
   return (
-    <article className="py-20 bg-white">
-      <div className="max-w-5xl mx-auto px-4">
-        <Link
-          href={backHref}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-primary transition-colors mb-8"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to {backLabel}
-        </Link>
+    <article className="product-detail-article">
+      <div className="product-detail-sheet">
+        <header className="product-detail-header">
+          <h1 className="product-detail-title">{title}</h1>
+          <span className="product-detail-label">{label}</span>
+        </header>
 
-        <div className="relative mb-10 h-72 md:h-96 overflow-hidden rounded-[22px]">
-          <Image src={image} alt={title} fill className="object-cover" sizes="(max-width:1024px) 100vw, 896px" priority />
-          <span className="absolute bottom-4 left-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-white">
-            {label}
-          </span>
-        </div>
+        <div className="product-detail-grid">
+          <div className="product-detail-main">
+            <div className="product-detail-media">
+              <CmsImage src={image} alt={title} fill priority />
+            </div>
 
-        <div className="grid lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 space-y-4">
-            {overview.map((paragraph) => (
-              <p key={paragraph} className="hp-body">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-
-          <aside className="rounded-[22px] bg-[#f4f5f7] p-6 h-fit">
-            <h3 className="hp-subtitle mb-4">{listTitle}</h3>
-            <ul className="space-y-3">
-              {listItems.map((item) => (
-                <li key={item} className="hp-body flex items-start gap-2 text-sm">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
-                  {item}
-                </li>
+            <div className="product-detail-overview">
+              {overview.map((paragraph) => (
+                <p key={paragraph} className="product-detail-text">
+                  {paragraph}
+                </p>
               ))}
-            </ul>
-          </aside>
-        </div>
+            </div>
 
-        <div className="mt-12 rounded-[22px] border border-gray-100 p-8">
-          <h3 className="hp-subtitle text-xl mb-4">{secondaryTitle}</h3>
-          <div className="flex flex-wrap gap-2">
-            {secondaryItems.map((item) => (
-              <span
-                key={item}
-                className="rounded-full border border-gray-200 bg-white px-4 py-1.5 text-xs font-semibold text-gray-600"
-              >
-                {item}
-              </span>
-            ))}
+            {secondaryItems.length > 0 && (
+              <div className="product-detail-applications">
+                <h2 className="product-detail-section-title">{secondaryTitle}</h2>
+                <ul className="product-detail-tags">
+                  {secondaryItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {companies.length > 0 && (
+              <div className="product-detail-companies">
+                <h2 className="product-detail-section-title">Companies & equipment we supply</h2>
+                <ul className="product-detail-company-list">
+                  {companies.map((company) => (
+                    <li key={company.name} className="product-detail-company-card">
+                      <p className="product-detail-company-name">{company.name}</p>
+                      {company.items.length > 0 && (
+                        <ul className="product-detail-tags">
+                          {company.items.map((item) => (
+                            <li key={`${company.name}-${item}`}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="product-detail-actions">
+              <Link href="/contact" className="btn-primary inline-flex text-sm">
+                Request Quote
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-12 flex flex-wrap gap-4">
-          <Link href="/contact" className="btn-primary inline-flex">
-            Request Quote
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
-            </svg>
-          </Link>
-          <Link
-            href={backHref}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-6 py-3 text-sm font-semibold text-dark hover:border-primary hover:text-primary transition-colors"
-          >
-            View all {backLabel.toLowerCase()}
-          </Link>
+          {listItems.length > 0 && (
+            <aside className="product-detail-features">
+              <h2 className="product-detail-section-title">{listTitle}</h2>
+              <ul className="product-detail-feature-list">
+                {listItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </aside>
+          )}
         </div>
       </div>
     </article>

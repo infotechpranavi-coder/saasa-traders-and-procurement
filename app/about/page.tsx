@@ -1,23 +1,24 @@
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import PageLayout from '../../components/PageLayout'
 import PageHero from '../../components/PageHero'
+import CmsImage from '../../components/CmsImage'
 import { SectionLabelIcon } from '../../components/icons/LogisticsIcons'
 import { COMPANY_NAME } from '@/lib/brand'
+import { SITE_IMAGES } from '@/lib/site-content'
 
 export const metadata: Metadata = { title: `About Us - ${COMPANY_NAME}` }
 
 const team = [
   { name: 'Michael Torres', role: 'CEO & Founder', image: '/images/testimonials/jacob.jpg' },
-  { name: 'Sarah Chen', role: 'Operations Director', image: '/images/testimonials/sarah.jpg' },
-  { name: 'James Wilson', role: 'Head of Logistics', image: '/images/testimonials/bessie.jpg' },
-  { name: 'Priya Sharma', role: 'Technology Lead', image: '/images/testimonials/sarah.jpg' },
+  { name: 'Sarah Chen', role: 'Procurement Director', image: '/images/testimonials/sarah.jpg' },
+  { name: 'James Wilson', role: 'Equipment Trading Lead', image: '/images/testimonials/bessie.jpg' },
+  { name: 'Priya Sharma', role: 'Supply Chain Manager', image: '/images/testimonials/sarah.jpg' },
 ]
 
 const stats = [
-  { value: '25+', label: 'Years Experience' },
-  { value: '150+', label: 'Countries Served' },
-  { value: '5K+', label: 'Fleet Vehicles' },
+  { value: '25+', label: 'Years Trading' },
+  { value: '150+', label: 'Product Lines' },
+  { value: '40+', label: 'Equipment Categories' },
 ]
 
 export default function AboutPage() {
@@ -32,12 +33,15 @@ export default function AboutPage() {
               <SectionLabelIcon className="text-primary" />
               OUR STORY
             </div>
-            <h2 className="hp-title mb-6">25+ Years of Logistics Excellence</h2>
+            <h2 className="hp-title mb-6">Procurement &amp; Trading Built for Industry</h2>
             <p className="hp-body mb-4">
-              Founded in 1999, SAASA B2E TRADES began as a regional trading firm with a vision to connect businesses through reliable equipment and logistics. Over the past 25 years, we have grown into a global powerhouse serving over 150 countries.
+              SAASA B2E TRADES is a business-to-enterprise trading company focused on sourcing and supplying construction
+              machinery, heavy equipment parts, trucks, buses, mining assets, and industrial products for contractors,
+              fleet operators, and project owners.
             </p>
             <p className="hp-body mb-8">
-              Our global logistics expertise, advanced supply chain technology and customized solutions help businesses of all sizes optimize their operations and deliver exceptional results.
+              From Yaoundé, Cameroon, we coordinate global supplier networks, manage import logistics, and deliver the
+              equipment and parts your operation needs — on spec, on time, and with transparent communication.
             </p>
             <div className="grid grid-cols-3 gap-4">
               {stats.map((s) => (
@@ -51,13 +55,19 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="relative col-span-2 h-52 overflow-hidden rounded-[22px]">
-              <Image src="/images/about/main.jpg" alt="SAASA B2E TRADES operations" fill className="object-cover" sizes="50vw" />
+              <CmsImage
+                src={SITE_IMAGES.about.main}
+                alt="JCB excavator on site"
+                fill
+                className="object-cover"
+                sizes="50vw"
+              />
             </div>
             <div className="relative h-44 overflow-hidden rounded-[22px]">
-              <Image src="/images/about/truck.jpg" alt="Fleet truck" fill className="object-cover" sizes="25vw" />
+              <CmsImage src={SITE_IMAGES.about.secondary} alt="Road roller" fill className="object-cover" sizes="25vw" />
             </div>
             <div className="relative h-44 overflow-hidden rounded-[22px]">
-              <Image src="/images/about/port-circle.jpg" alt="Port logistics" fill className="object-cover" sizes="25vw" />
+              <CmsImage src={SITE_IMAGES.about.accent} alt="Drum mix plant" fill className="object-cover" sizes="25vw" />
             </div>
           </div>
         </div>
@@ -76,7 +86,7 @@ export default function AboutPage() {
             {team.map((member) => (
               <article key={member.name} className="rounded-2xl bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-xl">
                 <div className="relative mx-auto mb-4 h-20 w-20 overflow-hidden rounded-full border-2 border-dashed border-primary p-1">
-                  <Image src={member.image} alt={member.name} fill className="rounded-full object-cover" sizes="80px" />
+                  <CmsImage src={member.image} alt={member.name} fill className="rounded-full object-cover" sizes="80px" />
                 </div>
                 <h4 className="hp-subtitle">{member.name}</h4>
                 <p className="hp-label-sm mt-1">{member.role}</p>

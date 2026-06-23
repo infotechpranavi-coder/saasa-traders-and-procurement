@@ -9,16 +9,28 @@ import {
   createProduct,
   createService,
   createBlog,
+  createBrand,
+  createBrandCategory,
+  createPortfolioProject,
+  createReview,
   deleteCategory,
   deleteProduct,
   deleteService,
   deleteBlog,
+  deleteBrand,
+  deleteBrandCategory,
+  deletePortfolioProject,
+  deleteReview,
   updateCategory,
   updateProduct,
   updateService,
   updateBlog,
+  updateBrand,
+  updateBrandCategory,
+  updatePortfolioProject,
+  updateReview,
 } from '@/lib/cms-mutations'
-import type { BlogPost, CategoryType, CmsData, Product, Service } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, PortfolioProject, Product, Service } from '@/types/cms'
 
 async function requireAdmin(): Promise<boolean> {
   return isAdminAuthenticated()
@@ -111,16 +123,25 @@ export async function saveCategoryAction(input: {
   id: string
   name: string
   type: CategoryType
+  description?: string
+  image?: string
   isEdit?: boolean
 }): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
   const cms = await readCms()
   const exists = cms.categories.some((c) => c.id === input.id)
+  const payload = {
+    id: input.id,
+    name: input.name,
+    type: input.type,
+    description: input.description,
+    image: input.image,
+  }
   const result =
     input.isEdit && exists
-      ? await updateCategory({ id: input.id, name: input.name, type: input.type })
-      : await createCategory({ id: input.id, name: input.name, type: input.type })
+      ? await updateCategory(payload)
+      : await createCategory(payload)
 
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }
@@ -149,6 +170,94 @@ export async function removeBlogAction(slug: string): Promise<{ ok: boolean; err
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
   const result = await deleteBlog(slug)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function saveBrandCategoryAction(input: {
+  id: string
+  name: string
+  isEdit?: boolean
+}): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const cms = await readCms()
+  const exists = cms.brandCategories.some((c) => c.id === input.id)
+  const result =
+    input.isEdit && exists
+      ? await updateBrandCategory({ id: input.id, name: input.name })
+      : await createBrandCategory({ id: input.id?.trim() || undefined, name: input.name })
+
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function removeBrandCategoryAction(id: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await deleteBrandCategory(id)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function saveBrandAction(
+  brand: Brand,
+  originalSlug?: string,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = originalSlug ? await updateBrand(originalSlug, brand) : await createBrand(brand)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function removeBrandAction(slug: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await deleteBrand(slug)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function savePortfolioAction(
+  project: PortfolioProject,
+  originalSlug?: string,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = originalSlug
+    ? await updatePortfolioProject(originalSlug, project)
+    : await createPortfolioProject(project)
+
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function removePortfolioAction(
+  slug: string,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await deletePortfolioProject(slug)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function saveReviewAction(
+  review: CustomerReview,
+  originalSlug?: string,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = originalSlug ? await updateReview(originalSlug, review) : await createReview(review)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function removeReviewAction(slug: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await deleteReview(slug)
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }
 }

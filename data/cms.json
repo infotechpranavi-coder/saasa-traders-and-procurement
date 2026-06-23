@@ -3,62 +3,120 @@
     {
       "id": "excavators",
       "name": "Excavators",
-      "type": "product"
+      "type": "product",
+      "description": "Hydraulic pumps, cylinders, and undercarriage parts for excavators and backhoes from leading OEM brands.",
+      "image": "/statsic/jcb.jpg"
     },
     {
       "id": "bulldozers",
       "name": "Bulldozers",
-      "type": "product"
+      "type": "product",
+      "description": "Undercarriage, blades, and drivetrain components for bulldozers and crawler dozers.",
+      "image": "/statsic/jcb.jpg"
     },
     {
       "id": "wheel-loaders",
       "name": "Wheel Loaders",
-      "type": "product"
+      "type": "product",
+      "description": "Bucket teeth, adapters, and loader wear parts for quarry and site material handling.",
+      "image": "/statsic/jcb.jpg"
     },
     {
       "id": "cranes",
       "name": "Cranes",
-      "type": "product"
+      "type": "product",
+      "description": "Wire ropes, hook blocks, and crane components for tower and mobile lifting operations.",
+      "image": "/statsic/drum mix.jpeg"
     },
     {
       "id": "concrete-mixers",
       "name": "Concrete Mixers",
-      "type": "product"
+      "type": "product",
+      "description": "Drum liners, mixing blades, and batch plant wear parts for ready-mix operations.",
+      "image": "/statsic/batchmix.jpeg"
     },
     {
       "id": "road-rollers",
       "name": "Road Rollers",
-      "type": "product"
+      "type": "product",
+      "description": "Drum kits, vibration components, and compaction parts for highway and site work.",
+      "image": "/statsic/road roller.jpg"
     },
     {
       "id": "dump-trucks",
       "name": "Dump Trucks",
-      "type": "product"
+      "type": "product",
+      "description": "Haul truck components, bodies, and fleet maintenance parts.",
+      "image": "/statsic/batchmix.jpeg"
     },
     {
       "id": "compactors",
       "name": "Compactors",
-      "type": "product"
+      "type": "product",
+      "description": "Compaction and asphalt equipment parts for road construction.",
+      "image": "/statsic/bitumen soreder.jpg"
+    },
+    {
+      "id": "engine-parts",
+      "name": "Engine Parts",
+      "type": "product",
+      "description": "Diesel engine overhaul kits and turbocharger components for heavy equipment.",
+      "image": "/statsic/batchmix.jpeg"
+    },
+    {
+      "id": "powertrain-hydraulics",
+      "name": "Powertrain & Hydraulics",
+      "type": "product",
+      "description": "Hydraulic seals, transmissions, and gearbox parts for earthmoving fleets.",
+      "image": "/statsic/drum mix.jpeg"
     },
     {
       "id": "construction",
       "name": "Construction & Earthmoving",
-      "type": "service"
+      "type": "service",
+      "description": "Equipment supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling machinery.",
+      "image": "/statsic/jcb.jpg"
     },
     {
       "id": "transport",
       "name": "Transport & Fleet",
-      "type": "service"
+      "type": "service",
+      "description": "Trucks, buses, and fleet procurement for material distribution and passenger transport.",
+      "image": "/statsic/road roller.jpg"
     },
     {
       "id": "energy",
       "name": "Energy & Power",
-      "type": "service"
+      "type": "service",
+      "description": "Industrial engines, generators, and power systems for job sites and remote operations.",
+      "image": "/statsic/drum mix.jpeg"
     },
     {
       "id": "mining",
       "name": "Mining & Quarrying",
-      "type": "service"
+      "type": "service",
+      "description": "Mining trucks, excavators, and quarry equipment sourcing with critical spares support.",
+      "image": "/statsic/bitumen soreder.jpg"
+    }
+  ],
+  "brandCategories": [
+    {
+      "id": "g",
+      "name": "g"
+    }
+  ],
+  "brands": [
+    {
+      "slug": "g",
+      "name": "ggg",
+      "categoryId": "g",
+      "description": "gg",
+      "image": "/images/products/concrete-mixer.jpg",
+      "equipment": [],
+      "listedProducts": [],
+      "productSlugs": [
+        "diesel-engine-overhaul-kits"
+      ]
     }
   ],
   "products": [
@@ -66,7 +124,8 @@
       "slug": "hydraulic-pump-assemblies",
       "title": "Hydraulic Pump Assemblies",
       "label": "Excavator Parts",
-      "image": "/images/products/hydraulic-pump.jpg",
+      "categoryId": "excavators",
+      "image": "/statsic/jcb.jpg",
       "desc": "High-pressure hydraulic pumps and valve blocks for excavators and backhoes. Engineered for long duty cycles on heavy construction sites.",
       "specs": [
         "CAT · Komatsu · JCB",
@@ -88,13 +147,15 @@
         "Demolition",
         "Utility trenching",
         "Port handling"
-      ]
+      ],
+      "showOnHomepage": true
     },
     {
       "slug": "undercarriage-track-chains",
       "title": "Undercarriage Track Chains",
       "label": "Bulldozer Parts",
-      "image": "/images/products/track-chains.jpg",
+      "categoryId": "bulldozers",
+      "image": "/statsic/jcb.jpg",
       "desc": "Track chains, sprockets, idlers, and rollers for bulldozers and tracked excavators. Heat-treated steel for abrasion resistance.",
       "specs": [
         "D6 · D8 · PC200 series",
@@ -116,13 +177,15 @@
         "Site grading",
         "Quarry extraction",
         "Land reclamation"
-      ]
+      ],
+      "showOnHomepage": false
     },
     {
       "slug": "loader-bucket-teeth-adapters",
       "title": "Loader Bucket Teeth & Adapters",
       "label": "Wheel Loader Parts",
-      "image": "/images/products/bucket-teeth.jpg",
+      "categoryId": "wheel-loaders",
+      "image": "/statsic/jcb.jpg",
       "desc": "Replaceable bucket teeth, adapters, and cutting edges for wheel loaders and front-end loaders used in quarry and site work.",
       "specs": [
         "Forged alloy steel",
@@ -144,13 +207,15 @@
         "Aggregate yards",
         "Material stockpiling",
         "Road base handling"
-      ]
+      ],
+      "showOnHomepage": false
     },
     {
       "slug": "crane-wire-rope-sheaves",
       "title": "Crane Wire Rope & Sheaves",
       "label": "Crane Components",
-      "image": "/images/products/crane-parts.jpg",
+      "categoryId": "cranes",
+      "image": "/statsic/drum mix.jpeg",
       "desc": "Wire ropes, hook blocks, sheave assemblies, and safety latches for tower cranes and mobile cranes on high-rise projects.",
       "specs": [
         "Mobile & tower cranes",
@@ -172,13 +237,15 @@
         "Infrastructure lifting",
         "Industrial plant erection",
         "Port crane maintenance"
-      ]
+      ],
+      "showOnHomepage": false
     },
     {
       "slug": "diesel-engine-overhaul-kits",
       "title": "Diesel Engine Overhaul Kits",
       "label": "Engine Parts",
-      "image": "/images/products/engine-parts.jpg",
+      "categoryId": "engine-parts",
+      "image": "/statsic/batchmix.jpeg",
       "desc": "Piston kits, gaskets, liners, and turbocharger parts for diesel engines powering excavators, loaders, and dump trucks.",
       "specs": [
         "Cummins · Deutz · Perkins",
@@ -200,13 +267,15 @@
         "Field overhauls",
         "Rental fleet maintenance",
         "Mining equipment rebuilds"
-      ]
+      ],
+      "showOnHomepage": false
     },
     {
       "slug": "hydraulic-cylinder-seal-kits",
       "title": "Hydraulic Cylinder Seal Kits",
       "label": "Hydraulic Parts",
-      "image": "/images/products/hydraulic-seals.jpg",
+      "categoryId": "powertrain-hydraulics",
+      "image": "/statsic/bitumen soreder.jpg",
       "desc": "Seal kits, rod wipers, and cylinder repair parts for boom, arm, and bucket cylinders across all major machinery brands.",
       "specs": [
         "NBR · PU · Viton options",
@@ -228,13 +297,15 @@
         "On-site cylinder repair",
         "Fleet preventive maintenance",
         "Rental equipment turnaround"
-      ]
+      ],
+      "showOnHomepage": false
     },
     {
       "slug": "concrete-mixer-drum-liners",
       "title": "Concrete Mixer Drum Liners",
       "label": "Concrete Equipment",
-      "image": "/images/products/concrete-mixer.jpg",
+      "categoryId": "concrete-mixers",
+      "image": "/statsic/batchmix.jpeg",
       "desc": "Wear-resistant drum liners, mixing blades, and discharge chute parts for transit mixers and stationary batch plants.",
       "specs": [
         "Transit & stationary mixers",
@@ -256,13 +327,15 @@
         "Precast batch plants",
         "Infrastructure pours",
         "Drum refurbishing workshops"
-      ]
+      ],
+      "showOnHomepage": true
     },
     {
       "slug": "road-roller-drum-kits",
       "title": "Road Roller Drum Kits",
       "label": "Compaction Parts",
-      "image": "/images/products/road-roller.jpg",
+      "categoryId": "road-rollers",
+      "image": "/statsic/road roller.jpg",
       "desc": "Vibration drum assemblies, bearing kits, and scraper blades for single and double drum rollers on road construction.",
       "specs": [
         "Smooth & padfoot drums",
@@ -284,13 +357,15 @@
         "Airfield paving",
         "Sub-base compaction",
         "Site preparation"
-      ]
+      ],
+      "showOnHomepage": true
     },
     {
       "slug": "transmission-gearbox-parts",
       "title": "Transmission & Gearbox Parts",
       "label": "Powertrain",
-      "image": "/images/products/gearbox-parts.jpg",
+      "categoryId": "powertrain-hydraulics",
+      "image": "/statsic/drum mix.jpeg",
       "desc": "Clutch plates, torque converters, planetary gears, and final drive components for loaders, dozers, and graders.",
       "specs": [
         "ZF · Allison · Dana",
@@ -312,14 +387,41 @@
         "Dozer drivetrain repair",
         "Grader transmission service",
         "Fleet exchange programs"
-      ]
+      ],
+      "showOnHomepage": false
+    },
+    {
+      "slug": "new",
+      "title": "new",
+      "label": "new",
+      "image": "/statsic/jcb.jpg",
+      "desc": "dedfweffv",
+      "specs": [
+        "eewf"
+      ],
+      "overview": [
+        "ewdcwe",
+        "fdgrg"
+      ],
+      "features": [
+        "wecfwef",
+        "sdfb"
+      ],
+      "applications": [
+        "wefwe",
+        "gvfnfg",
+        "fgbhrg"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "excavators"
     }
   ],
   "services": [
     {
       "slug": "construction-equipment",
       "title": "Construction equipment, Earthmoving, Industrial, and Port",
-      "image": "/images/services/construction-equipment.jpg",
+      "image": "/statsic/jcb.jpg",
       "summary": "Supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling equipment used on major construction and industrial projects.",
       "overview": [
         "SAASA B2E TRADES supports contractors, rental fleets, and industrial operators with construction equipment supply and spare parts logistics across earthmoving, industrial, and port applications.",
@@ -337,12 +439,14 @@
         "Industrial plants",
         "Port terminals",
         "Infrastructure projects"
-      ]
+      ],
+      "categoryId": "construction",
+      "showOnHomepage": true
     },
     {
       "slug": "trucks-transport",
       "title": "Trucks for Transport and Distribution of Materials",
-      "image": "/images/services/trucks.jpg",
+      "image": "/statsic/batchmix.jpeg",
       "summary": "Heavy-duty trucks and distribution fleets for moving construction materials, aggregates, and bulk goods across regional and international routes.",
       "overview": [
         "We help material producers and logistics companies source trucks built for transport and distribution of construction materials, aggregates, and bulk cargo.",
@@ -360,12 +464,14 @@
         "Building materials",
         "Bulk cargo",
         "Regional freight"
-      ]
+      ],
+      "categoryId": "transport",
+      "showOnHomepage": true
     },
     {
       "slug": "buses-transport",
       "title": "Buses for people transport companies",
-      "image": "/images/services/buses.jpg",
+      "image": "/statsic/road roller.jpg",
       "summary": "Coach and transit buses for passenger transport operators, including procurement support and aftermarket parts for fleet maintenance.",
       "overview": [
         "SAASA B2E TRADES works with people transport companies to source modern coach and transit buses suited to intercity, tourism, and corporate shuttle operations.",
@@ -383,12 +489,14 @@
         "Tourism operators",
         "Corporate shuttles",
         "Private charter fleets"
-      ]
+      ],
+      "categoryId": "transport",
+      "showOnHomepage": false
     },
     {
       "slug": "energy-engines-generators",
       "title": "Energy | Engines and Generators",
-      "image": "/images/services/engines.jpg",
+      "image": "/statsic/drum mix.jpeg",
       "summary": "Industrial engines, generator sets, and power system components for construction sites, mines, and remote operations.",
       "overview": [
         "Our energy division covers industrial diesel engines, generator sets, and supporting components for construction sites, mining camps, and remote power needs.",
@@ -406,12 +514,14 @@
         "Mining operations",
         "Remote facilities",
         "Industrial backup power"
-      ]
+      ],
+      "categoryId": "energy",
+      "showOnHomepage": false
     },
     {
       "slug": "mining-quarrying",
       "title": "Mining and Quarrying equipment",
-      "image": "/images/services/mining.jpg",
+      "image": "/statsic/bitumen soreder.jpg",
       "summary": "Heavy mining trucks, excavators, and wear parts for open-pit mining and quarry extraction operations worldwide.",
       "overview": [
         "SAASA B2E TRADES supplies mining and quarrying equipment including ultra-class haul trucks, large excavators, and high-wear components for extraction operations.",
@@ -429,7 +539,9 @@
         "Aggregate quarries",
         "Mineral extraction",
         "Bulk material processing"
-      ]
+      ],
+      "categoryId": "mining",
+      "showOnHomepage": true
     }
   ],
   "blogs": [
@@ -518,6 +630,127 @@
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
       ]
+    }
+  ],
+  "portfolio": [
+    {
+      "slug": "freight-fleet-expansion",
+      "title": "Freight Fleet Expansion",
+      "label": "Road Transport",
+      "image": "/images/services/road.jpg",
+      "excerpt": "Scaled regional road freight capacity with modern fleet assets and route optimization.",
+      "body": [
+        "SAASA B2E TRADES supported a major freight operator with end-to-end procurement, delivery, and commissioning of new heavy-duty trucks for regional distribution.",
+        "The project included equipment sourcing, customs coordination, and driver-ready handover across multiple depots — reducing downtime and improving on-time delivery performance.",
+        "Contact our team to discuss fleet expansion, vehicle supply, or integrated logistics support for your operation."
+      ],
+      "client": "Regional Freight Operator",
+      "location": "India",
+      "year": "2024"
+    },
+    {
+      "slug": "electric-bus-fleet",
+      "title": "Electric Bus Fleet Implementation",
+      "label": "Transport",
+      "image": "/images/about/truck.jpg",
+      "excerpt": "Introduced electric buses for urban transit with charging infrastructure planning.",
+      "body": [
+        "We partnered with a municipal transport authority to source electric buses, charging systems, and maintenance support for a phased city rollout.",
+        "Our team managed vendor selection, import logistics, and technical documentation to align with local compliance and operational requirements.",
+        "Reach out to learn how we can support sustainable fleet transitions for buses, trucks, and port equipment."
+      ],
+      "client": "Urban Transit Authority",
+      "location": "South Asia",
+      "year": "2025"
+    },
+    {
+      "slug": "smart-port-management",
+      "title": "Smart Port Management System",
+      "label": "Port Logistics",
+      "image": "/images/solutions/port.jpg",
+      "excerpt": "Port equipment and systems integration for smarter cargo handling operations.",
+      "body": [
+        "This engagement covered procurement of port-handling machinery, spare parts pipelines, and coordination with terminal operators for staged deployment.",
+        "SAASA B2E TRADES aligned equipment specifications with yard workflows to improve throughput and reduce idle time at the berth.",
+        "Ask us about port logistics, crane supply, and integrated equipment support for marine terminals."
+      ],
+      "client": "Marine Terminal Partner",
+      "location": "Coastal Hub",
+      "year": "2024"
+    },
+    {
+      "slug": "container-ship-operations",
+      "title": "Container Ship Operations",
+      "label": "Sea Freight",
+      "image": "/images/services/sea.jpg",
+      "excerpt": "Marine logistics support for container operations and vessel readiness.",
+      "body": [
+        "We delivered marine equipment, spares, and technical supplies to support container vessel operations across key trade lanes.",
+        "The project emphasized reliable lead times, documentation accuracy, and coordinated deliveries to minimize vessel turnaround delays.",
+        "Contact us for sea freight support, marine parts supply, and global shipping logistics."
+      ],
+      "client": "Shipping Line Partner",
+      "location": "International",
+      "year": "2023"
+    },
+    {
+      "slug": "cross-continental-rail-network",
+      "title": "Cross-Continental Rail Network",
+      "label": "Rail Freight",
+      "image": "/images/services/rail.jpg",
+      "excerpt": "Rail freight equipment and rolling stock support for long-haul corridors.",
+      "body": [
+        "SAASA B2E TRADES supplied rail-compatible freight equipment and coordinated cross-border logistics for an expanding rail corridor.",
+        "From wagons and locomotive components to maintenance planning, we helped the client standardize procurement across regions.",
+        "Speak with our specialists about rail freight equipment, parts, and corridor logistics."
+      ],
+      "client": "Rail Corridor Consortium",
+      "location": "Multi-region",
+      "year": "2025"
+    }
+  ],
+  "reviews": [
+    {
+      "slug": "sarah-williams",
+      "name": "Sarah Williams",
+      "role": "Procurement Manager",
+      "quote": "SAASA B2E TRADES sourced excavator hydraulic parts and undercarriage components for our fleet faster than our previous suppliers. Quotations were clear and deliveries arrived as promised.",
+      "image": "/images/products/hydraulic-pump.jpg"
+    },
+    {
+      "slug": "bessie-cooper",
+      "name": "Bessie Cooper",
+      "role": "Fleet Operations Director",
+      "quote": "We needed trucks and buses for a municipal rollout — their team handled supplier selection, import paperwork, and staged delivery across multiple depots professionally.",
+      "image": "/images/services/trucks.jpg"
+    },
+    {
+      "slug": "jacob-jones",
+      "name": "Jacob Jones",
+      "role": "Project Director",
+      "quote": "From mining equipment inquiries to repeat parts orders, SAASA B2E has become our go-to trading partner. Responsive support and reliable sourcing across categories.",
+      "image": "/images/services/mining.jpg"
+    },
+    {
+      "slug": "amadou-diallo",
+      "name": "Amadou Diallo",
+      "role": "Construction Site Manager",
+      "quote": "They supplied concrete mixers, road rollers, and spare parts for our highway project with consistent lead times. A dependable procurement partner for heavy machinery.",
+      "image": "/images/products/concrete-mixer.jpg"
+    },
+    {
+      "slug": "grace-mbeki",
+      "name": "Grace Mbeki",
+      "role": "Plant Superintendent",
+      "quote": "Crane parts, gearbox assemblies, and engine components were sourced to OEM specifications. Their team understands construction machinery requirements very well.",
+      "image": "/images/products/crane-parts.jpg"
+    },
+    {
+      "slug": "pierre-nguemba",
+      "name": "Pierre Nguemba",
+      "role": "Quarry Operations Lead",
+      "quote": "Bucket teeth, track chains, and compactor spares keep our quarry running. SAASA B2E coordinates suppliers and shipping so we spend less time chasing orders.",
+      "image": "/images/products/bucket-teeth.jpg"
     }
   ]
 }

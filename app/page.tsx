@@ -4,8 +4,8 @@ import About from '../components/About'
 import Stats from '../components/Stats'
 import Process from '../components/Process'
 import Solutions from '../components/Solutions'
-import Portfolio from '../components/Portfolio'
-import Testimonials from '../components/Testimonials'
+import HomePortfolio from '../components/HomePortfolio'
+import HomeTestimonials from '../components/HomeTestimonials'
 import HomeBlog from '../components/HomeBlog'
 import Footer from '../components/Footer'
 
@@ -18,8 +18,8 @@ export default function Home() {
       <Stats />
       <Process />
       <Solutions />
-      <Portfolio />
-      <Testimonials />
+      <HomePortfolio />
+      <HomeTestimonials />
       <HomeBlog />
       <Footer />
     </main>

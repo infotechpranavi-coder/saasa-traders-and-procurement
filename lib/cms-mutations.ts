@@ -2,7 +2,8 @@ import { revalidatePath } from 'next/cache'
 import { CMS_DEFAULT_AUTHOR } from '@/lib/brand'
 import { readCms, writeCms } from '@/lib/cms'
 import { slugify } from '@/lib/slugify'
-import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from '@/types/cms'
+import { normalizeProductCompanies } from '@/lib/product-companies'
+import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, PortfolioProject, Product, Service } from '@/types/cms'
 
 export type CmsActionResult<T = undefined> =
   | { ok: true; data: T; cms: CmsData }
@@ -10,9 +11,10 @@ export type CmsActionResult<T = undefined> =
 
 function revalidatePublicPages() {
   revalidatePath('/')
-  revalidatePath('/products')
-  revalidatePath('/services')
+  revalidatePath('/products', 'layout')
+  revalidatePath('/services', 'layout')
   revalidatePath('/blog')
+  revalidatePath('/work', 'layout')
   revalidatePath('/dashboard')
 }
 
@@ -27,12 +29,14 @@ function normalizeProduct(body: Product, fallbackSlug?: string): Product | null 
     slug,
     title,
     label: body.label?.trim() || 'Parts',
-    image: body.image?.trim() || '/images/products/hydraulic-pump.jpg',
+    image: body.image?.trim() || '/statsic/jcb.jpg',
     desc: body.desc?.trim() || '',
     specs: body.specs ?? [],
     overview: body.overview ?? [],
     features: body.features ?? [],
     applications: body.applications ?? [],
+    companies: normalizeProductCompanies(body.companies),
+    showOnHomepage: Boolean(body.showOnHomepage),
   }
 }
 
@@ -46,11 +50,12 @@ function normalizeService(body: Service, fallbackSlug?: string): Service | null 
     ...body,
     slug,
     title,
-    image: body.image?.trim() || '/images/services/construction-equipment.jpg',
+    image: body.image?.trim() || '/statsic/jcb.jpg',
     summary: body.summary?.trim() || '',
     overview: body.overview ?? [],
     capabilities: body.capabilities ?? [],
     industries: body.industries ?? [],
+    showOnHomepage: Boolean(body.showOnHomepage),
   }
 }
 
@@ -136,7 +141,13 @@ export async function deleteService(slug: string): Promise<CmsActionResult> {
   return { ok: true, data: undefined, cms }
 }
 
-export async function createCategory(input: { id?: string; name: string; type: CategoryType }): Promise<CmsActionResult<Category>> {
+export async function createCategory(input: {
+  id?: string
+  name: string
+  type: CategoryType
+  description?: string
+  image?: string
+}): Promise<CmsActionResult<Category>> {
   const name = input.name.trim()
   if (!name) return { ok: false, error: 'Name is required' }
 
@@ -147,14 +158,26 @@ export async function createCategory(input: { id?: string; name: string; type: C
     return { ok: false, error: 'Category already exists' }
   }
 
-  const category: Category = { id, name, type: input.type || 'product' }
+  const category: Category = {
+    id,
+    name,
+    type: input.type || 'product',
+    description: input.description?.trim() || '',
+    image: input.image?.trim() || '',
+  }
   cms.categories.push(category)
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: category, cms }
 }
 
-export async function updateCategory(input: { id: string; name: string; type: CategoryType }): Promise<CmsActionResult<Category>> {
+export async function updateCategory(input: {
+  id: string
+  name: string
+  type: CategoryType
+  description?: string
+  image?: string
+}): Promise<CmsActionResult<Category>> {
   const id = input.id.trim()
   const name = input.name.trim()
   if (!id || !name) return { ok: false, error: 'Id and name are required' }
@@ -163,7 +186,13 @@ export async function updateCategory(input: { id: string; name: string; type: Ca
   const index = cms.categories.findIndex((c) => c.id === id)
   if (index === -1) return { ok: false, error: 'Category not found' }
 
-  const category: Category = { id, name, type: input.type || 'product' }
+  const category: Category = {
+    id,
+    name,
+    type: input.type || 'product',
+    description: input.description?.trim() || '',
+    image: input.image?.trim() || '',
+  }
   cms.categories[index] = category
   await writeCms(cms)
   revalidatePublicPages()
@@ -172,6 +201,12 @@ export async function updateCategory(input: { id: string; name: string; type: Ca
 
 export async function deleteCategory(id: string): Promise<CmsActionResult> {
   const cms = await readCms()
+  const inUse =
+    cms.products.some((p) => p.categoryId === id) || cms.services.some((s) => s.categoryId === id)
+  if (inUse) {
+    return { ok: false, error: 'Category is assigned to products or services. Reassign them first.' }
+  }
+
   cms.categories = cms.categories.filter((c) => c.id !== id)
   await writeCms(cms)
   revalidatePublicPages()
@@ -243,6 +278,250 @@ export async function updateBlog(originalSlug: string, blogInput: BlogPost): Pro
 export async function deleteBlog(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.blogs = cms.blogs.filter((b) => b.slug !== slug)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: undefined, cms }
+}
+
+function normalizeBrand(body: Brand, fallbackSlug?: string): Brand | null {
+  const name = body.name?.trim()
+  if (!name) return null
+
+  const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(name)
+  const categoryId = body.categoryId?.trim()
+  if (!categoryId) return null
+
+  return {
+    slug,
+    name,
+    categoryId,
+    description: body.description?.trim() || '',
+    image: body.image?.trim() || '/images/products/gearbox-parts.jpg',
+    equipment: (body.equipment ?? []).map((item) => item.trim()).filter(Boolean),
+    listedProducts: (body.listedProducts ?? []).map((item) => item.trim()).filter(Boolean),
+    productSlugs: body.productSlugs ?? [],
+  }
+}
+
+export async function createBrandCategory(input: {
+  id?: string
+  name: string
+}): Promise<CmsActionResult<BrandCategory>> {
+  const name = input.name.trim()
+  if (!name) return { ok: false, error: 'Name is required' }
+
+  const cms = await readCms()
+  const id = input.id?.trim() ? slugify(input.id) : slugify(name)
+  if (cms.brandCategories.some((c) => c.id === id)) {
+    return { ok: false, error: 'Brand category already exists' }
+  }
+
+  const category: BrandCategory = { id, name }
+  cms.brandCategories.push(category)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: category, cms }
+}
+
+export async function updateBrandCategory(input: {
+  id: string
+  name: string
+}): Promise<CmsActionResult<BrandCategory>> {
+  const id = input.id.trim()
+  const name = input.name.trim()
+  if (!id || !name) return { ok: false, error: 'Id and name are required' }
+
+  const cms = await readCms()
+  const index = cms.brandCategories.findIndex((c) => c.id === id)
+  if (index === -1) return { ok: false, error: 'Brand category not found' }
+
+  const category: BrandCategory = { id, name }
+  cms.brandCategories[index] = category
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: category, cms }
+}
+
+export async function deleteBrandCategory(id: string): Promise<CmsActionResult> {
+  const cms = await readCms()
+  if (cms.brands.some((b) => b.categoryId === id)) {
+    return { ok: false, error: 'Brand category has brands assigned. Reassign or delete them first.' }
+  }
+
+  cms.brandCategories = cms.brandCategories.filter((c) => c.id !== id)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: undefined, cms }
+}
+
+export async function createBrand(brandInput: Brand): Promise<CmsActionResult<Brand>> {
+  const brand = normalizeBrand(brandInput)
+  if (!brand) return { ok: false, error: 'Name and brand category are required' }
+
+  const cms = await readCms()
+  if (!cms.brandCategories.some((c) => c.id === brand.categoryId)) {
+    return { ok: false, error: 'Brand category not found' }
+  }
+  if (cms.brands.some((b) => b.slug === brand.slug)) {
+    return { ok: false, error: 'Brand slug already exists' }
+  }
+
+  cms.brands.push(brand)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: brand, cms }
+}
+
+export async function updateBrand(originalSlug: string, brandInput: Brand): Promise<CmsActionResult<Brand>> {
+  const brand = normalizeBrand(brandInput, originalSlug)
+  if (!brand || !originalSlug) return { ok: false, error: 'Invalid brand data' }
+
+  const cms = await readCms()
+  const index = cms.brands.findIndex((b) => b.slug === originalSlug)
+  if (index === -1) return { ok: false, error: 'Brand not found' }
+
+  if (!cms.brandCategories.some((c) => c.id === brand.categoryId)) {
+    return { ok: false, error: 'Brand category not found' }
+  }
+  if (brand.slug !== originalSlug && cms.brands.some((b) => b.slug === brand.slug)) {
+    return { ok: false, error: 'Brand slug already exists' }
+  }
+
+  cms.brands[index] = brand
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: brand, cms }
+}
+
+export async function deleteBrand(slug: string): Promise<CmsActionResult> {
+  const cms = await readCms()
+  cms.brands = cms.brands.filter((b) => b.slug !== slug)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: undefined, cms }
+}
+
+function normalizePortfolio(body: PortfolioProject, fallbackSlug?: string): PortfolioProject | null {
+  const title = body.title?.trim()
+  if (!title) return null
+
+  const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(title)
+
+  return {
+    ...body,
+    slug,
+    title,
+    label: body.label?.trim() || 'Project',
+    image: body.image?.trim() || '/images/services/road.jpg',
+    excerpt: body.excerpt?.trim() || '',
+    body: body.body?.length ? body.body : [''],
+    client: body.client?.trim() || '',
+    location: body.location?.trim() || '',
+    year: body.year?.trim() || '',
+  }
+}
+
+export async function createPortfolioProject(
+  input: PortfolioProject,
+): Promise<CmsActionResult<PortfolioProject>> {
+  const project = normalizePortfolio(input)
+  if (!project) return { ok: false, error: 'Title is required' }
+
+  const cms = await readCms()
+  if (cms.portfolio.some((p) => p.slug === project.slug)) {
+    return { ok: false, error: 'Project slug already exists' }
+  }
+
+  cms.portfolio.push(project)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: project, cms }
+}
+
+export async function updatePortfolioProject(
+  originalSlug: string,
+  input: PortfolioProject,
+): Promise<CmsActionResult<PortfolioProject>> {
+  const project = normalizePortfolio(input, originalSlug)
+  if (!project || !originalSlug) return { ok: false, error: 'Invalid project data' }
+
+  const cms = await readCms()
+  const index = cms.portfolio.findIndex((p) => p.slug === originalSlug)
+  if (index === -1) return { ok: false, error: 'Project not found' }
+
+  if (project.slug !== originalSlug && cms.portfolio.some((p) => p.slug === project.slug)) {
+    return { ok: false, error: 'Project slug already exists' }
+  }
+
+  cms.portfolio[index] = project
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: project, cms }
+}
+
+export async function deletePortfolioProject(slug: string): Promise<CmsActionResult> {
+  const cms = await readCms()
+  cms.portfolio = cms.portfolio.filter((p) => p.slug !== slug)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: undefined, cms }
+}
+
+function normalizeReview(body: CustomerReview, fallbackSlug?: string): CustomerReview | null {
+  const name = body.name?.trim()
+  const quote = body.quote?.trim()
+  if (!name || !quote) return null
+
+  const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(name)
+
+  return {
+    slug,
+    name,
+    role: body.role?.trim() || 'Client',
+    quote,
+    image: body.image?.trim() || '/statsic/jcb.jpg',
+  }
+}
+
+export async function createReview(input: CustomerReview): Promise<CmsActionResult<CustomerReview>> {
+  const review = normalizeReview(input)
+  if (!review) return { ok: false, error: 'Name and review text are required' }
+
+  const cms = await readCms()
+  if (cms.reviews.some((r) => r.slug === review.slug)) {
+    return { ok: false, error: 'Review slug already exists' }
+  }
+
+  cms.reviews.push(review)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: review, cms }
+}
+
+export async function updateReview(
+  originalSlug: string,
+  input: CustomerReview,
+): Promise<CmsActionResult<CustomerReview>> {
+  const review = normalizeReview(input, originalSlug)
+  if (!review || !originalSlug) return { ok: false, error: 'Invalid review data' }
+
+  const cms = await readCms()
+  const index = cms.reviews.findIndex((r) => r.slug === originalSlug)
+  if (index === -1) return { ok: false, error: 'Review not found' }
+
+  if (review.slug !== originalSlug && cms.reviews.some((r) => r.slug === review.slug)) {
+    return { ok: false, error: 'Review slug already exists' }
+  }
+
+  cms.reviews[index] = review
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: review, cms }
+}
+
+export async function deleteReview(slug: string): Promise<CmsActionResult> {
+  const cms = await readCms()
+  cms.reviews = cms.reviews.filter((r) => r.slug !== slug)
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: undefined, cms }

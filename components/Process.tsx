@@ -7,20 +7,20 @@ const steps: { num: string; icon: LogisticsIconName; title: string; desc: string
   {
     num: '01',
     icon: 'quote',
-    title: 'Get a Quote',
-    desc: "Simply provide details about your shipment, and we'll give you a transparent quote.",
+    title: 'Share Requirements',
+    desc: 'Tell us the equipment, parts, or products you need — including specs, quantities, and delivery timelines.',
   },
   {
     num: '02',
-    icon: 'plane',
-    title: 'Book Your Shipment',
-    desc: "Simply provide details about your shipment, and we'll give you a transparent quote.",
+    icon: 'package',
+    title: 'Source & Procure',
+    desc: 'We identify suppliers, negotiate terms, and manage trading documentation for a transparent procurement process.',
   },
   {
     num: '03',
     icon: 'truck',
-    title: 'Delivery & Support',
-    desc: "Simply provide details about your shipment, and we'll give you a transparent quote.",
+    title: 'Deliver & Support',
+    desc: 'Equipment and parts are shipped to your site with ongoing after-sales support and repeat supply when you need it.',
   },
 ]
 
@@ -33,10 +33,10 @@ export default function Process() {
         <div className="text-center mb-14 reveal">
           <div className="section-label justify-center mb-3">
             <SectionLabelIcon className="text-primary" />
-            ABOUT OUR COMPANY
+            HOW WE WORK
           </div>
           <h2 className="hp-title hp-title--center">
-            Valuable Process For Our Customers
+            A Simple Procurement Process
           </h2>
         </div>
 

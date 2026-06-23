@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import CmsImage from './CmsImage'
 import Link from 'next/link'
 import type { Service } from '@/types/cms'
 
@@ -9,12 +9,11 @@ function ExpertiseCard({ service }: { service: Service }) {
       className="expertise-card group block bg-white transition-shadow duration-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)]"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-        <Image
+        <CmsImage
           src={service.image}
           alt={service.title}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+          className="transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </div>
       <div className="relative flex min-h-[88px] items-end justify-between gap-3 bg-white px-4 pb-4 pt-5 sm:min-h-[96px] sm:px-5 sm:pb-5">
@@ -35,14 +34,17 @@ interface ExpertiseServicesGridProps {
   services: Service[]
   className?: string
   reveal?: boolean
+  hideTitle?: boolean
 }
 
-export default function ExpertiseServicesGrid({ services, className = '', reveal = false }: ExpertiseServicesGridProps) {
+export default function ExpertiseServicesGrid({ services, className = '', reveal = false, hideTitle = false }: ExpertiseServicesGridProps) {
   return (
     <div className={className}>
-      <h2 className={`hp-title mb-8 ${reveal ? 'reveal' : ''}`}>
-        Our area of expertise
-      </h2>
+      {!hideTitle && (
+        <h2 className={`hp-title mb-8 ${reveal ? 'reveal' : ''}`}>
+          Our area of expertise
+        </h2>
+      )}
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4 xl:gap-6">
         {services.map((service) => (

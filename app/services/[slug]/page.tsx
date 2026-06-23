@@ -1,9 +1,14 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import PageLayout from '../../../components/PageLayout'
-import PageHero from '../../../components/PageHero'
 import DetailPageContent from '../../../components/DetailPageContent'
-import { getServiceBySlug } from '@/lib/cms'
+import ServicesBrowseLayout from '../../../components/ServicesBrowseLayout'
+import {
+  getServiceBySlug,
+  getCategoryById,
+  getServiceCategories,
+  getServices,
+} from '@/lib/cms'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,29 +22,37 @@ export default async function ServiceDetailPage({ params }: { params: { slug: st
   const service = await getServiceBySlug(params.slug)
   if (!service) notFound()
 
+  const [category, categories, allServices] = await Promise.all([
+    service.categoryId ? getCategoryById(service.categoryId) : Promise.resolve(undefined),
+    getServiceCategories(),
+    getServices(),
+  ])
+
   return (
     <PageLayout>
-      <PageHero
-        title={service.title}
-        breadcrumb="Services"
-        trail={[
-          { label: 'Services', href: '/services' },
-          { label: service.title },
-        ]}
-      />
-
-      <DetailPageContent
-        image={service.image}
-        title={service.title}
-        label="Our Expertise"
-        overview={service.overview}
-        listTitle="What We Provide"
-        listItems={service.capabilities}
-        secondaryTitle="Industries Served"
-        secondaryItems={service.industries}
-        backHref="/services"
-        backLabel="Services"
-      />
+      <section className="product-detail-body">
+        <div className="product-detail-inner">
+          <ServicesBrowseLayout
+            categories={categories}
+            services={allServices}
+            activeCategoryId={category?.id}
+            activeServiceSlug={service.slug}
+          >
+            <DetailPageContent
+              image={service.image}
+              title={service.title}
+              label="Our Expertise"
+              overview={service.overview}
+              listTitle="What We Provide"
+              listItems={service.capabilities}
+              secondaryTitle="Industries Served"
+              secondaryItems={service.industries}
+              backHref="/services"
+              backLabel="Services"
+            />
+          </ServicesBrowseLayout>
+        </div>
+      </section>
     </PageLayout>
   )
 }
