@@ -9,10 +9,18 @@ interface CmsImageProps {
   className?: string
   fill?: boolean
   priority?: boolean
+  /** Accepted for API compatibility with next/image call sites; native img ignores this. */
+  sizes?: string
 }
 
 /** Native img for CMS assets — local paths first, remote fallback on error */
-export default function CmsImage({ src, alt, className = '', fill = false, priority = false }: CmsImageProps) {
+export default function CmsImage({
+  src,
+  alt,
+  className = '',
+  fill = false,
+  priority = false,
+}: CmsImageProps) {
   const [currentSrc, setCurrentSrc] = useState(() => resolveCmsImage(src))
 
   useEffect(() => {

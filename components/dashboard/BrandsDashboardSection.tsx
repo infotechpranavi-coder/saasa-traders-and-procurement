@@ -118,7 +118,7 @@ export default function BrandsDashboardSection({
     const selected = new Set(editingBrand.productSlugs)
     if (selected.has(slug)) selected.delete(slug)
     else selected.add(slug)
-    setEditingBrand({ ...editingBrand, productSlugs: [...selected] })
+    setEditingBrand({ ...editingBrand, productSlugs: Array.from(selected) })
   }
 
   return (
