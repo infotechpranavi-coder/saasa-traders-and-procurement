@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
-import { ADMIN_COOKIE, getAdminPassword, isAdminAuthenticated } from '@/lib/auth'
+import { ADMIN_COOKIE, isValidAdminCredentials, isAdminAuthenticated } from '@/lib/auth'
 import { readCms } from '@/lib/cms'
 import {
   createCategory,
@@ -11,6 +11,7 @@ import {
   createBlog,
   createBrand,
   createBrandCategory,
+  createHeroBanner,
   createPortfolioProject,
   createReview,
   deleteCategory,
@@ -19,6 +20,7 @@ import {
   deleteBlog,
   deleteBrand,
   deleteBrandCategory,
+  deleteHeroBanner,
   deletePortfolioProject,
   deleteReview,
   updateCategory,
@@ -27,10 +29,11 @@ import {
   updateBlog,
   updateBrand,
   updateBrandCategory,
+  updateHeroBanner,
   updatePortfolioProject,
   updateReview,
 } from '@/lib/cms-mutations'
-import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, PortfolioProject, Product, Service } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service } from '@/types/cms'
 
 async function requireAdmin(): Promise<boolean> {
   return isAdminAuthenticated()
@@ -45,9 +48,12 @@ export async function getDashboardData(): Promise<{ authenticated: boolean; cms:
   return { authenticated: true, cms }
 }
 
-export async function loginAction(password: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
-  if (password !== getAdminPassword()) {
-    return { ok: false, error: 'Invalid password' }
+export async function loginAction(
+  username: string,
+  password: string,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!isValidAdminCredentials(username.trim(), password)) {
+    return { ok: false, error: 'Invalid username or password' }
   }
 
   const cookieStore = await cookies()
@@ -258,6 +264,25 @@ export async function removeReviewAction(slug: string): Promise<{ ok: boolean; e
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
   const result = await deleteReview(slug)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function saveHeroBannerAction(
+  banner: HeroBanner,
+  originalSlug?: string,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = originalSlug ? await updateHeroBanner(originalSlug, banner) : await createHeroBanner(banner)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function removeHeroBannerAction(slug: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await deleteHeroBanner(slug)
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }
 }

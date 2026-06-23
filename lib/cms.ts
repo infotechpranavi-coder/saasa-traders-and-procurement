@@ -1,9 +1,10 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import type { Category, CmsData, CustomerReview, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost } from '@/types/cms'
+import type { Category, CmsData, CustomerReview, HeroBanner, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost } from '@/types/cms'
 import { products as seedProducts, productCategories } from '@/data/products'
 import { expertiseServices as seedServices } from '@/data/expertise-services'
 import { seedBlogs } from '@/data/blog-seed'
+import { seedHeroBanners } from '@/data/hero-banners-seed'
 import { seedPortfolio } from '@/data/portfolio-seed'
 import { seedReviews } from '@/data/reviews-seed'
 import { slugify } from '@/lib/slugify'
@@ -20,6 +21,7 @@ function normalizeCms(data: Partial<CmsData>): CmsData {
     blogs: data.blogs?.length ? data.blogs : seedBlogs,
     portfolio: data.portfolio?.length ? data.portfolio : seedPortfolio,
     reviews: data.reviews?.length ? data.reviews : seedReviews,
+    heroBanners: data.heroBanners?.length ? data.heroBanners : seedHeroBanners,
   }
 }
 
@@ -46,6 +48,7 @@ function buildSeed(): CmsData {
     blogs: seedBlogs,
     portfolio: seedPortfolio,
     reviews: seedReviews,
+    heroBanners: seedHeroBanners,
   }
 }
 
@@ -54,7 +57,7 @@ export async function readCms(): Promise<CmsData> {
     const raw = await fs.readFile(CMS_FILE, 'utf-8')
     const json = JSON.parse(raw) as Partial<CmsData>
     const parsed = normalizeCms(json)
-    if (!json.blogs?.length || !json.portfolio?.length || !json.reviews?.length) {
+    if (!json.blogs?.length || !json.portfolio?.length || !json.reviews?.length || !json.heroBanners?.length) {
       await writeCms(parsed)
     }
     return parsed
@@ -202,4 +205,9 @@ export async function getPortfolioBySlug(slug: string): Promise<PortfolioProject
 export async function getCustomerReviews(): Promise<CustomerReview[]> {
   const cms = await readCms()
   return cms.reviews
+}
+
+export async function getHeroBanners(): Promise<HeroBanner[]> {
+  const cms = await readCms()
+  return [...cms.heroBanners].sort((a, b) => a.position - b.position || a.slug.localeCompare(b.slug))
 }

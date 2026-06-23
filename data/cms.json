@@ -752,5 +752,34 @@
       "quote": "Bucket teeth, track chains, and compactor spares keep our quarry running. SAASA B2E coordinates suppliers and shipping so we spend less time chasing orders.",
       "image": "/images/products/bucket-teeth.jpg"
     }
+  ],
+  "heroBanners": [
+    {
+      "slug": "heavy-equipment",
+      "position": 1,
+      "image": "/statsic/batchmix.jpeg",
+      "badge": "EST. 2024 • PROCUREMENT & TRADING",
+      "title": "Heavy",
+      "titleAccent": "Equipment",
+      "subtitle": "Source construction machinery, earthmoving equipment, and industrial assets through a trusted B2E trading partner."
+    },
+    {
+      "slug": "earthmoving-machinery",
+      "position": 2,
+      "image": "/statsic/jcb.jpg",
+      "badge": "EST. 2024 • FLEET SUPPLY",
+      "title": "Earthmoving",
+      "titleAccent": "Machinery",
+      "subtitle": "Procure excavators, loaders, dozers, cranes, and road-building equipment through a trusted B2E trading partner."
+    },
+    {
+      "slug": "machinery-parts",
+      "position": 3,
+      "image": "/statsic/road roller.jpg",
+      "badge": "EST. 2024 • GENUINE PARTS",
+      "title": "Machinery",
+      "titleAccent": "Parts",
+      "subtitle": "Genuine and aftermarket parts for excavators, loaders, cranes, and road-building equipment — supplied on time."
+    }
   ]
 }

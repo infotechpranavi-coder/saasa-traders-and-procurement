@@ -16,7 +16,7 @@ const emptyBrand = (): Brand => ({
   name: '',
   categoryId: '',
   description: '',
-  image: '/statsic/jcb.jpg',
+  image: '',
   equipment: [],
   listedProducts: [],
   productSlugs: [],
@@ -124,54 +124,51 @@ export default function BrandsDashboardSection({
   return (
     <>
       <section className="dashboard-panel">
-        <div className="dashboard-page-header">
-          <div>
-            <h2 className="dashboard-page-title">Strong Brands</h2>
-            <p className="dashboard-page-desc">
-              Manage brand categories, company names, and the products listed under each company on the Strong Brands pages.
-            </p>
+        <div className="dashboard-panel-head">
+          <div className="dashboard-page-header">
+            <div>
+              <h2 className="dashboard-page-title">Strong Brands</h2>
+              <p className="dashboard-page-desc">
+                Manage brand categories, company names, and the products listed under each company on the Strong Brands pages.
+              </p>
+            </div>
+          </div>
+
+          <div className="dashboard-subtabs">
+            <button
+              type="button"
+              onClick={() => setSubTab('categories')}
+              className={`dashboard-subtab ${subTab === 'categories' ? 'dashboard-subtab--active' : ''}`}
+            >
+              Brand categories
+            </button>
+            <button
+              type="button"
+              onClick={() => setSubTab('companies')}
+              className={`dashboard-subtab ${subTab === 'companies' ? 'dashboard-subtab--active' : ''}`}
+            >
+              Companies &amp; products
+            </button>
           </div>
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2 border-b border-gray-200 pb-4">
-          <button
-            type="button"
-            onClick={() => setSubTab('categories')}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold ${
-              subTab === 'categories' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Brand categories
-          </button>
-          <button
-            type="button"
-            onClick={() => setSubTab('companies')}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold ${
-              subTab === 'companies' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Companies &amp; products
-          </button>
-        </div>
-
-        {subTab === 'categories' && (
-          <>
-            <div className="mb-4 flex justify-end">
-              <button
-                type="button"
-                className="btn-primary text-sm py-2.5 px-5"
-                onClick={() => setBrandCategoryForm({ id: '', name: '', isEdit: false })}
-              >
-                + Add category
-              </button>
-            </div>
-            <div className="dashboard-table">
-              {cms.brandCategories.length === 0 ? (
-                <p className="px-4 py-8 text-center text-sm text-gray-500">
-                  No categories yet — e.g. Construction Equipment, Trucks, Engines.
-                </p>
-              ) : (
-                cms.brandCategories.map((category) => (
+        <div className="dashboard-table-scroll">
+          {subTab === 'categories' && (
+            <>
+              <div className="mb-4 flex justify-end">
+                <button
+                  type="button"
+                  className="btn-primary text-sm py-2.5 px-5"
+                  onClick={() => setBrandCategoryForm({ id: '', name: '', isEdit: false })}
+                >
+                  + Add category
+                </button>
+              </div>
+              <div className="dashboard-table">
+                {cms.brandCategories.length === 0 ? (
+                  <p className="dashboard-empty">No categories yet — e.g. Construction Equipment, Trucks, Engines.</p>
+                ) : (
+                  cms.brandCategories.map((category) => (
                   <div key={category.id} className="dashboard-table-row">
                     <div className="min-w-0">
                       <p className="dashboard-row-title">{category.name}</p>
@@ -195,63 +192,62 @@ export default function BrandsDashboardSection({
                   </div>
                 ))
               )}
-            </div>
-          </>
-        )}
+              </div>
+            </>
+          )}
 
-        {subTab === 'companies' && (
-          <>
-            <div className="mb-4 flex justify-end">
-              <button
-                type="button"
-                className="btn-primary text-sm py-2.5 px-5"
-                onClick={() => {
-                  setEditingBrand(emptyBrand())
-                  setOriginalSlug('')
-                }}
-              >
-                + Add company
-              </button>
-            </div>
-            <div className="dashboard-table">
-              {cms.brands.length === 0 ? (
-                <p className="px-4 py-8 text-center text-sm text-gray-500">
-                  No companies yet — add a company name and list the products supplied under it.
-                </p>
-              ) : (
-                cms.brands.map((brand) => {
-                  const listedCount = (brand.listedProducts?.length ?? 0) + brand.productSlugs.length
-                  return (
-                    <div key={brand.slug} className="dashboard-table-row">
-                      <div className="min-w-0">
-                        <p className="dashboard-row-title">{brand.name}</p>
-                        <p className="dashboard-row-meta">
-                          {brand.slug} · {brandCategoryNameById[brand.categoryId] ?? brand.categoryId} · {listedCount}{' '}
-                          product{listedCount === 1 ? '' : 's'}
-                        </p>
+          {subTab === 'companies' && (
+            <>
+              <div className="mb-4 flex justify-end">
+                <button
+                  type="button"
+                  className="btn-primary text-sm py-2.5 px-5"
+                  onClick={() => {
+                    setEditingBrand(emptyBrand())
+                    setOriginalSlug('')
+                  }}
+                >
+                  + Add company
+                </button>
+              </div>
+              <div className="dashboard-table">
+                {cms.brands.length === 0 ? (
+                  <p className="dashboard-empty">No companies yet — add a company name and list the products supplied under it.</p>
+                ) : (
+                  cms.brands.map((brand) => {
+                    const listedCount = (brand.listedProducts?.length ?? 0) + brand.productSlugs.length
+                    return (
+                      <div key={brand.slug} className="dashboard-table-row">
+                        <div className="min-w-0">
+                          <p className="dashboard-row-title">{brand.name}</p>
+                          <p className="dashboard-row-meta">
+                            {brand.slug} · {brandCategoryNameById[brand.categoryId] ?? brand.categoryId} · {listedCount}{' '}
+                            product{listedCount === 1 ? '' : 's'}
+                          </p>
+                        </div>
+                        <div className="dashboard-row-actions">
+                          <button
+                            type="button"
+                            className="dashboard-btn-edit"
+                            onClick={() => {
+                              setEditingBrand({ ...brand, listedProducts: brand.listedProducts ?? [] })
+                              setOriginalSlug(brand.slug)
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button type="button" className="dashboard-btn-delete" onClick={() => deleteBrand(brand.slug)}>
+                            Delete
+                          </button>
+                        </div>
                       </div>
-                      <div className="dashboard-row-actions">
-                        <button
-                          type="button"
-                          className="dashboard-btn-edit"
-                          onClick={() => {
-                            setEditingBrand({ ...brand, listedProducts: brand.listedProducts ?? [] })
-                            setOriginalSlug(brand.slug)
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button type="button" className="dashboard-btn-delete" onClick={() => deleteBrand(brand.slug)}>
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })
-              )}
-            </div>
-          </>
-        )}
+                    )
+                  })
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </section>
 
       {brandCategoryForm && (

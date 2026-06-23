@@ -1,9 +1,8 @@
 import { revalidatePath } from 'next/cache'
-import { CMS_DEFAULT_AUTHOR } from '@/lib/brand'
 import { readCms, writeCms } from '@/lib/cms'
 import { slugify } from '@/lib/slugify'
 import { normalizeProductCompanies } from '@/lib/product-companies'
-import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, PortfolioProject, Product, Service } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service } from '@/types/cms'
 
 export type CmsActionResult<T = undefined> =
   | { ok: true; data: T; cms: CmsData }
@@ -28,8 +27,8 @@ function normalizeProduct(body: Product, fallbackSlug?: string): Product | null 
     ...body,
     slug,
     title,
-    label: body.label?.trim() || 'Parts',
-    image: body.image?.trim() || '/statsic/jcb.jpg',
+    label: body.label?.trim() || '',
+    image: body.image?.trim() || '',
     desc: body.desc?.trim() || '',
     specs: body.specs ?? [],
     overview: body.overview ?? [],
@@ -50,7 +49,7 @@ function normalizeService(body: Service, fallbackSlug?: string): Service | null 
     ...body,
     slug,
     title,
-    image: body.image?.trim() || '/statsic/jcb.jpg',
+    image: body.image?.trim() || '',
     summary: body.summary?.trim() || '',
     overview: body.overview ?? [],
     capabilities: body.capabilities ?? [],
@@ -223,12 +222,12 @@ function normalizeBlog(body: BlogPost, fallbackSlug?: string): BlogPost | null {
     ...body,
     slug,
     title,
-    image: body.image?.trim() || '/images/blog/featured-air.jpg',
-    date: body.date?.trim() || new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-    author: body.author?.trim() || CMS_DEFAULT_AUTHOR,
-    cat: body.cat?.trim() || 'Logistics',
+    image: body.image?.trim() || '',
+    date: body.date?.trim() || '',
+    author: body.author?.trim() || '',
+    cat: body.cat?.trim() || '',
     excerpt: body.excerpt?.trim() || '',
-    body: body.body?.length ? body.body : [''],
+    body: (body.body ?? []).map((paragraph) => paragraph.trim()).filter(Boolean),
     featured: Boolean(body.featured),
     highlight: Boolean(body.highlight),
   }
@@ -296,7 +295,7 @@ function normalizeBrand(body: Brand, fallbackSlug?: string): Brand | null {
     name,
     categoryId,
     description: body.description?.trim() || '',
-    image: body.image?.trim() || '/images/products/gearbox-parts.jpg',
+    image: body.image?.trim() || '',
     equipment: (body.equipment ?? []).map((item) => item.trim()).filter(Boolean),
     listedProducts: (body.listedProducts ?? []).map((item) => item.trim()).filter(Boolean),
     productSlugs: body.productSlugs ?? [],
@@ -411,8 +410,8 @@ function normalizePortfolio(body: PortfolioProject, fallbackSlug?: string): Port
     ...body,
     slug,
     title,
-    label: body.label?.trim() || 'Project',
-    image: body.image?.trim() || '/images/services/road.jpg',
+    label: body.label?.trim() || '',
+    image: body.image?.trim() || '',
     excerpt: body.excerpt?.trim() || '',
     body: body.body?.length ? body.body : [''],
     client: body.client?.trim() || '',
@@ -477,9 +476,9 @@ function normalizeReview(body: CustomerReview, fallbackSlug?: string): CustomerR
   return {
     slug,
     name,
-    role: body.role?.trim() || 'Client',
+    role: body.role?.trim() || '',
     quote,
-    image: body.image?.trim() || '/statsic/jcb.jpg',
+    image: body.image?.trim() || '',
   }
 }
 
@@ -522,6 +521,74 @@ export async function updateReview(
 export async function deleteReview(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.reviews = cms.reviews.filter((r) => r.slug !== slug)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: undefined, cms }
+}
+
+function normalizeHeroBanner(body: HeroBanner, fallbackSlug?: string): HeroBanner | null {
+  const title = body.title?.trim()
+  const subtitle = body.subtitle?.trim()
+  const image = body.image?.trim()
+  if (!title || !subtitle || !image) return null
+
+  const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(`${title}-${body.titleAccent || 'slide'}`)
+
+  return {
+    slug,
+    position: Math.max(1, Number(body.position) || 1),
+    image,
+    badge: body.badge?.trim() || '',
+    title,
+    titleAccent: body.titleAccent?.trim() || '',
+    subtitle,
+  }
+}
+
+function sortHeroBanners(banners: HeroBanner[]) {
+  return [...banners].sort((a, b) => a.position - b.position || a.slug.localeCompare(b.slug))
+}
+
+export async function createHeroBanner(input: HeroBanner): Promise<CmsActionResult<HeroBanner>> {
+  const banner = normalizeHeroBanner(input)
+  if (!banner) return { ok: false, error: 'Title, subtitle, and background image are required' }
+
+  const cms = await readCms()
+  if (cms.heroBanners.some((b) => b.slug === banner.slug)) {
+    return { ok: false, error: 'Banner slug already exists' }
+  }
+
+  cms.heroBanners = sortHeroBanners([...cms.heroBanners, banner])
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: banner, cms }
+}
+
+export async function updateHeroBanner(
+  originalSlug: string,
+  input: HeroBanner,
+): Promise<CmsActionResult<HeroBanner>> {
+  const banner = normalizeHeroBanner(input, originalSlug)
+  if (!banner || !originalSlug) return { ok: false, error: 'Invalid banner data' }
+
+  const cms = await readCms()
+  const index = cms.heroBanners.findIndex((b) => b.slug === originalSlug)
+  if (index === -1) return { ok: false, error: 'Banner not found' }
+
+  if (banner.slug !== originalSlug && cms.heroBanners.some((b) => b.slug === banner.slug)) {
+    return { ok: false, error: 'Banner slug already exists' }
+  }
+
+  cms.heroBanners[index] = banner
+  cms.heroBanners = sortHeroBanners(cms.heroBanners)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: banner, cms }
+}
+
+export async function deleteHeroBanner(slug: string): Promise<CmsActionResult> {
+  const cms = await readCms()
+  cms.heroBanners = cms.heroBanners.filter((b) => b.slug !== slug)
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: undefined, cms }

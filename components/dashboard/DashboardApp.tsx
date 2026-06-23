@@ -5,10 +5,11 @@ import Link from 'next/link'
 import BrandLogo from '@/components/BrandLogo'
 import BrandsDashboardSection from '@/components/dashboard/BrandsDashboardSection'
 import DashboardDrawer from '@/components/dashboard/DashboardDrawer'
+import HeroBannersDashboardSection from '@/components/dashboard/HeroBannersDashboardSection'
 import PointListEditor from '@/components/dashboard/PointListEditor'
 import ProductCompaniesEditor from '@/components/dashboard/ProductCompaniesEditor'
 import ReviewsDashboardSection from '@/components/dashboard/ReviewsDashboardSection'
-import { CMS_DEFAULT_AUTHOR, COMPANY_NAME } from '@/lib/brand'
+import { COMPANY_NAME } from '@/lib/brand'
 import type { BlogPost, Category, CategoryType, CmsData, PortfolioProject, Product, Service } from '@/types/cms'
 import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
@@ -29,13 +30,14 @@ import {
   saveServiceAction,
 } from '@/app/dashboard/actions'
 
-type Tab = 'products' | 'services' | 'categories' | 'brands' | 'blogs' | 'portfolio' | 'reviews'
+type Tab = 'products' | 'services' | 'categories' | 'brands' | 'hero' | 'blogs' | 'portfolio' | 'reviews'
 
 const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'products', label: 'Products' },
   { id: 'services', label: 'Services' },
   { id: 'categories', label: 'Categories' },
   { id: 'brands', label: 'Strong brands' },
+  { id: 'hero', label: 'Hero banners' },
   { id: 'reviews', label: 'Reviews' },
   { id: 'blogs', label: 'Blogs' },
   { id: 'portfolio', label: 'Recent work' },
@@ -45,7 +47,7 @@ const emptyProduct = (): Product => ({
   slug: '',
   title: '',
   label: '',
-  image: '/statsic/jcb.jpg',
+  image: '',
   desc: '',
   specs: [],
   overview: [],
@@ -58,23 +60,23 @@ const emptyProduct = (): Product => ({
 const emptyService = (): Service => ({
   slug: '',
   title: '',
-  image: '/statsic/jcb.jpg',
+  image: '',
   summary: '',
-  overview: [''],
-  capabilities: [''],
-  industries: [''],
+  overview: [],
+  capabilities: [],
+  industries: [],
   showOnHomepage: false,
 })
 
 const emptyBlog = (): BlogPost => ({
   slug: '',
   title: '',
-  image: '/images/blog/featured-air.jpg',
-  date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-  author: CMS_DEFAULT_AUTHOR,
-  cat: 'Logistics',
+  image: '',
+  date: '',
+  author: '',
+  cat: '',
   excerpt: '',
-  body: [''],
+  body: [],
   featured: false,
   highlight: false,
 })
@@ -83,9 +85,9 @@ const emptyPortfolio = (): PortfolioProject => ({
   slug: '',
   title: '',
   label: '',
-  image: '/images/services/road.jpg',
+  image: '',
   excerpt: '',
-  body: [''],
+  body: [],
   client: '',
   location: '',
   year: '',
@@ -99,6 +101,7 @@ export default function DashboardApp({
   initialCms: CmsData | null
 }) {
   const [authenticated, setAuthenticated] = useState(initialAuthenticated)
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
   const [tab, setTab] = useState<Tab>('products')
@@ -113,13 +116,13 @@ export default function DashboardApp({
   const [categoryForm, setCategoryForm] = useState<{
     id: string
     name: string
-    type: CategoryType
+    type: CategoryType | ''
     description: string
     image: string
   }>({
     id: '',
     name: '',
-    type: 'product',
+    type: '',
     description: '',
     image: '',
   })
@@ -132,7 +135,7 @@ export default function DashboardApp({
     setEditingBlog(null)
     setEditingPortfolio(null)
     setCategoryDrawerOpen(false)
-    setCategoryForm({ id: '', name: '', type: 'product', description: '', image: '' })
+    setCategoryForm({ id: '', name: '', type: '', description: '', image: '' })
     setOriginalSlug('')
   }
 
@@ -144,13 +147,14 @@ export default function DashboardApp({
   const login = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoginError('')
-    const result = await loginAction(password)
+    const result = await loginAction(username, password)
     if (!result.ok) {
-      setLoginError(result.error || 'Invalid password')
+      setLoginError(result.error || 'Invalid username or password')
       return
     }
     setAuthenticated(true)
     if (result.cms) setCms(result.cms)
+    setUsername('')
     setPassword('')
   }
 
@@ -228,16 +232,20 @@ export default function DashboardApp({
 
   const saveCategory = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!categoryForm.type) {
+      showMsg('Please select a category type')
+      return
+    }
     setLoading(true)
     const isEdit = Boolean(categoryForm.id && cms?.categories.some((c) => c.id === categoryForm.id))
-    const result = await saveCategoryAction({ ...categoryForm, isEdit })
+    const result = await saveCategoryAction({ ...categoryForm, type: categoryForm.type, isEdit })
     setLoading(false)
     if (!result.ok) {
       showMsg(result.error || 'Failed to save category')
       return
     }
     setCategoryDrawerOpen(false)
-    setCategoryForm({ id: '', name: '', type: 'product', description: '', image: '' })
+    setCategoryForm({ id: '', name: '', type: '', description: '', image: '' })
     if (result.cms) setCms(result.cms)
     else await refreshCms()
     showMsg('Category saved')
@@ -303,13 +311,23 @@ export default function DashboardApp({
 
   if (!authenticated) {
     return (
-      <div className="dashboard-shell site-typography flex min-h-screen items-center justify-center px-4">
-        <form onSubmit={login} className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
+      <div className="dashboard-login-shell site-typography">
+        <form onSubmit={login} className="dashboard-login-card">
           <div className="mb-5 flex justify-center">
             <BrandLogo className="brand-logo brand-logo--nav mx-auto" />
           </div>
           <h1 className="hp-title text-2xl mb-1 text-center">{COMPANY_NAME} Admin</h1>
-          <p className="hp-body text-sm mb-6">Sign in to manage products, services, categories, blog posts, and recent work.</p>
+          <p className="hp-body text-sm mb-6">Sign in with your admin username and password to manage site content.</p>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="dashboard-input mb-4"
+            placeholder="Admin username"
+            autoComplete="username"
+            required
+          />
           <label className="block text-sm font-semibold text-gray-700 mb-1">Password</label>
           <input
             type="password"
@@ -317,15 +335,13 @@ export default function DashboardApp({
             onChange={(e) => setPassword(e.target.value)}
             className="dashboard-input mb-4"
             placeholder="Admin password"
+            autoComplete="current-password"
             required
           />
           {loginError && <p className="text-sm text-red-600 mb-3">{loginError}</p>}
           <button type="submit" className="btn-primary w-full justify-center">
             Sign In
           </button>
-          <p className="mt-4 text-xs text-gray-400 text-center">
-            Default password: <code className="text-gray-600">transhub2024</code> — set <code>ADMIN_PASSWORD</code> in .env
-          </p>
         </form>
       </div>
     )
@@ -338,7 +354,7 @@ export default function DashboardApp({
     cms?.products.filter((p) => !productCategoryFilter || p.categoryId === productCategoryFilter) ?? []
 
   return (
-    <div className="dashboard-shell site-typography min-h-screen">
+    <div className="dashboard-shell site-typography">
       <header className="dashboard-header">
         <div className="flex items-center gap-3">
           <BrandLogo className="brand-logo brand-logo--dashboard" />
@@ -356,25 +372,10 @@ export default function DashboardApp({
 
       {message && <div className="dashboard-toast">{message}</div>}
 
-      <div className="mx-auto flex max-w-[1600px] gap-0 px-4 py-6 lg:px-6">
-        <aside className="dashboard-sidebar hidden w-52 shrink-0 lg:block">
-          {NAV_TABS.map(({ id, label }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => {
-                setTab(id)
-                closeDrawer()
-              }}
-              className={`dashboard-nav-item w-full text-left ${tab === id ? 'dashboard-nav-item--active' : ''}`}
-            >
-              {label}
-            </button>
-          ))}
-        </aside>
-
-        <main className="min-w-0 flex-1">
-          <div className="mb-4 flex gap-2 lg:hidden">
+      <div className="dashboard-body">
+        <aside className="dashboard-sidebar">
+          <div className="dashboard-sidebar-inner">
+            <p className="dashboard-sidebar-label">Content</p>
             {NAV_TABS.map(({ id, label }) => (
               <button
                 key={id}
@@ -383,9 +384,25 @@ export default function DashboardApp({
                   setTab(id)
                   closeDrawer()
                 }}
-                className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${
-                  tab === id ? 'bg-primary text-white' : 'bg-white text-gray-600'
-                }`}
+                className={`dashboard-nav-item ${tab === id ? 'dashboard-nav-item--active' : ''}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </aside>
+
+        <main className="dashboard-main">
+          <div className="dashboard-mobile-tabs lg:hidden">
+            {NAV_TABS.map(({ id, label }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => {
+                  setTab(id)
+                  closeDrawer()
+                }}
+                className={`dashboard-mobile-tab ${tab === id ? 'dashboard-mobile-tab--active' : ''}`}
               >
                 {label}
               </button>
@@ -394,40 +411,43 @@ export default function DashboardApp({
 
           {tab === 'products' && cms && (
             <section className="dashboard-panel">
-              <div className="dashboard-page-header">
-                <div>
-                  <h2 className="dashboard-page-title">Products</h2>
-                  <p className="dashboard-page-desc">
-                    {cms.products.length} item{cms.products.length === 1 ? '' : 's'} — assign a category so they appear in the public catalog filters.
-                  </p>
+              <div className="dashboard-panel-head">
+                <div className="dashboard-page-header">
+                  <div>
+                    <h2 className="dashboard-page-title">Products</h2>
+                    <p className="dashboard-page-desc">
+                      {cms.products.length} item{cms.products.length === 1 ? '' : 's'} — assign a category so they appear in the public catalog filters.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary text-sm py-2.5 px-5"
+                    onClick={() => {
+                      setEditingProduct(emptyProduct())
+                      setOriginalSlug('')
+                    }}
+                  >
+                    + Add product
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btn-primary text-sm py-2.5 px-5"
-                  onClick={() => {
-                    setEditingProduct(emptyProduct())
-                    setOriginalSlug('')
-                  }}
-                >
-                  + Add product
-                </button>
+                <div className="dashboard-toolbar">
+                  <label className="text-xs font-semibold text-gray-600">Filter by category</label>
+                  <select
+                    className="dashboard-input max-w-xs"
+                    value={productCategoryFilter}
+                    onChange={(e) => setProductCategoryFilter(e.target.value)}
+                  >
+                    <option value="">All categories</option>
+                    {productCategories.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div className="dashboard-toolbar">
-                <label className="text-xs font-semibold text-gray-600">Filter by category</label>
-                <select
-                  className="dashboard-input max-w-xs"
-                  value={productCategoryFilter}
-                  onChange={(e) => setProductCategoryFilter(e.target.value)}
-                >
-                  <option value="">All categories</option>
-                  {productCategories.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="dashboard-table max-h-[70vh] overflow-y-auto">
+              <div className="dashboard-table-scroll">
+                <div className="dashboard-table">
                 {filteredDashboardProducts.map((p) => (
                   <div key={p.slug} className="dashboard-table-row">
                     <div className="min-w-0">
@@ -454,31 +474,35 @@ export default function DashboardApp({
                     </div>
                   </div>
                 ))}
+                </div>
               </div>
             </section>
           )}
 
           {tab === 'services' && cms && (
             <section className="dashboard-panel">
-              <div className="dashboard-page-header">
-                <div>
-                  <h2 className="dashboard-page-title">Services</h2>
-                  <p className="dashboard-page-desc">
-                    {cms.services.length} service{cms.services.length === 1 ? '' : 's'} shown on the public services pages.
-                  </p>
+              <div className="dashboard-panel-head">
+                <div className="dashboard-page-header">
+                  <div>
+                    <h2 className="dashboard-page-title">Services</h2>
+                    <p className="dashboard-page-desc">
+                      {cms.services.length} service{cms.services.length === 1 ? '' : 's'} shown on the public services pages.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary text-sm py-2.5 px-5"
+                    onClick={() => {
+                      setEditingService(emptyService())
+                      setOriginalSlug('')
+                    }}
+                  >
+                    + Add service
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btn-primary text-sm py-2.5 px-5"
-                  onClick={() => {
-                    setEditingService(emptyService())
-                    setOriginalSlug('')
-                  }}
-                >
-                  + Add service
-                </button>
               </div>
-              <div className="dashboard-table max-h-[70vh] overflow-y-auto">
+              <div className="dashboard-table-scroll">
+                <div className="dashboard-table">
                 {cms.services.map((s) => (
                   <div key={s.slug} className="dashboard-table-row">
                     <div className="min-w-0">
@@ -505,31 +529,35 @@ export default function DashboardApp({
                     </div>
                   </div>
                 ))}
+                </div>
               </div>
             </section>
           )}
 
           {tab === 'categories' && cms && (
             <section className="dashboard-panel">
-              <div className="dashboard-page-header">
-                <div>
-                  <h2 className="dashboard-page-title">Categories</h2>
-                  <p className="dashboard-page-desc">
-                    {cms.categories.length} categor{cms.categories.length === 1 ? 'y' : 'ies'} — categories appear as navbar sub-tabs under Products and Services.
-                  </p>
+              <div className="dashboard-panel-head">
+                <div className="dashboard-page-header">
+                  <div>
+                    <h2 className="dashboard-page-title">Categories</h2>
+                    <p className="dashboard-page-desc">
+                      {cms.categories.length} categor{cms.categories.length === 1 ? 'y' : 'ies'} — categories appear as navbar sub-tabs under Products and Services.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary text-sm py-2.5 px-5"
+                    onClick={() => {
+                      setCategoryForm({ id: '', name: '', type: '', description: '', image: '' })
+                      setCategoryDrawerOpen(true)
+                    }}
+                  >
+                    + Add category
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btn-primary text-sm py-2.5 px-5"
-                  onClick={() => {
-                    setCategoryForm({ id: '', name: '', type: 'product', description: '', image: '' })
-                    setCategoryDrawerOpen(true)
-                  }}
-                >
-                  + Add category
-                </button>
               </div>
-              <div className="dashboard-table">
+              <div className="dashboard-table-scroll">
+                <div className="dashboard-table">
                 {cms.categories.map((c) => {
                   const productCount = cms.products.filter((p) => p.categoryId === c.id).length
                   const serviceCount = cms.services.filter((s) => s.categoryId === c.id).length
@@ -567,12 +595,23 @@ export default function DashboardApp({
                     </div>
                   )
                 })}
+                </div>
               </div>
             </section>
           )}
 
           {tab === 'brands' && cms && (
             <BrandsDashboardSection
+              cms={cms}
+              loading={loading}
+              setLoading={setLoading}
+              setCms={setCms}
+              showMsg={showMsg}
+            />
+          )}
+
+          {tab === 'hero' && cms && (
+            <HeroBannersDashboardSection
               cms={cms}
               loading={loading}
               setLoading={setLoading}
@@ -593,25 +632,28 @@ export default function DashboardApp({
 
           {tab === 'blogs' && cms && (
             <section className="dashboard-panel">
-              <div className="dashboard-page-header">
-                <div>
-                  <h2 className="dashboard-page-title">Blog posts</h2>
-                  <p className="dashboard-page-desc">
-                    {cms.blogs?.length ?? 0} post{(cms.blogs?.length ?? 0) === 1 ? '' : 's'} — manage articles shown on the blog and homepage.
-                  </p>
+              <div className="dashboard-panel-head">
+                <div className="dashboard-page-header">
+                  <div>
+                    <h2 className="dashboard-page-title">Blog posts</h2>
+                    <p className="dashboard-page-desc">
+                      {cms.blogs?.length ?? 0} post{(cms.blogs?.length ?? 0) === 1 ? '' : 's'} — manage articles shown on the blog and homepage.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary text-sm py-2.5 px-5"
+                    onClick={() => {
+                      setEditingBlog(emptyBlog())
+                      setOriginalSlug('')
+                    }}
+                  >
+                    + Add post
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btn-primary text-sm py-2.5 px-5"
-                  onClick={() => {
-                    setEditingBlog(emptyBlog())
-                    setOriginalSlug('')
-                  }}
-                >
-                  + Add post
-                </button>
               </div>
-              <div className="dashboard-table max-h-[70vh] overflow-y-auto">
+              <div className="dashboard-table-scroll">
+                <div className="dashboard-table">
                 {cms.blogs?.map((post) => (
                   <div key={post.slug} className="dashboard-table-row">
                     <div className="min-w-0">
@@ -638,31 +680,35 @@ export default function DashboardApp({
                     </div>
                   </div>
                 ))}
+                </div>
               </div>
             </section>
           )}
 
           {tab === 'portfolio' && cms && (
             <section className="dashboard-panel">
-              <div className="dashboard-page-header">
-                <div>
-                  <h2 className="dashboard-page-title">Recent work</h2>
-                  <p className="dashboard-page-desc">
-                    {cms.portfolio?.length ?? 0} project{(cms.portfolio?.length ?? 0) === 1 ? '' : 's'} — cards in the homepage “Explore Our Recent Work” slider.
-                  </p>
+              <div className="dashboard-panel-head">
+                <div className="dashboard-page-header">
+                  <div>
+                    <h2 className="dashboard-page-title">Recent work</h2>
+                    <p className="dashboard-page-desc">
+                      {cms.portfolio?.length ?? 0} project{(cms.portfolio?.length ?? 0) === 1 ? '' : 's'} — cards in the homepage “Explore Our Recent Work” slider.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary text-sm py-2.5 px-5"
+                    onClick={() => {
+                      setEditingPortfolio(emptyPortfolio())
+                      setOriginalSlug('')
+                    }}
+                  >
+                    + Add project
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="btn-primary text-sm py-2.5 px-5"
-                  onClick={() => {
-                    setEditingPortfolio(emptyPortfolio())
-                    setOriginalSlug('')
-                  }}
-                >
-                  + Add project
-                </button>
               </div>
-              <div className="dashboard-table max-h-[70vh] overflow-y-auto">
+              <div className="dashboard-table-scroll">
+                <div className="dashboard-table">
                 {cms.portfolio?.map((project) => (
                   <div key={project.slug} className="dashboard-table-row">
                     <div className="min-w-0">
@@ -692,6 +738,7 @@ export default function DashboardApp({
                     </div>
                   </div>
                 ))}
+                </div>
               </div>
             </section>
           )}
@@ -942,8 +989,10 @@ export default function DashboardApp({
               <select
                 className="dashboard-input"
                 value={categoryForm.type}
-                onChange={(e) => setCategoryForm({ ...categoryForm, type: e.target.value as CategoryType })}
+                onChange={(e) => setCategoryForm({ ...categoryForm, type: e.target.value as CategoryType | '' })}
+                required
               >
+                <option value="">Select type…</option>
                 <option value="product">Product</option>
                 <option value="service">Service</option>
                 <option value="both">Both</option>

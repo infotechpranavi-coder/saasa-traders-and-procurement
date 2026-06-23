@@ -4,33 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight, ArrowRight } from 'lucide-react'
 import CmsImage from './CmsImage'
-import { SITE_IMAGES } from '@/lib/site-content'
+import type { HeroBanner } from '@/types/cms'
 
 const SLIDE_MS = 6000
-
-const slides = [
-  {
-    image: SITE_IMAGES.hero.equipment,
-    badge: 'EST. 2024 • PROCUREMENT & TRADING',
-    line1: 'Heavy',
-    line2: 'Equipment',
-    desc: 'Source construction machinery, earthmoving equipment, and industrial assets through a trusted B2E trading partner.',
-  },
-  {
-    image: SITE_IMAGES.hero.machinery,
-    badge: 'EST. 2024 • FLEET SUPPLY',
-    line1: 'Earthmoving',
-    line2: 'Machinery',
-    desc: 'Procure excavators, loaders, dozers, cranes, and road-building equipment through a trusted B2E trading partner.',
-  },
-  {
-    image: SITE_IMAGES.hero.parts,
-    badge: 'EST. 2024 • GENUINE PARTS',
-    line1: 'Machinery',
-    line2: 'Parts',
-    desc: 'Genuine and aftermarket parts for excavators, loaders, cranes, and road-building equipment — supplied on time.',
-  },
-]
 
 const stats = [
   { value: '150+', label: 'PRODUCT LINES' },
@@ -47,7 +23,12 @@ function lerp(current: number, target: number, factor: number) {
   return current + (target - current) * factor
 }
 
-export default function Hero() {
+interface HeroProps {
+  banners: HeroBanner[]
+}
+
+export default function Hero({ banners }: HeroProps) {
+  const slides = banners
   const stageRef = useRef<HTMLElement>(null)
   const [activeSlide, setActiveSlide] = useState(0)
   const [displaySlide, setDisplaySlide] = useState(0)
@@ -56,6 +37,8 @@ export default function Hero() {
   const [scrollVisual, setScrollVisual] = useState({ scale: 1, radius: 0 })
 
   useEffect(() => {
+    if (slides.length === 0) return
+
     let frame = 0
     let targetProgress = 0
 
@@ -92,15 +75,17 @@ export default function Hero() {
       window.removeEventListener('scroll', measure)
       window.removeEventListener('resize', measure)
     }
-  }, [])
+  }, [slides.length])
 
   useEffect(() => {
+    if (slides.length <= 1) return
+
     const timer = window.setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length)
     }, SLIDE_MS)
 
     return () => window.clearInterval(timer)
-  }, [])
+  }, [slides.length])
 
   useEffect(() => {
     if (activeSlide === displaySlide) return
@@ -113,6 +98,17 @@ export default function Hero() {
 
     return () => window.clearTimeout(timer)
   }, [activeSlide, displaySlide])
+
+  useEffect(() => {
+    if (displaySlide >= slides.length) {
+      setDisplaySlide(0)
+      setActiveSlide(0)
+    }
+  }, [displaySlide, slides.length])
+
+  if (slides.length === 0) {
+    return null
+  }
 
   const slide = slides[displaySlide]
 
@@ -128,7 +124,7 @@ export default function Hero() {
         <div className="hero-cinematic-inner">
           {slides.map((item, index) => (
             <div
-              key={item.image}
+              key={item.slug}
               className={`hero-cinematic-bg ${index === activeSlide ? 'hero-cinematic-bg--active' : ''}`}
               aria-hidden={index !== activeSlide}
             >
@@ -150,11 +146,11 @@ export default function Hero() {
               <span className="hero-cinematic-badge">{slide.badge}</span>
 
               <h1 className="hero-cinematic-title">
-                <span className="hero-cinematic-title-main">{slide.line1}</span>
-                <span className="hero-cinematic-title-accent">{slide.line2}</span>
+                <span className="hero-cinematic-title-main">{slide.title}</span>
+                {slide.titleAccent && <span className="hero-cinematic-title-accent">{slide.titleAccent}</span>}
               </h1>
 
-              <p className="hero-cinematic-desc">{slide.desc}</p>
+              <p className="hero-cinematic-desc">{slide.subtitle}</p>
 
               <div className="hero-cinematic-actions">
                 <Link href="/contact" className="hero-cinematic-btn hero-cinematic-btn--primary">
@@ -184,9 +180,9 @@ export default function Hero() {
             </div>
 
             <div className="hero-cinematic-dots" role="tablist" aria-label="Hero slides">
-              {slides.map((_, index) => (
+              {slides.map((item, index) => (
                 <button
-                  key={index}
+                  key={item.slug}
                   type="button"
                   role="tab"
                   aria-selected={index === activeSlide}

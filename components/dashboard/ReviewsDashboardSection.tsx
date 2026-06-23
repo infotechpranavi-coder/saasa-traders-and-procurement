@@ -10,7 +10,7 @@ const emptyReview = (): CustomerReview => ({
   name: '',
   role: '',
   quote: '',
-  image: '/images/products/hydraulic-pump.jpg',
+  image: '',
 })
 
 interface ReviewsDashboardSectionProps {
@@ -63,27 +63,33 @@ export default function ReviewsDashboardSection({
   return (
     <>
       <section className="dashboard-panel">
-        <div className="dashboard-page-header">
-          <div>
-            <h2 className="dashboard-page-title">Customer reviews</h2>
-            <p className="dashboard-page-desc">
-              {cms.reviews?.length ?? 0} review{(cms.reviews?.length ?? 0) === 1 ? '' : 's'} — shown in the homepage testimonials section.
-            </p>
+        <div className="dashboard-panel-head">
+          <div className="dashboard-page-header">
+            <div>
+              <h2 className="dashboard-page-title">Customer reviews</h2>
+              <p className="dashboard-page-desc">
+                {cms.reviews?.length ?? 0} review{(cms.reviews?.length ?? 0) === 1 ? '' : 's'} — shown in the homepage testimonials section.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn-primary text-sm py-2.5 px-5"
+              onClick={() => {
+                setEditingReview(emptyReview())
+                setOriginalSlug('')
+              }}
+            >
+              + Add review
+            </button>
           </div>
-          <button
-            type="button"
-            className="btn-primary text-sm py-2.5 px-5"
-            onClick={() => {
-              setEditingReview(emptyReview())
-              setOriginalSlug('')
-            }}
-          >
-            + Add review
-          </button>
         </div>
 
-        <div className="dashboard-table max-h-[70vh] overflow-y-auto">
-          {cms.reviews?.map((review) => (
+        <div className="dashboard-table-scroll">
+          <div className="dashboard-table">
+            {(cms.reviews?.length ?? 0) === 0 ? (
+              <p className="dashboard-empty">No reviews yet — add customer testimonials for the homepage.</p>
+            ) : (
+              cms.reviews?.map((review) => (
             <div key={review.slug} className="dashboard-table-row">
               <div className="min-w-0">
                 <p className="dashboard-row-title truncate">{review.name}</p>
@@ -108,7 +114,9 @@ export default function ReviewsDashboardSection({
                 </button>
               </div>
             </div>
-          ))}
+              ))
+            )}
+          </div>
         </div>
       </section>
 

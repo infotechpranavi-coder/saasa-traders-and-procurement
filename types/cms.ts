@@ -99,6 +99,18 @@ export interface CustomerReview {
   image: string
 }
 
+/** Homepage hero carousel slide */
+export interface HeroBanner {
+  slug: string
+  /** Slide order — lower numbers appear first */
+  position: number
+  image: string
+  badge: string
+  title: string
+  titleAccent: string
+  subtitle: string
+}
+
 export interface CmsData {
   categories: Category[]
   brandCategories: BrandCategory[]
@@ -108,4 +120,5 @@ export interface CmsData {
   blogs: BlogPost[]
   portfolio: PortfolioProject[]
   reviews: CustomerReview[]
+  heroBanners: HeroBanner[]
 }
