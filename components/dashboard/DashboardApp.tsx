@@ -35,7 +35,7 @@ type Tab = 'products' | 'services' | 'categories' | 'brands' | 'hero' | 'blogs' 
 const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'products', label: 'Products' },
   { id: 'services', label: 'Services' },
-  { id: 'categories', label: 'Categories' },
+  { id: 'categories', label: 'Product categories' },
   { id: 'brands', label: 'Strong brands' },
   { id: 'hero', label: 'Hero banners' },
   { id: 'reviews', label: 'Reviews' },
@@ -66,6 +66,7 @@ const emptyService = (): Service => ({
   capabilities: [],
   industries: [],
   showOnHomepage: false,
+  showInFooter: false,
 })
 
 const emptyBlog = (): BlogPost => ({
@@ -119,12 +120,14 @@ export default function DashboardApp({
     type: CategoryType | ''
     description: string
     image: string
+    showInFooter: boolean
   }>({
     id: '',
     name: '',
     type: '',
     description: '',
     image: '',
+    showInFooter: false,
   })
   const [productCategoryFilter, setProductCategoryFilter] = useState('')
   const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false)
@@ -135,7 +138,7 @@ export default function DashboardApp({
     setEditingBlog(null)
     setEditingPortfolio(null)
     setCategoryDrawerOpen(false)
-    setCategoryForm({ id: '', name: '', type: '', description: '', image: '' })
+    setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
     setOriginalSlug('')
   }
 
@@ -245,7 +248,7 @@ export default function DashboardApp({
       return
     }
     setCategoryDrawerOpen(false)
-    setCategoryForm({ id: '', name: '', type: '', description: '', image: '' })
+    setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
     if (result.cms) setCms(result.cms)
     else await refreshCms()
     showMsg('Category saved')
@@ -510,6 +513,7 @@ export default function DashboardApp({
                       <p className="dashboard-row-meta">
                         {s.slug}
                         {s.categoryId ? ` · ${categoryNameById[s.categoryId] ?? s.categoryId}` : ' · No category'}
+                        {s.showInFooter ? ' · Footer' : ''}
                       </p>
                     </div>
                     <div className="dashboard-row-actions">
@@ -539,20 +543,20 @@ export default function DashboardApp({
               <div className="dashboard-panel-head">
                 <div className="dashboard-page-header">
                   <div>
-                    <h2 className="dashboard-page-title">Categories</h2>
+                    <h2 className="dashboard-page-title">Product categories</h2>
                     <p className="dashboard-page-desc">
-                      {cms.categories.length} categor{cms.categories.length === 1 ? 'y' : 'ies'} — categories appear as navbar sub-tabs under Products and Services.
+                      {cms.categories.length} product categor{cms.categories.length === 1 ? 'y' : 'ies'} — used in the catalog, navbar, and optionally the site footer.
                     </p>
                   </div>
                   <button
                     type="button"
                     className="btn-primary text-sm py-2.5 px-5"
                     onClick={() => {
-                      setCategoryForm({ id: '', name: '', type: '', description: '', image: '' })
+                      setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
                       setCategoryDrawerOpen(true)
                     }}
                   >
-                    + Add category
+                    + Add product category
                   </button>
                 </div>
               </div>
@@ -567,6 +571,7 @@ export default function DashboardApp({
                         <p className="dashboard-row-title">{c.name}</p>
                         <p className="dashboard-row-meta">
                           {c.id} · {c.type}
+                          {c.showInFooter ? ' · Footer' : ''}
                           {(c.type === 'product' || c.type === 'both') && ` · ${productCount} product${productCount === 1 ? '' : 's'}`}
                           {(c.type === 'service' || c.type === 'both') && ` · ${serviceCount} service${serviceCount === 1 ? '' : 's'}`}
                         </p>
@@ -582,6 +587,7 @@ export default function DashboardApp({
                               type: c.type,
                               description: c.description || '',
                               image: c.image || '',
+                              showInFooter: Boolean(c.showInFooter),
                             })
                             setCategoryDrawerOpen(true)
                           }}
@@ -908,6 +914,15 @@ export default function DashboardApp({
                   <input
                     type="checkbox"
                     className="rounded border-gray-300 text-primary focus:ring-primary"
+                    checked={Boolean(editingService.showInFooter)}
+                    onChange={(e) => setEditingService({ ...editingService, showInFooter: e.target.checked })}
+                  />
+                  Show in site footer
+                </label>
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-primary focus:ring-primary"
                     checked={Boolean(editingService.showOnHomepage)}
                     onChange={(e) => setEditingService({ ...editingService, showOnHomepage: e.target.checked })}
                   />
@@ -945,13 +960,13 @@ export default function DashboardApp({
       {categoryDrawerOpen && cms && (
         <DashboardDrawer
           open
-          title={categoryForm.id && cms.categories.some((c) => c.id === categoryForm.id) ? 'Edit category' : 'New category'}
-          subtitle="Shown on the category details page, navbar menu, and product/service listings."
+          title={categoryForm.id && cms.categories.some((c) => c.id === categoryForm.id) ? 'Edit product category' : 'New product category'}
+          subtitle="Shown on category pages, catalog filters, navbar menus, and optionally the site footer."
           onClose={closeDrawer}
           footer={
             <>
               <button type="submit" form="dashboard-category-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save category'}
+                {loading ? 'Saving…' : 'Save product category'}
               </button>
               <button type="button" className="dashboard-btn-secondary" onClick={closeDrawer}>
                 Cancel
@@ -998,6 +1013,15 @@ export default function DashboardApp({
                 <option value="both">Both</option>
               </select>
             </div>
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              <input
+                type="checkbox"
+                className="rounded border-gray-300 text-primary focus:ring-primary"
+                checked={categoryForm.showInFooter}
+                onChange={(e) => setCategoryForm({ ...categoryForm, showInFooter: e.target.checked })}
+              />
+              Show in site footer (product categories column)
+            </label>
           </form>
         </DashboardDrawer>
       )}

@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { Play } from 'lucide-react'
+import { Handshake } from 'lucide-react'
 import CmsImage from './CmsImage'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { LogisticsIcon, type LogisticsIconName } from './icons/LogisticsIcons'
@@ -14,7 +14,7 @@ const features: { icon: LogisticsIconName; title: string; desc: string }[] = [
   { icon: 'refresh', title: 'Repeat Supply', desc: 'Ongoing procurement support so your fleets and projects stay supplied.' },
 ]
 
-function CargoContainer() {
+function TradeBadge() {
   return (
     <div className="relative w-[148px] rotate-[-8deg] drop-shadow-[0_18px_32px_rgba(0,0,0,0.28)] sm:w-[168px]">
       <div className="relative aspect-[5/3.5] overflow-hidden rounded-[5px] border border-[#e85a20]/40 bg-[#ff6633]">
@@ -23,10 +23,11 @@ function CargoContainer() {
         <div className="absolute inset-y-1.5 right-[12%] w-[3px] bg-[#d44a15]/45" />
         <div className="absolute inset-x-2 top-[36%] h-[2px] bg-[#ffaa77]/35" />
         <div
-          className="absolute inset-0 flex items-center justify-center text-[1.65rem] font-black tracking-[0.18em] text-white sm:text-[1.85rem]"
+          className="absolute inset-0 flex flex-col items-center justify-center px-2 text-center font-black leading-tight text-white"
           style={{ fontFamily: 'Barlow, sans-serif' }}
         >
-          CARGO
+          <span className="text-[0.82rem] tracking-[0.14em] sm:text-[0.92rem]">PROCUREMENT</span>
+          <span className="mt-0.5 text-[0.62rem] tracking-[0.18em] text-white/95 sm:text-[0.7rem]">&amp; TRADING</span>
         </div>
       </div>
       <div className="mx-auto h-2 w-[92%] rounded-b-sm bg-[#c4521f]" />
@@ -91,18 +92,17 @@ function SolutionsVisual() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#ff6633]/25 via-transparent to-[#001a33]/15" />
       </div>
 
-      {/* Play button — overlap center */}
-      <button
-        type="button"
-        className="absolute left-[50%] top-[47%] z-[4] flex h-[62px] w-[62px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.18)] transition hover:scale-105"
-        aria-label="Play video"
+      {/* Partnership badge — overlap center */}
+      <div
+        className="absolute left-[50%] top-[47%] z-[4] flex h-[62px] w-[62px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
+        aria-hidden
       >
-        <Play className="ml-1 h-6 w-6 fill-[#ff6633] text-[#ff6633]" strokeWidth={0} />
-      </button>
+        <Handshake className="h-7 w-7 text-[#ff6633]" strokeWidth={2} />
+      </div>
 
-      {/* CARGO container — bottom left foreground */}
+      {/* Trade badge — bottom left foreground */}
       <div className="absolute bottom-1 left-0 z-[5] sm:bottom-2 sm:-left-2">
-        <CargoContainer />
+        <TradeBadge />
       </div>
     </div>
   )

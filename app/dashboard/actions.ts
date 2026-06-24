@@ -131,6 +131,7 @@ export async function saveCategoryAction(input: {
   type: CategoryType
   description?: string
   image?: string
+  showInFooter?: boolean
   isEdit?: boolean
 }): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
@@ -143,6 +144,7 @@ export async function saveCategoryAction(input: {
     type: input.type,
     description: input.description,
     image: input.image,
+    showInFooter: input.showInFooter,
   }
   const result =
     input.isEdit && exists

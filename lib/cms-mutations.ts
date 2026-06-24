@@ -55,6 +55,7 @@ function normalizeService(body: Service, fallbackSlug?: string): Service | null 
     capabilities: body.capabilities ?? [],
     industries: body.industries ?? [],
     showOnHomepage: Boolean(body.showOnHomepage),
+    showInFooter: Boolean(body.showInFooter),
   }
 }
 
@@ -146,6 +147,7 @@ export async function createCategory(input: {
   type: CategoryType
   description?: string
   image?: string
+  showInFooter?: boolean
 }): Promise<CmsActionResult<Category>> {
   const name = input.name.trim()
   if (!name) return { ok: false, error: 'Name is required' }
@@ -163,6 +165,7 @@ export async function createCategory(input: {
     type: input.type || 'product',
     description: input.description?.trim() || '',
     image: input.image?.trim() || '',
+    showInFooter: Boolean(input.showInFooter),
   }
   cms.categories.push(category)
   await writeCms(cms)
@@ -176,6 +179,7 @@ export async function updateCategory(input: {
   type: CategoryType
   description?: string
   image?: string
+  showInFooter?: boolean
 }): Promise<CmsActionResult<Category>> {
   const id = input.id.trim()
   const name = input.name.trim()
@@ -191,6 +195,7 @@ export async function updateCategory(input: {
     type: input.type || 'product',
     description: input.description?.trim() || '',
     image: input.image?.trim() || '',
+    showInFooter: Boolean(input.showInFooter),
   }
   cms.categories[index] = category
   await writeCms(cms)

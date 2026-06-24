@@ -6,6 +6,7 @@ export interface Category {
   type: CategoryType
   description?: string
   image?: string
+  showInFooter?: boolean
 }
 
 export interface ProductCompany {
@@ -55,6 +56,7 @@ export interface Service {
   capabilities: string[]
   industries: string[]
   showOnHomepage?: boolean
+  showInFooter?: boolean
 }
 
 export interface HomepageExpertiseItem {

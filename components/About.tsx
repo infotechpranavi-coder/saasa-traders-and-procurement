@@ -81,7 +81,10 @@ function AboutCollage() {
           <div className="absolute inset-y-2 left-[14%] w-[3px] bg-[#ff8844]/60" />
           <div className="absolute inset-y-2 right-[14%] w-[3px] bg-[#d44a15]/50" />
           <div className="absolute inset-x-3 top-[38%] h-[2px] bg-[#ff9966]/40" />
-          <div className="absolute bottom-2 left-3 text-[9px] font-bold tracking-wider text-white/80">CARGO</div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-1 text-center font-bold leading-tight text-white/95">
+            <span className="text-[7px] tracking-[0.12em] sm:text-[8px]">PROCUREMENT</span>
+            <span className="text-[6px] tracking-[0.14em] text-white/85 sm:text-[7px]">&amp; TRADING</span>
+          </div>
         </div>
       </div>
 
