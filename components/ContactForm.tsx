@@ -1,8 +1,13 @@
 'use client'
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
-import { ArrowUpRight, Clock, Mail, MapPin, Phone } from 'lucide-react'
-import { COMPANY_EMAIL, COMPANY_ADDRESS, COMPANY_PHONE } from '@/lib/brand'
+import { ArrowUpRight, Clock, MapPin } from 'lucide-react'
+import {
+  COMPANY_ADDRESS,
+  COMPANY_EMAILS,
+  COMPANY_LEGAL_NAME,
+  COMPANY_PHONES,
+} from '@/lib/brand'
 import { CONTACT_SERVICE_OPTIONS } from '@/lib/site-content'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
 
@@ -32,12 +37,7 @@ export default function ContactForm() {
     alert('Thank you! We will contact you soon.')
   }
 
-  const info = [
-    { icon: MapPin, title: 'Our Location', desc: COMPANY_ADDRESS },
-    { icon: Phone, title: 'Phone Number', desc: COMPANY_PHONE },
-    { icon: Mail, title: 'Email Address', desc: COMPANY_EMAIL },
-    { icon: Clock, title: 'Working Hours', desc: 'Mon - Sat: 9AM - 7PM' },
-  ]
+  const info = [{ icon: Clock, title: 'Working Hours', desc: 'Mon - Sat: 9AM - 7PM' }]
 
   return (
     <section className="py-20 bg-white">
@@ -53,6 +53,36 @@ export default function ContactForm() {
               Need construction equipment, machinery parts, trucks, or industrial products sourced and delivered?
               Our procurement team is ready to quote your requirements.
             </p>
+
+            <div className="contact-address-card mb-8">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50 text-primary">
+                <MapPin className="h-5 w-5" strokeWidth={2} />
+              </div>
+              <p className="hp-subtitle text-lg text-[#0d1b2a]">{COMPANY_LEGAL_NAME}</p>
+              <p className="hp-body mt-1 text-sm text-gray-600">{COMPANY_ADDRESS}</p>
+              <div className="mt-4 space-y-1.5">
+                {COMPANY_EMAILS.map((email) => (
+                  <a
+                    key={email}
+                    href={`mailto:${email}`}
+                    className="block text-sm text-gray-600 transition-colors hover:text-primary"
+                  >
+                    {email}
+                  </a>
+                ))}
+              </div>
+              <div className="mt-4 space-y-1.5">
+                {COMPANY_PHONES.map((phone) => (
+                  <a
+                    key={phone.tel}
+                    href={`tel:${phone.tel}`}
+                    className="block text-sm font-semibold text-[#0d1b2a] transition-colors hover:text-primary"
+                  >
+                    {phone.display}
+                  </a>
+                ))}
+              </div>
+            </div>
 
             {info.map((item) => (
               <div key={item.title} className="flex gap-4 mb-6">

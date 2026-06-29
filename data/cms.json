@@ -781,5 +781,10 @@
       "titleAccent": "Parts",
       "subtitle": "Genuine and aftermarket parts for excavators, loaders, cranes, and road-building equipment — supplied on time."
     }
-  ]
+  ],
+  "brochure": {
+    "url": "/uploads/brochures/test-brochure.pdf",
+    "fileName": "SAASA-Brochure.pdf",
+    "uploadedAt": "2026-06-29T16:50:25.691Z"
+  }
 }

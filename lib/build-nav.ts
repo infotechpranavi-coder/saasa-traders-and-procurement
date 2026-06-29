@@ -1,5 +1,6 @@
 import type { CmsData } from '@/types/cms'
 import type { NavItem, NavSubItem } from '@/types'
+import { MAIN_SAASA_SITE_LABEL, MAIN_SAASA_SITE_URL } from '@/lib/brand'
 
 function buildCategoryMenu(
   categories: CmsData['categories'],
@@ -53,6 +54,12 @@ export function buildNavItems(cms: CmsData | null): NavItem[] {
       children: productCategories.length > 0 ? productChildren : undefined,
     },
     { label: 'Blog', href: '/blog', hasDropdown: false },
+    {
+      label: MAIN_SAASA_SITE_LABEL,
+      href: MAIN_SAASA_SITE_URL,
+      hasDropdown: false,
+      external: true,
+    },
     { label: 'Contact Us', href: '/contact', hasDropdown: false },
   ]
 }

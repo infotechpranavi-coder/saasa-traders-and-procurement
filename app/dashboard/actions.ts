@@ -1,5 +1,7 @@
 'use server'
 
+import { mkdir, writeFile } from 'fs/promises'
+import path from 'path'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { ADMIN_COOKIE, isValidAdminCredentials, isAdminAuthenticated } from '@/lib/auth'
@@ -23,6 +25,7 @@ import {
   deleteHeroBanner,
   deletePortfolioProject,
   deleteReview,
+  updateBrochure,
   updateCategory,
   updateProduct,
   updateService,
@@ -33,7 +36,7 @@ import {
   updatePortfolioProject,
   updateReview,
 } from '@/lib/cms-mutations'
-import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
 
 async function requireAdmin(): Promise<boolean> {
   return isAdminAuthenticated()
@@ -287,4 +290,78 @@ export async function removeHeroBannerAction(slug: string): Promise<{ ok: boolea
   const result = await deleteHeroBanner(slug)
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }
+}
+
+export async function saveBrochureAction(
+  brochure: BrochureFile,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await updateBrochure(brochure)
+  if (!result.ok) return { ok: false, error: result.error }
+  return { ok: true, cms: result.cms }
+}
+
+export async function removeBrochureAction(): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const result = await updateBrochure(null)
+  if (!result.ok) return { ok: false, error: result.error }
+  revalidatePath('/', 'layout')
+  revalidatePath('/dashboard')
+  return { ok: true, cms: result.cms }
+}
+
+function safeBrochureName(name: string) {
+  return name.replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-+/g, '-')
+}
+
+export async function uploadBrochureFormAction(
+  formData: FormData,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const file = formData.get('file')
+  if (!file || !(file instanceof File)) {
+    return { ok: false, error: 'No file selected' }
+  }
+
+  const ext = path.extname(file.name).toLowerCase()
+  const isPdf =
+    ext === '.pdf' ||
+    file.type === 'application/pdf' ||
+    file.type === 'application/x-pdf' ||
+    (file.type === 'application/octet-stream' && ext === '.pdf')
+
+  if (!isPdf) {
+    return { ok: false, error: 'Please upload a PDF file (.pdf)' }
+  }
+
+  if (file.size > 15 * 1024 * 1024) {
+    return { ok: false, error: 'Brochure must be 15 MB or smaller' }
+  }
+
+  try {
+    const base = safeBrochureName(path.basename(file.name, ext)) || 'brochure'
+    const filename = `${Date.now()}-${base}.pdf`
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'brochures')
+    await mkdir(uploadsDir, { recursive: true })
+
+    const buffer = Buffer.from(await file.arrayBuffer())
+    await writeFile(path.join(uploadsDir, filename), buffer)
+
+    const result = await updateBrochure({
+      url: `/uploads/brochures/${filename}`,
+      fileName: file.name,
+      uploadedAt: new Date().toISOString(),
+    })
+
+    if (!result.ok) return { ok: false, error: result.error }
+
+    revalidatePath('/', 'layout')
+    revalidatePath('/dashboard')
+    return { ok: true, cms: result.cms }
+  } catch {
+    return { ok: false, error: 'Failed to save brochure file' }
+  }
 }

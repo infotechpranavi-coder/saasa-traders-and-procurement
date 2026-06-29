@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
+import type { BrochureFile } from '@/types/cms'
 import type { NavItem, NavSubItem } from '@/types'
+import BrochureDownloadButton from './BrochureDownloadButton'
 
 interface NavMegaMenuProps {
   item: NavItem
@@ -83,14 +85,26 @@ export function NavMegaMenuItem({ item, floating, onNavigate }: NavMegaMenuProps
   useEffect(() => () => clearCloseTimer(), [clearCloseTimer])
 
   if (!item.hasDropdown || !item.children?.length) {
+    const className = `nav-link flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold ${
+      floating ? 'text-white/90 hover:text-white' : 'text-[#1a1a1a] hover:text-primary'
+    }`
+
+    if (item.external) {
+      return (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onNavigate}
+          className={className}
+        >
+          {item.label}
+        </a>
+      )
+    }
+
     return (
-      <Link
-        href={item.href}
-        onClick={onNavigate}
-        className={`nav-link flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold ${
-          floating ? 'text-white/90 hover:text-white' : 'text-[#1a1a1a] hover:text-primary'
-        }`}
-      >
+      <Link href={item.href} onClick={onNavigate} className={className}>
         {item.label}
       </Link>
     )
@@ -203,16 +217,18 @@ function MegaCategoryColumn({
 
 interface MobileNavAccordionProps {
   navItems: NavItem[]
+  brochure?: BrochureFile | null
   onClose: () => void
   solid: boolean
 }
 
-export function MobileNavAccordion({ navItems, onClose, solid }: MobileNavAccordionProps) {
+export function MobileNavAccordion({ navItems, brochure, onClose, solid }: MobileNavAccordionProps) {
   return (
     <div className="flex flex-col gap-1">
       {navItems.map((item) => (
         <MobileNavItem key={item.label} item={item} onClose={onClose} solid={solid} />
       ))}
+      <BrochureDownloadButton brochure={brochure} variant="inline" className="mt-3 w-full justify-center" onNavigate={onClose} />
       <Link href="/contact" className="btn-primary mt-3 justify-center text-sm" onClick={onClose}>
         Request a Quote →
       </Link>
@@ -234,6 +250,20 @@ function MobileNavItem({
     : 'text-sm font-semibold text-white/90 hover:text-white'
 
   if (!item.hasDropdown || !item.children?.length) {
+    if (item.external) {
+      return (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${linkClass} border-b py-2.5 ${solid ? 'border-gray-100' : 'border-white/10'}`}
+          onClick={onClose}
+        >
+          {item.label}
+        </a>
+      )
+    }
+
     return (
       <Link href={item.href} className={`${linkClass} border-b py-2.5 ${solid ? 'border-gray-100' : 'border-white/10'}`} onClick={onClose}>
         {item.label}

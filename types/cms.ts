@@ -113,6 +113,13 @@ export interface HeroBanner {
   subtitle: string
 }
 
+/** Company brochure PDF for public download */
+export interface BrochureFile {
+  url: string
+  fileName: string
+  uploadedAt?: string
+}
+
 export interface CmsData {
   categories: Category[]
   brandCategories: BrandCategory[]
@@ -123,4 +130,5 @@ export interface CmsData {
   portfolio: PortfolioProject[]
   reviews: CustomerReview[]
   heroBanners: HeroBanner[]
+  brochure: BrochureFile | null
 }

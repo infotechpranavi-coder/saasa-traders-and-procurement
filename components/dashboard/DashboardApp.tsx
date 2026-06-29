@@ -3,14 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import BrandLogo from '@/components/BrandLogo'
+import BrochureDashboardSection from '@/components/dashboard/BrochureDashboardSection'
 import BrandsDashboardSection from '@/components/dashboard/BrandsDashboardSection'
 import DashboardDrawer from '@/components/dashboard/DashboardDrawer'
 import HeroBannersDashboardSection from '@/components/dashboard/HeroBannersDashboardSection'
 import PointListEditor from '@/components/dashboard/PointListEditor'
 import ProductCompaniesEditor from '@/components/dashboard/ProductCompaniesEditor'
+import RecentWorkDashboardSection from '@/components/dashboard/RecentWorkDashboardSection'
 import ReviewsDashboardSection from '@/components/dashboard/ReviewsDashboardSection'
 import { COMPANY_NAME } from '@/lib/brand'
-import type { BlogPost, Category, CategoryType, CmsData, PortfolioProject, Product, Service } from '@/types/cms'
+import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from '@/types/cms'
 import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
 import { normalizeProductCompanies } from '@/lib/product-companies'
@@ -20,17 +22,15 @@ import {
   logoutAction,
   removeBlogAction,
   removeCategoryAction,
-  removePortfolioAction,
   removeProductAction,
   removeServiceAction,
   saveBlogAction,
   saveCategoryAction,
-  savePortfolioAction,
   saveProductAction,
   saveServiceAction,
 } from '@/app/dashboard/actions'
 
-type Tab = 'products' | 'services' | 'categories' | 'brands' | 'hero' | 'blogs' | 'portfolio' | 'reviews'
+type Tab = 'products' | 'services' | 'categories' | 'brands' | 'hero' | 'blogs' | 'portfolio' | 'reviews' | 'brochure'
 
 const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'products', label: 'Products' },
@@ -38,9 +38,10 @@ const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'categories', label: 'Product categories' },
   { id: 'brands', label: 'Strong brands' },
   { id: 'hero', label: 'Hero banners' },
+  { id: 'portfolio', label: 'Recent work' },
   { id: 'reviews', label: 'Reviews' },
   { id: 'blogs', label: 'Blogs' },
-  { id: 'portfolio', label: 'Recent work' },
+  { id: 'brochure', label: 'Brochure' },
 ]
 
 const emptyProduct = (): Product => ({
@@ -82,18 +83,6 @@ const emptyBlog = (): BlogPost => ({
   highlight: false,
 })
 
-const emptyPortfolio = (): PortfolioProject => ({
-  slug: '',
-  title: '',
-  label: '',
-  image: '',
-  excerpt: '',
-  body: [],
-  client: '',
-  location: '',
-  year: '',
-})
-
 export default function DashboardApp({
   initialAuthenticated,
   initialCms,
@@ -112,7 +101,6 @@ export default function DashboardApp({
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [editingService, setEditingService] = useState<Service | null>(null)
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null)
-  const [editingPortfolio, setEditingPortfolio] = useState<PortfolioProject | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
   const [categoryForm, setCategoryForm] = useState<{
     id: string
@@ -136,7 +124,6 @@ export default function DashboardApp({
     setEditingProduct(null)
     setEditingService(null)
     setEditingBlog(null)
-    setEditingPortfolio(null)
     setCategoryDrawerOpen(false)
     setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
     setOriginalSlug('')
@@ -285,31 +272,6 @@ export default function DashboardApp({
     if (result.cms) setCms(result.cms)
     else await refreshCms()
     showMsg('Blog post deleted')
-  }
-
-  const savePortfolio = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editingPortfolio) return
-    setLoading(true)
-    const result = await savePortfolioAction(editingPortfolio, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok) {
-      showMsg(result.error || 'Failed to save project')
-      return
-    }
-    setEditingPortfolio(null)
-    setOriginalSlug('')
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Project saved')
-  }
-
-  const deletePortfolio = async (slug: string) => {
-    if (!confirm('Delete this project?')) return
-    const result = await removePortfolioAction(slug)
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Project deleted')
   }
 
   if (!authenticated) {
@@ -626,8 +588,28 @@ export default function DashboardApp({
             />
           )}
 
+          {tab === 'portfolio' && cms && (
+            <RecentWorkDashboardSection
+              cms={cms}
+              loading={loading}
+              setLoading={setLoading}
+              setCms={setCms}
+              showMsg={showMsg}
+            />
+          )}
+
           {tab === 'reviews' && cms && (
             <ReviewsDashboardSection
+              cms={cms}
+              loading={loading}
+              setLoading={setLoading}
+              setCms={setCms}
+              showMsg={showMsg}
+            />
+          )}
+
+          {tab === 'brochure' && cms && (
+            <BrochureDashboardSection
               cms={cms}
               loading={loading}
               setLoading={setLoading}
@@ -691,63 +673,6 @@ export default function DashboardApp({
             </section>
           )}
 
-          {tab === 'portfolio' && cms && (
-            <section className="dashboard-panel">
-              <div className="dashboard-panel-head">
-                <div className="dashboard-page-header">
-                  <div>
-                    <h2 className="dashboard-page-title">Recent work</h2>
-                    <p className="dashboard-page-desc">
-                      {cms.portfolio?.length ?? 0} project{(cms.portfolio?.length ?? 0) === 1 ? '' : 's'} — cards in the homepage “Explore Our Recent Work” slider.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn-primary text-sm py-2.5 px-5"
-                    onClick={() => {
-                      setEditingPortfolio(emptyPortfolio())
-                      setOriginalSlug('')
-                    }}
-                  >
-                    + Add project
-                  </button>
-                </div>
-              </div>
-              <div className="dashboard-table-scroll">
-                <div className="dashboard-table">
-                {cms.portfolio?.map((project) => (
-                  <div key={project.slug} className="dashboard-table-row">
-                    <div className="min-w-0">
-                      <p className="dashboard-row-title truncate">{project.title}</p>
-                      <p className="dashboard-row-meta">
-                        {project.slug} · {project.label || 'No label'}
-                      </p>
-                    </div>
-                    <div className="dashboard-row-actions">
-                      <button
-                        type="button"
-                        className="dashboard-btn-edit"
-                        onClick={() => {
-                          setEditingPortfolio({ ...project })
-                          setOriginalSlug(project.slug)
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="dashboard-btn-delete"
-                        onClick={() => deletePortfolio(project.slug)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                </div>
-              </div>
-            </section>
-          )}
         </main>
       </div>
 
@@ -910,7 +835,15 @@ export default function DashboardApp({
                 </div>
                 <Field label="Image URL" value={editingService.image} onChange={(v) => setEditingService({ ...editingService, image: v })} />
                 <TextArea label="Summary" value={editingService.summary} onChange={(v) => setEditingService({ ...editingService, summary: v })} rows={2} />
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              </div>
+            </div>
+            <div className="dashboard-form-section">
+              <p className="dashboard-form-section-title">Visibility</p>
+              <p className="mb-3 text-xs text-gray-500">
+                Control where this service appears on the public site. Footer only lists services with the footer option enabled.
+              </p>
+              <div className="flex flex-col gap-3 text-sm">
+                <label className="flex items-center gap-2 font-medium text-gray-700">
                   <input
                     type="checkbox"
                     className="rounded border-gray-300 text-primary focus:ring-primary"
@@ -919,7 +852,7 @@ export default function DashboardApp({
                   />
                   Show in site footer
                 </label>
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <label className="flex items-center gap-2 font-medium text-gray-700">
                   <input
                     type="checkbox"
                     className="rounded border-gray-300 text-primary focus:ring-primary"
@@ -1094,86 +1027,6 @@ export default function DashboardApp({
         </DashboardDrawer>
       )}
 
-      {editingPortfolio && (
-        <DashboardDrawer
-          open
-          title={originalSlug ? 'Edit project' : 'New project'}
-          subtitle="Shown as a card in the homepage “Explore Our Recent Work” section. Clicking opens the project detail page."
-          onClose={closeDrawer}
-          footer={
-            <>
-              <button type="submit" form="dashboard-portfolio-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save project'}
-              </button>
-              <button type="button" className="dashboard-btn-secondary" onClick={closeDrawer}>
-                Cancel
-              </button>
-            </>
-          }
-        >
-          <form id="dashboard-portfolio-form" onSubmit={savePortfolio} className="space-y-0">
-            <div className="dashboard-form-section">
-              <p className="dashboard-form-section-title">Card</p>
-              <div className="space-y-3">
-                <Field
-                  label="Title"
-                  value={editingPortfolio.title}
-                  onChange={(v) => setEditingPortfolio({ ...editingPortfolio, title: v })}
-                />
-                <Field
-                  label="Slug"
-                  value={editingPortfolio.slug}
-                  onChange={(v) => setEditingPortfolio({ ...editingPortfolio, slug: v })}
-                />
-                <Field
-                  label="Label (e.g. Road Transport)"
-                  value={editingPortfolio.label}
-                  onChange={(v) => setEditingPortfolio({ ...editingPortfolio, label: v })}
-                />
-                <Field
-                  label="Image URL"
-                  value={editingPortfolio.image}
-                  onChange={(v) => setEditingPortfolio({ ...editingPortfolio, image: v })}
-                />
-              </div>
-            </div>
-            <div className="dashboard-form-section">
-              <p className="dashboard-form-section-title">Detail page</p>
-              <div className="space-y-3">
-                <TextArea
-                  label="Excerpt"
-                  value={editingPortfolio.excerpt || ''}
-                  onChange={(v) => setEditingPortfolio({ ...editingPortfolio, excerpt: v })}
-                  rows={2}
-                />
-                <TextArea
-                  label="Body (one paragraph per line)"
-                  value={editingPortfolio.body.join('\n')}
-                  onChange={(v) => setEditingPortfolio({ ...editingPortfolio, body: parseLines(v) })}
-                  rows={6}
-                />
-                <div className="grid grid-cols-3 gap-3">
-                  <Field
-                    label="Client"
-                    value={editingPortfolio.client || ''}
-                    onChange={(v) => setEditingPortfolio({ ...editingPortfolio, client: v })}
-                  />
-                  <Field
-                    label="Location"
-                    value={editingPortfolio.location || ''}
-                    onChange={(v) => setEditingPortfolio({ ...editingPortfolio, location: v })}
-                  />
-                  <Field
-                    label="Year"
-                    value={editingPortfolio.year || ''}
-                    onChange={(v) => setEditingPortfolio({ ...editingPortfolio, year: v })}
-                  />
-                </div>
-              </div>
-            </div>
-          </form>
-        </DashboardDrawer>
-      )}
     </div>
   )
 }

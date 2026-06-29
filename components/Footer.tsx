@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowUpRight, MapPin, Phone } from 'lucide-react'
+import { ArrowUpRight, MapPin, Phone, Mail } from 'lucide-react'
 import BrandLogo from './BrandLogo'
-import { COMPANY_NAME, COMPANY_ADDRESS, COMPANY_PHONE, COMPANY_PHONE_TEL, COMPANY_DESCRIPTION } from '@/lib/brand'
+import { COMPANY_NAME, COMPANY_ADDRESS, COMPANY_EMAILS, COMPANY_PHONES, COMPANY_DESCRIPTION, SOCIAL_LINKS } from '@/lib/brand'
 import { FOOTER_QUICK_LINKS, FOOTER_SERVICES } from '@/lib/site-content'
+import BrochureDownloadButton from './BrochureDownloadButton'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import type { CmsData } from '@/types/cms'
 import type { SocialName } from '@/types'
@@ -82,28 +83,18 @@ export default function Footer() {
                 <BrandLogo className="brand-logo brand-logo--nav" />
                 <span className="footer-brand-name text-white">{COMPANY_NAME}</span>
               </Link>
-              <p className="text-gray-400 text-sm leading-relaxed mb-5">{COMPANY_DESCRIPTION}</p>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-start gap-3 text-sm text-gray-400">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
-                  <span>{COMPANY_ADDRESS}</span>
-                </div>
-                <a
-                  href={`tel:${COMPANY_PHONE_TEL}`}
-                  className="flex items-center gap-3 text-sm text-gray-400 hover:text-primary transition-colors"
-                >
-                  <Phone className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
-                  <span>{COMPANY_PHONE}</span>
-                </a>
-              </div>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">{COMPANY_DESCRIPTION}</p>
               <div className="flex gap-3">
-                {(['facebook', 'twitter', 'instagram', 'linkedin'] as const).map((s) => (
+                {SOCIAL_LINKS.map((social) => (
                   <a
-                    key={s}
-                    href="#"
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
                     className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-all"
                   >
-                    <SocialIcon name={s} />
+                    <SocialIcon name={social.name} />
                   </a>
                 ))}
               </div>
@@ -112,15 +103,27 @@ export default function Footer() {
             <div className="reveal delay-100">
               <h4 className="mb-2">Quick Links</h4>
               <div className="w-8 h-1 bg-primary mb-5" />
-              {FOOTER_QUICK_LINKS.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {FOOTER_QUICK_LINKS.map((item) =>
+                'external' in item && item.external ? (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
+                  >
+                    {item.label}
+                  </Link>
+                ),
+              )}
             </div>
 
             <div className="reveal delay-200">
@@ -154,23 +157,40 @@ export default function Footer() {
             </div>
 
             <div className="reveal delay-300">
-              <h4 className="mb-2">Opening Hours</h4>
+              <h4 className="mb-2">Contact Us</h4>
               <div className="w-8 h-1 bg-primary mb-5" />
-              {[
-                { day: 'Week Days', hours: '09.00 – 7.00' },
-                { day: 'Saturday', hours: '08.00 – 2.00' },
-                { day: 'Sunday', hours: 'Day Off' },
-              ].map((item) => (
-                <div key={item.day} className="flex items-center justify-between py-2 border-b border-gray-800 text-sm">
-                  <span className="text-gray-400">{item.day}</span>
-                  <span className="text-white font-medium">{item.hours}</span>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 text-sm text-gray-400">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                  <span>{COMPANY_ADDRESS}</span>
                 </div>
-              ))}
+                {COMPANY_EMAILS.map((email) => (
+                  <a
+                    key={email}
+                    href={`mailto:${email}`}
+                    className="flex items-center gap-3 text-sm text-gray-400 hover:text-primary transition-colors"
+                  >
+                    <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                    <span>{email}</span>
+                  </a>
+                ))}
+                {COMPANY_PHONES.map((phone) => (
+                  <a
+                    key={phone.tel}
+                    href={`tel:${phone.tel}`}
+                    className="flex items-center gap-3 text-sm text-gray-400 hover:text-primary transition-colors"
+                  >
+                    <Phone className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                    <span>{phone.display}</span>
+                  </a>
+                ))}
+              </div>
+              <BrochureDownloadButton brochure={cms?.brochure} variant="inline" className="mt-6 w-full justify-center border-white/20 bg-white/5 text-white hover:bg-white hover:text-[#0d1b2a]" />
               <Link
                 href="/contact"
-                className="mt-5 inline-flex items-center justify-center bg-white text-dark font-bold text-sm px-6 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
+                className="mt-3 inline-flex w-full items-center justify-center bg-white text-dark font-bold text-sm px-6 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
               >
-                Contact Us
+                Get in Touch
               </Link>
             </div>
           </div>
@@ -204,9 +224,9 @@ function SocialIcon({ name }: { name: SocialName }) {
         <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
       </svg>
     ),
-    twitter: (
-      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    gmb: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" />
       </svg>
     ),
     instagram: (

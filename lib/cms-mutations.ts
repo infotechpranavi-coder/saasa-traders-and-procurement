@@ -2,7 +2,7 @@ import { revalidatePath } from 'next/cache'
 import { readCms, writeCms } from '@/lib/cms'
 import { slugify } from '@/lib/slugify'
 import { normalizeProductCompanies } from '@/lib/product-companies'
-import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
 
 export type CmsActionResult<T = undefined> =
   | { ok: true; data: T; cms: CmsData }
@@ -597,4 +597,28 @@ export async function deleteHeroBanner(slug: string): Promise<CmsActionResult> {
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: undefined, cms }
+}
+
+export async function updateBrochure(brochure: BrochureFile | null): Promise<CmsActionResult<BrochureFile | null>> {
+  const cms = await readCms()
+
+  if (brochure) {
+    const url = brochure.url?.trim()
+    const fileName = brochure.fileName?.trim()
+    if (!url || !fileName) {
+      return { ok: false, error: 'Brochure file is required' }
+    }
+    cms.brochure = {
+      url,
+      fileName,
+      uploadedAt: brochure.uploadedAt || new Date().toISOString(),
+    }
+  } else {
+    cms.brochure = null
+  }
+
+  await writeCms(cms)
+  revalidatePublicPages()
+  revalidatePath('/', 'layout')
+  return { ok: true, data: cms.brochure, cms }
 }

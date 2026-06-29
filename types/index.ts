@@ -1,4 +1,4 @@
-export type SocialName = 'facebook' | 'twitter' | 'instagram' | 'linkedin'
+export type SocialName = 'facebook' | 'instagram' | 'linkedin' | 'gmb'
 
 export type NavbarVariant = 'default' | 'hero'
 
@@ -13,4 +13,5 @@ export interface NavItem {
   href: string
   hasDropdown: boolean
   children?: NavSubItem[]
+  external?: boolean
 }

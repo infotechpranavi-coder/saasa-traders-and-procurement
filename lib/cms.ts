@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
-import type { Category, CmsData, CustomerReview, HeroBanner, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost } from '@/types/cms'
+import type { Category, CmsData, CustomerReview, HeroBanner, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost, BrochureFile } from '@/types/cms'
 import { products as seedProducts, productCategories } from '@/data/products'
 import { expertiseServices as seedServices } from '@/data/expertise-services'
 import { seedBlogs } from '@/data/blog-seed'
@@ -22,6 +22,7 @@ function normalizeCms(data: Partial<CmsData>): CmsData {
     portfolio: data.portfolio?.length ? data.portfolio : seedPortfolio,
     reviews: data.reviews?.length ? data.reviews : seedReviews,
     heroBanners: data.heroBanners?.length ? data.heroBanners : seedHeroBanners,
+    brochure: data.brochure ?? null,
   }
 }
 
@@ -49,6 +50,7 @@ function buildSeed(): CmsData {
     portfolio: seedPortfolio,
     reviews: seedReviews,
     heroBanners: seedHeroBanners,
+    brochure: null,
   }
 }
 
@@ -58,6 +60,9 @@ export async function readCms(): Promise<CmsData> {
     const json = JSON.parse(raw) as Partial<CmsData>
     const parsed = normalizeCms(json)
     if (!json.blogs?.length || !json.portfolio?.length || !json.reviews?.length || !json.heroBanners?.length) {
+      if (json.brochure) {
+        parsed.brochure = json.brochure
+      }
       await writeCms(parsed)
     }
     return parsed
@@ -210,4 +215,9 @@ export async function getCustomerReviews(): Promise<CustomerReview[]> {
 export async function getHeroBanners(): Promise<HeroBanner[]> {
   const cms = await readCms()
   return [...cms.heroBanners].sort((a, b) => a.position - b.position || a.slug.localeCompare(b.slug))
+}
+
+export async function getBrochure(): Promise<BrochureFile | null> {
+  const cms = await readCms()
+  return cms.brochure
 }

@@ -4,10 +4,11 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import BrandLogo from './BrandLogo'
+import BrochureDownloadButton from './BrochureDownloadButton'
 import { MobileNavAccordion, NavMegaMenuItem } from './NavMegaMenu'
 import { COMPANY_NAME, COMPANY_TAGLINE } from '@/lib/brand'
 import { buildNavItems } from '@/lib/build-nav'
-import type { CmsData } from '@/types/cms'
+import type { CmsData, BrochureFile } from '@/types/cms'
 import type { NavItem, NavbarVariant } from '@/types'
 
 interface NavbarProps {
@@ -165,6 +166,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
     <div className="flex h-[80px] items-center justify-between gap-4 overflow-visible px-5 lg:h-[88px] lg:px-8">
       <NavContent
         navItems={navItems}
+        brochure={cms?.brochure}
         mode="solid"
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
@@ -183,6 +185,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   const navInner = isHero ? (
     <NavInner
       navItems={navItems}
+      brochure={cms?.brochure}
       blend={navBlend}
       mobileOpen={mobileOpen}
       setMobileOpen={setMobileOpen}
@@ -229,6 +232,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           {mobileOpen && (
             <MobileMenu
               navItems={navItems}
+              brochure={cms?.brochure}
               onClose={() => setMobileOpen(false)}
               solid={isSolidMenu}
               className={
@@ -250,6 +254,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
       {mobileOpen && (
         <MobileMenu
           navItems={navItems}
+          brochure={cms?.brochure}
           onClose={() => setMobileOpen(false)}
           solid
           className="max-w-[1400px] mx-auto site-nav-mobile-menu lg:hidden"
@@ -261,6 +266,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
 
 function NavInner({
   navItems,
+  brochure,
   blend,
   mobileOpen,
   setMobileOpen,
@@ -274,6 +280,7 @@ function NavInner({
   onSearchSelect,
 }: {
   navItems: NavItem[]
+  brochure?: BrochureFile | null
   blend: number
   mobileOpen: boolean
   setMobileOpen: (open: boolean) => void
@@ -293,6 +300,7 @@ function NavInner({
       <div className="flex min-h-[80px] items-center justify-between gap-4 overflow-visible px-5 lg:min-h-[88px] lg:px-8">
         <NavContent
           navItems={navItems}
+          brochure={brochure}
           mode={mode}
           mobileOpen={mobileOpen}
           setMobileOpen={setMobileOpen}
@@ -312,6 +320,7 @@ function NavInner({
 
 function NavContent({
   navItems,
+  brochure,
   mode,
   mobileOpen,
   setMobileOpen,
@@ -325,6 +334,7 @@ function NavContent({
   onSearchSelect,
 }: {
   navItems: NavItem[]
+  brochure?: BrochureFile | null
   mode: 'floating' | 'solid'
   mobileOpen: boolean
   setMobileOpen: (open: boolean) => void
@@ -338,6 +348,7 @@ function NavContent({
   onSearchSelect: (href: string) => void
 }) {
   const floating = mode === 'floating'
+  const [searchOpen, setSearchOpen] = useState(false)
 
   return (
     <>
@@ -369,7 +380,8 @@ function NavContent({
         ))}
       </div>
 
-      <div className="hidden lg:flex items-center gap-3 shrink-0">
+      <div className={`nav-actions hidden md:flex items-center gap-1.5 lg:gap-2 shrink-0 min-w-0 ${searchOpen ? 'nav-actions--search-open' : ''}`}>
+        <BrochureDownloadButton brochure={brochure} variant="navbar" floating={floating} iconOnly={searchOpen} />
         <NavSearch
           floating={floating}
           searchQuery={searchQuery}
@@ -380,10 +392,16 @@ function NavContent({
           onSearchChange={onSearchChange}
           onSearchSubmit={onSearchSubmit}
           onSearchSelect={onSearchSelect}
+          onOpenChange={setSearchOpen}
         />
-        <Link href="/contact" className="btn-primary text-sm px-6 py-3">
-          Request a Quote
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <Link
+          href="/contact"
+          className={`btn-primary shrink-0 text-sm ${searchOpen ? 'nav-quote-btn--icon-only' : 'px-5 lg:px-6 py-3'}`}
+          aria-label="Request a Quote"
+          title="Request a Quote"
+        >
+          {!searchOpen && <span>Request a Quote</span>}
+          <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
         </Link>
@@ -436,6 +454,7 @@ function NavSearch({
   onSearchChange,
   onSearchSubmit,
   onSearchSelect,
+  onOpenChange,
 }: {
   floating: boolean
   compact?: boolean
@@ -447,19 +466,25 @@ function NavSearch({
   onSearchChange: (value: string) => void
   onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   onSearchSelect: (href: string) => void
+  onOpenChange?: (open: boolean) => void
 }) {
   const [open, setOpen] = useState(false)
   const wrapRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const setSearchOpen = (next: boolean) => {
+    setOpen(next)
+    onOpenChange?.(next)
+  }
+
   const closeSearch = () => {
-    setOpen(false)
+    setSearchOpen(false)
     setShowSuggestions(false)
     onSearchChange('')
   }
 
   const openSearch = () => {
-    setOpen(true)
+    setSearchOpen(true)
     setShowSuggestions(true)
   }
 
@@ -494,7 +519,7 @@ function NavSearch({
   const suggestions = showSuggestions && open && (
     <div
       className={`nav-search-suggestions absolute z-50 max-h-[320px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-[0_16px_36px_rgba(0,0,0,0.18)] ${
-        compact ? 'left-0 right-0 top-[52px] w-full min-w-[280px]' : 'right-0 top-[52px] w-[340px]'
+        compact ? 'left-0 right-0 top-[52px] w-full min-w-[280px]' : 'right-0 top-[52px] w-[min(280px,calc(100vw-2rem))]'
       }`}
     >
       {searchLoading && <p className="px-2 py-2 text-sm text-gray-500">Loading...</p>}
@@ -542,7 +567,7 @@ function NavSearch({
           closeSearch()
         }}
       >
-        <div className={`nav-search-expanded flex h-11 items-center gap-2 rounded-full px-3 ${shellClass} ${compact ? 'w-full' : 'w-[210px] xl:w-[240px]'}`}>
+        <div className={`nav-search-expanded flex h-11 items-center gap-1.5 rounded-full px-2.5 ${shellClass} ${compact ? 'w-full' : 'w-[132px] md:w-[148px] lg:w-[168px]'}`}>
           <SearchIcon />
           <input
             ref={inputRef}
@@ -576,15 +601,16 @@ function NavSearch({
 
 interface MobileMenuProps {
   navItems: NavItem[]
+  brochure?: BrochureFile | null
   onClose: () => void
   className: string
   solid: boolean
 }
 
-function MobileMenu({ navItems, onClose, className, solid }: MobileMenuProps) {
+function MobileMenu({ navItems, brochure, onClose, className, solid }: MobileMenuProps) {
   return (
     <div className={className}>
-      <MobileNavAccordion navItems={navItems} onClose={onClose} solid={solid} />
+      <MobileNavAccordion navItems={navItems} brochure={brochure} onClose={onClose} solid={solid} />
     </div>
   )
 }
