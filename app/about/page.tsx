@@ -26,9 +26,9 @@ export default function AboutPage() {
     <PageLayout>
       <PageHero title="About Us" breadcrumb="About" />
 
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
+      <section className="overflow-hidden py-20 bg-white">
+        <div className="mx-auto grid max-w-7xl min-w-0 items-center gap-12 px-4 lg:grid-cols-2 lg:gap-14 xl:gap-16">
+          <div className="min-w-0">
             <div className="section-label mb-3">
               <SectionLabelIcon className="text-primary" />
               OUR STORY
@@ -43,17 +43,17 @@ export default function AboutPage() {
               From Yaoundé, Cameroon, we coordinate global supplier networks, manage import logistics, and deliver the
               equipment and parts your operation needs — on spec, on time, and with transparent communication.
             </p>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {stats.map((s) => (
-                <div key={s.label} className="text-center rounded-2xl bg-[#f4f5f7] p-4">
-                  <div className="hp-stat text-primary">{s.value}</div>
-                  <div className="hp-label-sm mt-1">{s.label}</div>
+                <div key={s.label} className="min-w-0 rounded-2xl bg-[#f4f5f7] p-3 text-center sm:p-4">
+                  <div className="hp-stat text-primary text-xl sm:text-2xl">{s.value}</div>
+                  <div className="hp-label-sm mt-1 text-[0.65rem] leading-tight sm:text-xs">{s.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="min-w-0 grid grid-cols-2 gap-3 sm:gap-4">
             <div className="relative col-span-2 h-52 overflow-hidden rounded-[22px]">
               <CmsImage
                 src={SITE_IMAGES.about.main}

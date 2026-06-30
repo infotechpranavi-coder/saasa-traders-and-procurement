@@ -49,7 +49,7 @@ function BestServicesSeal() {
           </textPath>
         </text>
       </svg>
-      <div className="relative z-[2] flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#ff6633] shadow-[0_6px_18px_rgba(255,102,51,0.45)]">
+      <div className="about-seal-core relative z-[2] flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#ff6633] shadow-[0_6px_18px_rgba(255,102,51,0.45)]">
         <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
           <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
         </svg>
@@ -101,7 +101,7 @@ function AboutCollage() {
       </div>
 
       {/* Bottom-right — circular port inset */}
-      <div className="absolute bottom-[4%] right-0 z-[3] h-[128px] w-[128px] overflow-hidden rounded-full border-[6px] border-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] sm:h-[138px] sm:w-[138px]">
+      <div className="absolute bottom-[4%] right-0 z-[3] h-[112px] w-[112px] overflow-hidden rounded-full border-[5px] border-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] sm:h-[128px] sm:w-[128px] lg:h-[118px] lg:w-[118px] xl:h-[138px] xl:w-[138px]">
         <CmsImage
           src={SITE_IMAGES.about.accent}
           alt="Drum mix asphalt plant"
@@ -126,26 +126,28 @@ export default function About() {
   return (
     <section ref={ref} className="about-section-bg overflow-hidden py-20 lg:py-24">
       <div className="mx-auto max-w-[1320px] px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-[44%_56%] lg:gap-14 xl:gap-16">
-          <AboutCollage />
+        <div className="grid min-w-0 items-center gap-12 lg:grid-cols-[minmax(0,44%)_minmax(0,56%)] lg:gap-10 xl:gap-14">
+          <div className="min-w-0">
+            <AboutCollage />
+          </div>
 
           {/* Right — content */}
-          <div className="reveal-right">
+          <div className="reveal-right min-w-0">
             <div className="section-label mb-4">
-              <SectionLabelIcon className="text-[#ff6633]" />
-              ABOUT OUR COMPANY
+              <SectionLabelIcon className="shrink-0 text-[#ff6633]" />
+              <span className="min-w-0">ABOUT OUR COMPANY</span>
             </div>
 
-            <h2 className="hp-title mb-5 max-w-[560px]">
+            <h2 className="hp-title mb-5 max-w-[560px] break-words">
               Your partner for equipment procurement and industrial trading.
             </h2>
 
-            <p className="hp-lead mb-7 max-w-[560px]">
+            <p className="hp-lead mb-7 max-w-[560px] break-words">
               From construction machinery and spare parts to trucks, buses, mining equipment, and power systems —
               we source, trade, and deliver the products your operation depends on.
             </p>
 
-            <div className="mb-7 flex flex-wrap gap-2.5">
+            <div className="mb-7 flex min-w-0 flex-wrap gap-2 sm:gap-2.5">
               {tabs.map((tab) => (
                 <button
                   key={tab}
@@ -158,33 +160,36 @@ export default function About() {
               ))}
             </div>
 
-            <div className="mb-6 flex gap-4 border-t border-gray-200 pt-6">
-              <div className="relative h-[88px] w-[130px] shrink-0 overflow-hidden rounded-[14px] shadow-md sm:h-[92px] sm:w-[140px]">
+            <div className="mb-6 flex min-w-0 gap-3 border-t border-gray-200 pt-6 sm:gap-4">
+              <div className="relative h-[80px] w-[112px] shrink-0 overflow-hidden rounded-[14px] shadow-md sm:h-[92px] sm:w-[140px]">
                 <CmsImage src={SITE_IMAGES.about.tab} alt="Bitumen spreader" fill className="object-cover" sizes="140px" />
               </div>
-              <p className="hp-body">{tabContent[activeTab]}</p>
+              <p className="hp-body min-w-0 flex-1">{tabContent[activeTab]}</p>
             </div>
 
-            <p className="hp-emphasis mb-8">
+            <p className="hp-emphasis mb-8 break-words">
               We manage supplier selection, import coordination, and delivery so your team can focus on the project.
             </p>
 
-            <div className="flex flex-wrap items-center gap-5">
+            <div className="flex min-w-0 flex-wrap items-center gap-4 sm:gap-5">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 rounded-full bg-[#ff5a1f] px-7 py-3.5 text-[0.9375rem] font-semibold text-white shadow-[0_8px_22px_rgba(255,90,31,0.35)] transition hover:bg-[#e64a19] hover:-translate-y-0.5"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#ff5a1f] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_22px_rgba(255,90,31,0.35)] transition hover:bg-[#e64a19] hover:-translate-y-0.5 sm:px-7 sm:py-3.5 sm:text-[0.9375rem]"
               >
                 About Us
-                <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
+                <ArrowUpRight className="h-4 w-4 shrink-0" strokeWidth={2.5} />
               </Link>
 
-              <div className="flex items-center gap-3">
-                <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-[#001a33] shadow-md">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full bg-[#001a33] shadow-md sm:h-[52px] sm:w-[52px]">
                   <Phone className="h-5 w-5 text-white" strokeWidth={2} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="hp-label-sm">Call Us Any Time:</p>
-                  <a href={`tel:${COMPANY_PHONE_TEL}`} className="hp-subtitle text-[#ff5a1f] hover:underline">
+                  <a
+                    href={`tel:${COMPANY_PHONE_TEL}`}
+                    className="hp-subtitle block truncate text-[#ff5a1f] hover:underline sm:whitespace-normal"
+                  >
                     {COMPANY_PHONE}
                   </a>
                 </div>
