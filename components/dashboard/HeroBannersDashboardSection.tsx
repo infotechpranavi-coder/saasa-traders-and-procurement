@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { CmsData, HeroBanner } from '@/types/cms'
 import { removeHeroBannerAction, saveHeroBannerAction } from '@/app/dashboard/actions'
+import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 import DashboardDrawer from './DashboardDrawer'
 import ImageUrlField from './ImageUrlField'
 
@@ -18,19 +19,18 @@ const emptyBanner = (): HeroBanner => ({
 
 interface HeroBannersDashboardSectionProps {
   cms: CmsData
-  loading: boolean
-  setLoading: (v: boolean) => void
   setCms: (cms: CmsData) => void
+  refreshCms: () => Promise<void>
   showMsg: (msg: string) => void
 }
 
 export default function HeroBannersDashboardSection({
   cms,
-  loading,
-  setLoading,
   setCms,
+  refreshCms,
   showMsg,
 }: HeroBannersDashboardSectionProps) {
+  const [saving, setSaving] = useState(false)
   const [editingBanner, setEditingBanner] = useState<HeroBanner | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
 
@@ -47,30 +47,36 @@ export default function HeroBannersDashboardSection({
       showMsg('Title and subtitle are required')
       return
     }
-    setLoading(true)
-    const result = await saveHeroBannerAction(editingBanner, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to save banner')
-      return
-    }
-    setCms(result.cms)
-    setEditingBanner(null)
-    setOriginalSlug('')
-    showMsg('Hero banner saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveHeroBannerAction(editingBanner, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingBanner(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Hero banner saved',
+        errorMessage: 'Failed to save banner',
+      },
+    )
   }
 
   const deleteBanner = async (slug: string) => {
     if (!confirm('Delete this hero banner?')) return
-    setLoading(true)
-    const result = await removeHeroBannerAction(slug)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to delete')
-      return
-    }
-    setCms(result.cms)
-    showMsg('Hero banner deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeHeroBannerAction(slug),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Hero banner deleted',
+        errorMessage: 'Failed to delete',
+      },
+    )
   }
 
   return (
@@ -88,6 +94,7 @@ export default function HeroBannersDashboardSection({
             <button
               type="button"
               className="btn-primary text-sm py-2.5 px-5"
+              disabled={saving}
               onClick={() => {
                 const nextPosition = banners.length > 0 ? Math.max(...banners.map((b) => b.position)) + 1 : 1
                 setEditingBanner({ ...emptyBanner(), position: nextPosition })
@@ -127,6 +134,7 @@ export default function HeroBannersDashboardSection({
                   <button
                     type="button"
                     className="dashboard-btn-edit"
+                    disabled={saving}
                     onClick={() => {
                       setEditingBanner({ ...banner })
                       setOriginalSlug(banner.slug)
@@ -134,7 +142,7 @@ export default function HeroBannersDashboardSection({
                   >
                     Edit
                   </button>
-                  <button type="button" className="dashboard-btn-delete" onClick={() => deleteBanner(banner.slug)}>
+                  <button type="button" className="dashboard-btn-delete" disabled={saving} onClick={() => void deleteBanner(banner.slug)}>
                     Delete
                   </button>
                 </div>
@@ -156,8 +164,8 @@ export default function HeroBannersDashboardSection({
           }}
           footer={
             <>
-              <button type="submit" form="dashboard-hero-banner-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save banner'}
+              <button type="submit" form="dashboard-hero-banner-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save banner'}
               </button>
               <button
                 type="button"

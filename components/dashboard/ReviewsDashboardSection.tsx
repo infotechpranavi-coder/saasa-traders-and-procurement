@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { CmsData, CustomerReview } from '@/types/cms'
 import { removeReviewAction, saveReviewAction } from '@/app/dashboard/actions'
+import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 import DashboardDrawer from './DashboardDrawer'
 
 const emptyReview = (): CustomerReview => ({
@@ -15,49 +16,58 @@ const emptyReview = (): CustomerReview => ({
 
 interface ReviewsDashboardSectionProps {
   cms: CmsData
-  loading: boolean
-  setLoading: (v: boolean) => void
   setCms: (cms: CmsData) => void
+  refreshCms: () => Promise<void>
   showMsg: (msg: string) => void
 }
 
 export default function ReviewsDashboardSection({
   cms,
-  loading,
-  setLoading,
   setCms,
+  refreshCms,
   showMsg,
 }: ReviewsDashboardSectionProps) {
+  const [saving, setSaving] = useState(false)
   const [editingReview, setEditingReview] = useState<CustomerReview | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
 
   const saveReview = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingReview) return
-    setLoading(true)
-    const result = await saveReviewAction(editingReview, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to save review')
+    if (!editingReview.name?.trim() || !editingReview.quote?.trim()) {
+      showMsg('Customer name and review text are required')
       return
     }
-    setCms(result.cms)
-    setEditingReview(null)
-    setOriginalSlug('')
-    showMsg('Review saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveReviewAction(editingReview, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingReview(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Review saved',
+        errorMessage: 'Failed to save review',
+      },
+    )
   }
 
   const deleteReview = async (slug: string) => {
     if (!confirm('Delete this customer review?')) return
-    setLoading(true)
-    const result = await removeReviewAction(slug)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to delete')
-      return
-    }
-    setCms(result.cms)
-    showMsg('Review deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeReviewAction(slug),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Review deleted',
+        errorMessage: 'Failed to delete',
+      },
+    )
   }
 
   return (
@@ -74,6 +84,7 @@ export default function ReviewsDashboardSection({
             <button
               type="button"
               className="btn-primary text-sm py-2.5 px-5"
+              disabled={saving}
               onClick={() => {
                 setEditingReview(emptyReview())
                 setOriginalSlug('')
@@ -102,6 +113,7 @@ export default function ReviewsDashboardSection({
                 <button
                   type="button"
                   className="dashboard-btn-edit"
+                  disabled={saving}
                   onClick={() => {
                     setEditingReview({ ...review })
                     setOriginalSlug(review.slug)
@@ -109,7 +121,7 @@ export default function ReviewsDashboardSection({
                 >
                   Edit
                 </button>
-                <button type="button" className="dashboard-btn-delete" onClick={() => deleteReview(review.slug)}>
+                <button type="button" className="dashboard-btn-delete" disabled={saving} onClick={() => void deleteReview(review.slug)}>
                   Delete
                 </button>
               </div>
@@ -131,8 +143,8 @@ export default function ReviewsDashboardSection({
           }}
           footer={
             <>
-              <button type="submit" form="dashboard-review-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save review'}
+              <button type="submit" form="dashboard-review-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save review'}
               </button>
               <button
                 type="button"

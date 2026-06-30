@@ -61,7 +61,7 @@ export default function BrochureDownloadButton({
         onClick={onNavigate}
       >
         <FileDown className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-        {!iconOnly && <span className="hidden sm:inline">Catalog</span>}
+        {!iconOnly && <span className="nav-brochure-btn-text">Catalog</span>}
       </a>
     )
   }

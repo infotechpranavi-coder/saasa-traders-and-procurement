@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { CmsData, PortfolioProject } from '@/types/cms'
 import { removePortfolioAction, savePortfolioAction } from '@/app/dashboard/actions'
+import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 import { parseLines } from '@/lib/utils'
 import DashboardDrawer from './DashboardDrawer'
 import ImageUrlField from './ImageUrlField'
@@ -21,19 +22,18 @@ const emptyProject = (): PortfolioProject => ({
 
 interface RecentWorkDashboardSectionProps {
   cms: CmsData
-  loading: boolean
-  setLoading: (v: boolean) => void
   setCms: (cms: CmsData) => void
+  refreshCms: () => Promise<void>
   showMsg: (msg: string) => void
 }
 
 export default function RecentWorkDashboardSection({
   cms,
-  loading,
-  setLoading,
   setCms,
+  refreshCms,
   showMsg,
 }: RecentWorkDashboardSectionProps) {
+  const [saving, setSaving] = useState(false)
   const [editingProject, setEditingProject] = useState<PortfolioProject | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
 
@@ -50,30 +50,36 @@ export default function RecentWorkDashboardSection({
       showMsg('Please upload or paste a card image')
       return
     }
-    setLoading(true)
-    const result = await savePortfolioAction(editingProject, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to save project')
-      return
-    }
-    setCms(result.cms)
-    setEditingProject(null)
-    setOriginalSlug('')
-    showMsg('Recent work project saved')
+    await runDashboardSave(
+      setSaving,
+      () => savePortfolioAction(editingProject, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingProject(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Recent work project saved',
+        errorMessage: 'Failed to save project',
+      },
+    )
   }
 
   const deleteProject = async (slug: string) => {
     if (!confirm('Delete this recent work project?')) return
-    setLoading(true)
-    const result = await removePortfolioAction(slug)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to delete')
-      return
-    }
-    setCms(result.cms)
-    showMsg('Project deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removePortfolioAction(slug),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Project deleted',
+        errorMessage: 'Failed to delete',
+      },
+    )
   }
 
   return (
@@ -91,6 +97,7 @@ export default function RecentWorkDashboardSection({
             <button
               type="button"
               className="btn-primary text-sm py-2.5 px-5"
+              disabled={saving}
               onClick={() => {
                 setEditingProject(emptyProject())
                 setOriginalSlug('')
@@ -135,6 +142,7 @@ export default function RecentWorkDashboardSection({
                     <button
                       type="button"
                       className="dashboard-btn-edit"
+                      disabled={saving}
                       onClick={() => {
                         setEditingProject({ ...project })
                         setOriginalSlug(project.slug)
@@ -142,7 +150,7 @@ export default function RecentWorkDashboardSection({
                     >
                       Edit
                     </button>
-                    <button type="button" className="dashboard-btn-delete" onClick={() => deleteProject(project.slug)}>
+                    <button type="button" className="dashboard-btn-delete" disabled={saving} onClick={() => void deleteProject(project.slug)}>
                       Delete
                     </button>
                   </div>
@@ -164,8 +172,8 @@ export default function RecentWorkDashboardSection({
           }}
           footer={
             <>
-              <button type="submit" form="dashboard-recent-work-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save project'}
+              <button type="submit" form="dashboard-recent-work-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save project'}
               </button>
               <button
                 type="button"

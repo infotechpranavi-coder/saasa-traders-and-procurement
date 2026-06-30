@@ -11,17 +11,17 @@ import { slugify } from '@/lib/slugify'
 
 const CMS_FILE = path.join(process.cwd(), 'data', 'cms.json')
 
-function normalizeCms(data: Partial<CmsData>): CmsData {
+function normalizeCms(data: Partial<CmsData>, seedDefaults = false): CmsData {
   return {
     categories: data.categories ?? [],
     brandCategories: data.brandCategories ?? [],
     brands: data.brands ?? [],
     products: data.products ?? [],
     services: data.services ?? [],
-    blogs: data.blogs?.length ? data.blogs : seedBlogs,
-    portfolio: data.portfolio?.length ? data.portfolio : seedPortfolio,
-    reviews: data.reviews?.length ? data.reviews : seedReviews,
-    heroBanners: data.heroBanners?.length ? data.heroBanners : seedHeroBanners,
+    blogs: Array.isArray(data.blogs) ? data.blogs : seedDefaults ? seedBlogs : [],
+    portfolio: Array.isArray(data.portfolio) ? data.portfolio : seedDefaults ? seedPortfolio : [],
+    reviews: Array.isArray(data.reviews) ? data.reviews : seedDefaults ? seedReviews : [],
+    heroBanners: Array.isArray(data.heroBanners) ? data.heroBanners : seedDefaults ? seedHeroBanners : [],
     brochure: data.brochure ?? null,
   }
 }
@@ -58,14 +58,7 @@ export async function readCms(): Promise<CmsData> {
   try {
     const raw = await fs.readFile(CMS_FILE, 'utf-8')
     const json = JSON.parse(raw) as Partial<CmsData>
-    const parsed = normalizeCms(json)
-    if (!json.blogs?.length || !json.portfolio?.length || !json.reviews?.length || !json.heroBanners?.length) {
-      if (json.brochure) {
-        parsed.brochure = json.brochure
-      }
-      await writeCms(parsed)
-    }
-    return parsed
+    return normalizeCms(json)
   } catch {
     const seed = buildSeed()
     await writeCms(seed)

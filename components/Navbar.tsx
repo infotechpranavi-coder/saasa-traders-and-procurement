@@ -163,7 +163,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   const navItems = useMemo(() => buildNavItems(cms), [cms])
 
   const solidNavContent = (
-    <div className="flex h-[80px] items-center justify-between gap-4 overflow-visible px-5 lg:h-[88px] lg:px-8">
+    <div className="flex h-[72px] min-w-0 items-center justify-between gap-2 overflow-hidden px-4 sm:h-[80px] sm:gap-3 sm:px-5 lg:h-[88px] lg:px-6 xl:px-8">
       <NavContent
         navItems={navItems}
         brochure={cms?.brochure}
@@ -297,7 +297,7 @@ function NavInner({
 
   return (
     <div className="relative w-full min-h-[80px] overflow-visible lg:min-h-[88px]">
-      <div className="flex min-h-[80px] items-center justify-between gap-4 overflow-visible px-5 lg:min-h-[88px] lg:px-8">
+      <div className="relative flex min-h-[72px] w-full min-w-0 items-center justify-between gap-2 overflow-hidden px-4 sm:min-h-[80px] sm:gap-3 sm:px-5 lg:min-h-[88px] lg:px-6 xl:px-8">
         <NavContent
           navItems={navItems}
           brochure={brochure}
@@ -352,35 +352,35 @@ function NavContent({
 
   return (
     <>
-      <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-        <span className={`nav-logo-wrap ${floating ? 'min-w-[140px] sm:min-w-[170px]' : 'min-w-[120px] sm:min-w-[145px]'}`}>
+      <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-2.5 lg:gap-3">
+        <span className={`nav-logo-wrap ${floating ? 'min-w-[120px] sm:min-w-[140px] lg:min-w-[130px] xl:min-w-[170px]' : 'min-w-[110px] sm:min-w-[120px] lg:min-w-[130px] xl:min-w-[145px]'}`}>
           <BrandLogo
             variant="nav"
             className={floating ? 'brand-logo brand-logo--hero' : 'brand-logo brand-logo--nav'}
             priority
           />
         </span>
-        <div className="min-w-0 max-w-[108px] sm:max-w-[118px] lg:max-w-[128px]">
+        <div className="hidden min-w-0 max-w-[108px] sm:block sm:max-w-[118px] xl:max-w-[128px]">
           <span
             className={`site-logo-text block text-[9px] sm:text-[10px] lg:text-[11px] leading-tight tracking-tight ${floating ? 'text-white' : 'text-[#0A0E1A]'}`}
           >
             {COMPANY_NAME}
           </span>
           <p
-            className={`hidden sm:block text-[7px] lg:text-[8px] tracking-[0.08em] font-medium mt-0.5 uppercase leading-tight ${floating ? 'text-white/55' : 'text-gray-500'}`}
+            className={`hidden xl:block text-[7px] lg:text-[8px] tracking-[0.08em] font-medium mt-0.5 uppercase leading-tight ${floating ? 'text-white/55' : 'text-gray-500'}`}
           >
             {COMPANY_TAGLINE}
           </p>
         </div>
       </Link>
 
-      <div className="hidden xl:flex items-center gap-6 overflow-visible">
+      <div className="nav-center-links hidden min-w-0 flex-1 items-center justify-center gap-3 overflow-hidden px-1 lg:flex xl:gap-5 2xl:gap-6">
         {navItems.map((item) => (
           <NavMegaMenuItem key={item.label} item={item} floating={floating} />
         ))}
       </div>
 
-      <div className={`nav-actions hidden md:flex items-center gap-1.5 lg:gap-2 shrink-0 min-w-0 ${searchOpen ? 'nav-actions--search-open' : ''}`}>
+      <div className={`nav-actions hidden min-w-0 shrink-0 items-center gap-1.5 lg:flex xl:gap-2 ${searchOpen ? 'nav-actions--search-open' : ''}`}>
         <BrochureDownloadButton brochure={brochure} variant="navbar" floating={floating} iconOnly={searchOpen} />
         <NavSearch
           floating={floating}
@@ -396,18 +396,23 @@ function NavContent({
         />
         <Link
           href="/contact"
-          className={`btn-primary shrink-0 text-sm ${searchOpen ? 'nav-quote-btn--icon-only' : 'px-5 lg:px-6 py-3'}`}
+          className={`btn-primary nav-quote-btn shrink-0 text-sm ${searchOpen ? 'nav-quote-btn--icon-only' : 'px-4 py-3 xl:px-5'}`}
           aria-label="Request a Quote"
           title="Request a Quote"
         >
-          {!searchOpen && <span>Request a Quote</span>}
+          {!searchOpen && (
+            <>
+              <span className="nav-quote-btn-text">Request a Quote</span>
+              <span className="nav-quote-btn-text-short">Quote</span>
+            </>
+          )}
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
           </svg>
         </Link>
       </div>
 
-      <div className="flex items-center gap-1 lg:hidden">
+      <div className="flex shrink-0 items-center gap-1 lg:hidden">
         <NavSearch
           floating={floating}
           compact
@@ -567,7 +572,7 @@ function NavSearch({
           closeSearch()
         }}
       >
-        <div className={`nav-search-expanded flex h-11 items-center gap-1.5 rounded-full px-2.5 ${shellClass} ${compact ? 'w-full' : 'w-[132px] md:w-[148px] lg:w-[168px]'}`}>
+        <div className={`nav-search-expanded flex h-11 items-center gap-1.5 rounded-full px-2.5 ${shellClass} ${compact ? 'w-full' : 'w-[128px] lg:w-[140px] xl:w-[160px] 2xl:w-[168px]'}`}>
           <SearchIcon />
           <input
             ref={inputRef}

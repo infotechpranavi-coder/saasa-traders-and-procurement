@@ -9,11 +9,7 @@ export type CmsActionResult<T = undefined> =
   | { ok: false; error: string }
 
 function revalidatePublicPages() {
-  revalidatePath('/')
-  revalidatePath('/products', 'layout')
-  revalidatePath('/services', 'layout')
-  revalidatePath('/blog')
-  revalidatePath('/work', 'layout')
+  revalidatePath('/', 'layout')
   revalidatePath('/dashboard')
 }
 

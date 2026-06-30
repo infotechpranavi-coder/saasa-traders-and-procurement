@@ -3,64 +3,54 @@
 import { useState } from 'react'
 import type { CmsData } from '@/types/cms'
 import { removeBrochureAction, uploadBrochureFormAction } from '@/app/dashboard/actions'
+import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 
 interface BrochureDashboardSectionProps {
   cms: CmsData
-  loading: boolean
-  setLoading: (v: boolean) => void
   setCms: (cms: CmsData) => void
+  refreshCms: () => Promise<void>
   showMsg: (msg: string) => void
 }
 
 export default function BrochureDashboardSection({
   cms,
-  loading,
-  setLoading,
   setCms,
+  refreshCms,
   showMsg,
 }: BrochureDashboardSectionProps) {
-  const [uploading, setUploading] = useState(false)
-  const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
   const brochure = cms.brochure
 
   const uploadBrochure = async (file: File) => {
-    setUploading(true)
-    setError('')
-    setLoading(true)
+    const formData = new FormData()
+    formData.append('file', file)
 
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-      const result = await uploadBrochureFormAction(formData)
-
-      if (!result.ok || !result.cms) {
-        setError(result.error || 'Upload failed')
-        showMsg(result.error || 'Failed to upload brochure')
-        return
-      }
-
-      setCms(result.cms)
-      showMsg('Brochure saved — download buttons are now live on the site')
-    } catch {
-      setError('Upload failed')
-      showMsg('Upload failed')
-    } finally {
-      setUploading(false)
-      setLoading(false)
-    }
+    await runDashboardSave(
+      setSaving,
+      () => uploadBrochureFormAction(formData),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Brochure saved — download buttons are now live on the site',
+        errorMessage: 'Failed to upload brochure',
+      },
+    )
   }
 
   const removeBrochure = async () => {
     if (!confirm('Remove the company brochure? Download buttons will be hidden until you upload a new file.')) return
-    setLoading(true)
-    const result = await removeBrochureAction()
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to remove brochure')
-      return
-    }
-    setCms(result.cms)
-    showMsg('Brochure removed')
+    await runDashboardSave(
+      setSaving,
+      () => removeBrochureAction(),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Brochure removed',
+        errorMessage: 'Failed to remove brochure',
+      },
+    )
   }
 
   return (
@@ -97,13 +87,13 @@ export default function BrochureDashboardSection({
               >
                 Preview / download
               </a>
-              <label className="dashboard-btn-secondary cursor-pointer text-sm">
-                {uploading ? 'Uploading…' : 'Replace PDF'}
+              <label className={`dashboard-btn-secondary text-sm ${saving ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}>
+                {saving ? 'Uploading…' : 'Replace PDF'}
                 <input
                   type="file"
                   accept=".pdf,application/pdf"
                   className="sr-only"
-                  disabled={uploading || loading}
+                  disabled={saving}
                   onChange={(e) => {
                     const file = e.target.files?.[0]
                     if (file) void uploadBrochure(file)
@@ -111,7 +101,7 @@ export default function BrochureDashboardSection({
                   }}
                 />
               </label>
-              <button type="button" className="dashboard-btn-delete" disabled={loading} onClick={() => void removeBrochure()}>
+              <button type="button" className="dashboard-btn-delete" disabled={saving} onClick={() => void removeBrochure()}>
                 Remove
               </button>
             </div>
@@ -119,13 +109,13 @@ export default function BrochureDashboardSection({
         ) : (
           <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
             <p className="text-sm text-gray-600 mb-4">No brochure uploaded yet. Add a PDF to enable download buttons on the site.</p>
-            <label className="btn-primary inline-flex cursor-pointer text-sm py-2.5 px-5">
-              {uploading ? 'Uploading…' : 'Upload brochure PDF'}
+            <label className={`btn-primary inline-flex text-sm py-2.5 px-5 ${saving ? 'pointer-events-none opacity-60' : 'cursor-pointer'}`}>
+              {saving ? 'Uploading…' : 'Upload brochure PDF'}
               <input
                 type="file"
                 accept=".pdf,application/pdf"
                 className="sr-only"
-                disabled={uploading || loading}
+                disabled={saving}
                 onChange={(e) => {
                   const file = e.target.files?.[0]
                   if (file) void uploadBrochure(file)
@@ -135,7 +125,6 @@ export default function BrochureDashboardSection({
             </label>
           </div>
         )}
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
         <p className="mt-4 text-xs text-gray-500">PDF only, max 15 MB.</p>
       </div>
     </section>

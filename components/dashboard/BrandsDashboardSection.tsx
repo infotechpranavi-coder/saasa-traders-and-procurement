@@ -9,6 +9,7 @@ import {
   saveBrandAction,
   saveBrandCategoryAction,
 } from '@/app/dashboard/actions'
+import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 import DashboardDrawer from './DashboardDrawer'
 
 const emptyBrand = (): Brand => ({
@@ -26,19 +27,18 @@ type BrandsSubTab = 'categories' | 'companies'
 
 interface BrandsDashboardSectionProps {
   cms: CmsData
-  loading: boolean
-  setLoading: (v: boolean) => void
   setCms: (cms: CmsData) => void
+  refreshCms: () => Promise<void>
   showMsg: (msg: string) => void
 }
 
 export default function BrandsDashboardSection({
   cms,
-  loading,
-  setLoading,
   setCms,
+  refreshCms,
   showMsg,
 }: BrandsDashboardSectionProps) {
+  const [saving, setSaving] = useState(false)
   const [subTab, setSubTab] = useState<BrandsSubTab>('companies')
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
@@ -51,33 +51,38 @@ export default function BrandsDashboardSection({
   const saveBrandCategory = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!brandCategoryForm) return
-    setLoading(true)
-    const result = await saveBrandCategoryAction({
-      id: brandCategoryForm.id,
-      name: brandCategoryForm.name,
-      isEdit: brandCategoryForm.isEdit,
-    })
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to save brand category')
-      return
-    }
-    setCms(result.cms)
-    setBrandCategoryForm(null)
-    showMsg('Brand category saved')
+    await runDashboardSave(
+      setSaving,
+      () =>
+        saveBrandCategoryAction({
+          id: brandCategoryForm.id,
+          name: brandCategoryForm.name,
+          isEdit: brandCategoryForm.isEdit,
+        }),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => setBrandCategoryForm(null),
+        successMessage: 'Brand category saved',
+        errorMessage: 'Failed to save brand category',
+      },
+    )
   }
 
   const deleteBrandCategory = async (id: string) => {
     if (!confirm('Delete this brand category?')) return
-    setLoading(true)
-    const result = await removeBrandCategoryAction(id)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to delete')
-      return
-    }
-    setCms(result.cms)
-    showMsg('Brand category deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeBrandCategoryAction(id),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Brand category deleted',
+        errorMessage: 'Failed to delete',
+      },
+    )
   }
 
   const saveBrand = async (e: React.FormEvent) => {
@@ -87,30 +92,36 @@ export default function BrandsDashboardSection({
       showMsg('Select a brand category')
       return
     }
-    setLoading(true)
-    const result = await saveBrandAction(editingBrand, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to save company')
-      return
-    }
-    setCms(result.cms)
-    setEditingBrand(null)
-    setOriginalSlug('')
-    showMsg('Company saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveBrandAction(editingBrand, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingBrand(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Company saved',
+        errorMessage: 'Failed to save company',
+      },
+    )
   }
 
   const deleteBrand = async (slug: string) => {
     if (!confirm('Delete this company?')) return
-    setLoading(true)
-    const result = await removeBrandAction(slug)
-    setLoading(false)
-    if (!result.ok || !result.cms) {
-      showMsg(result.error || 'Failed to delete')
-      return
-    }
-    setCms(result.cms)
-    showMsg('Company deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeBrandAction(slug),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        successMessage: 'Company deleted',
+        errorMessage: 'Failed to delete',
+      },
+    )
   }
 
   const toggleProduct = (slug: string) => {
@@ -258,8 +269,8 @@ export default function BrandsDashboardSection({
           onClose={() => setBrandCategoryForm(null)}
           footer={
             <>
-              <button type="submit" form="dashboard-brand-category-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save'}
+              <button type="submit" form="dashboard-brand-category-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save'}
               </button>
               <button type="button" className="dashboard-btn-secondary" onClick={() => setBrandCategoryForm(null)}>
                 Cancel
@@ -295,8 +306,8 @@ export default function BrandsDashboardSection({
           }}
           footer={
             <>
-              <button type="submit" form="dashboard-brand-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save company'}
+              <button type="submit" form="dashboard-brand-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save company'}
               </button>
               <button
                 type="button"

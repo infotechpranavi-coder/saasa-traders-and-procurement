@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import BrandLogo from '@/components/BrandLogo'
 import BrochureDashboardSection from '@/components/dashboard/BrochureDashboardSection'
 import BrandsDashboardSection from '@/components/dashboard/BrandsDashboardSection'
@@ -29,6 +30,7 @@ import {
   saveProductAction,
   saveServiceAction,
 } from '@/app/dashboard/actions'
+import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 
 type Tab = 'products' | 'services' | 'categories' | 'brands' | 'hero' | 'blogs' | 'portfolio' | 'reviews' | 'brochure'
 
@@ -43,6 +45,10 @@ const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'blogs', label: 'Blogs' },
   { id: 'brochure', label: 'Brochure' },
 ]
+
+function isDashboardTab(value: string | null): value is Tab {
+  return value !== null && NAV_TABS.some((item) => item.id === value)
+}
 
 const emptyProduct = (): Product => ({
   slug: '',
@@ -90,13 +96,15 @@ export default function DashboardApp({
   initialAuthenticated: boolean
   initialCms: CmsData | null
 }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [authenticated, setAuthenticated] = useState(initialAuthenticated)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
   const [tab, setTab] = useState<Tab>('products')
   const [cms, setCms] = useState<CmsData | null>(initialCms)
-  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [editingService, setEditingService] = useState<Service | null>(null)
@@ -129,10 +137,28 @@ export default function DashboardApp({
     setOriginalSlug('')
   }
 
-  const refreshCms = async () => {
+  const refreshCms = useCallback(async () => {
     const data = await getDashboardData()
     if (data.cms) setCms(data.cms)
-  }
+  }, [])
+
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab')
+    if (isDashboardTab(tabFromUrl)) {
+      setTab(tabFromUrl)
+    }
+  }, [searchParams])
+
+  const selectTab = useCallback(
+    (id: Tab) => {
+      setTab(id)
+      closeDrawer()
+      const params = new URLSearchParams(searchParams.toString())
+      params.set('tab', id)
+      router.replace(`/dashboard?${params.toString()}`, { scroll: false })
+    },
+    [router, searchParams],
+  )
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -166,7 +192,6 @@ export default function DashboardApp({
       showMsg('Please select a product category')
       return
     }
-    setLoading(true)
     const payload: Product = {
       ...editingProduct,
       overview: editingProduct.overview.map((s) => s.trim()).filter(Boolean),
@@ -174,50 +199,59 @@ export default function DashboardApp({
       applications: editingProduct.applications.map((s) => s.trim()).filter(Boolean),
       companies: normalizeProductCompanies(editingProduct.companies),
     }
-    const result = await saveProductAction(payload, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok) {
-      showMsg(result.error || 'Failed to save product')
-      return
-    }
-    setEditingProduct(null)
-    setOriginalSlug('')
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Product saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveProductAction(payload, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingProduct(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Product saved',
+        errorMessage: 'Failed to save product',
+      },
+    )
   }
 
   const saveService = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingService) return
-    setLoading(true)
-    const result = await saveServiceAction(editingService, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok) {
-      showMsg(result.error || 'Failed to save service')
-      return
-    }
-    setEditingService(null)
-    setOriginalSlug('')
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Service saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveServiceAction(editingService, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingService(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Service saved',
+        errorMessage: 'Failed to save service',
+      },
+    )
   }
 
   const deleteProduct = async (slug: string) => {
     if (!confirm('Delete this product?')) return
-    const result = await removeProductAction(slug)
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Product deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeProductAction(slug),
+      { showMsg, setCms, refreshCms, successMessage: 'Product deleted', errorMessage: 'Failed to delete product' },
+    )
   }
 
   const deleteService = async (slug: string) => {
     if (!confirm('Delete this service?')) return
-    const result = await removeServiceAction(slug)
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Service deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeServiceAction(slug),
+      { showMsg, setCms, refreshCms, successMessage: 'Service deleted', errorMessage: 'Failed to delete service' },
+    )
   }
 
   const saveCategory = async (e: React.FormEvent) => {
@@ -226,52 +260,60 @@ export default function DashboardApp({
       showMsg('Please select a category type')
       return
     }
-    setLoading(true)
     const isEdit = Boolean(categoryForm.id && cms?.categories.some((c) => c.id === categoryForm.id))
-    const result = await saveCategoryAction({ ...categoryForm, type: categoryForm.type, isEdit })
-    setLoading(false)
-    if (!result.ok) {
-      showMsg(result.error || 'Failed to save category')
-      return
-    }
-    setCategoryDrawerOpen(false)
-    setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Category saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveCategoryAction({ ...categoryForm, type: categoryForm.type as CategoryType, isEdit }),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setCategoryDrawerOpen(false)
+          setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
+        },
+        successMessage: 'Category saved',
+        errorMessage: 'Failed to save category',
+      },
+    )
   }
 
   const deleteCategory = async (id: string) => {
     if (!confirm('Delete this category?')) return
-    const result = await removeCategoryAction(id)
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Category deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeCategoryAction(id),
+      { showMsg, setCms, refreshCms, successMessage: 'Category deleted', errorMessage: 'Failed to delete category' },
+    )
   }
 
   const saveBlog = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingBlog) return
-    setLoading(true)
-    const result = await saveBlogAction(editingBlog, originalSlug || undefined)
-    setLoading(false)
-    if (!result.ok) {
-      showMsg(result.error || 'Failed to save blog')
-      return
-    }
-    setEditingBlog(null)
-    setOriginalSlug('')
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Blog post saved')
+    await runDashboardSave(
+      setSaving,
+      () => saveBlogAction(editingBlog, originalSlug || undefined),
+      {
+        showMsg,
+        setCms,
+        refreshCms,
+        onSuccess: () => {
+          setEditingBlog(null)
+          setOriginalSlug('')
+        },
+        successMessage: 'Blog post saved',
+        errorMessage: 'Failed to save blog',
+      },
+    )
   }
 
   const deleteBlog = async (slug: string) => {
     if (!confirm('Delete this blog post?')) return
-    const result = await removeBlogAction(slug)
-    if (result.cms) setCms(result.cms)
-    else await refreshCms()
-    showMsg('Blog post deleted')
+    await runDashboardSave(
+      setSaving,
+      () => removeBlogAction(slug),
+      { showMsg, setCms, refreshCms, successMessage: 'Blog post deleted', errorMessage: 'Failed to delete blog post' },
+    )
   }
 
   if (!authenticated) {
@@ -345,10 +387,7 @@ export default function DashboardApp({
               <button
                 key={id}
                 type="button"
-                onClick={() => {
-                  setTab(id)
-                  closeDrawer()
-                }}
+                onClick={() => selectTab(id)}
                 className={`dashboard-nav-item ${tab === id ? 'dashboard-nav-item--active' : ''}`}
               >
                 {label}
@@ -363,10 +402,7 @@ export default function DashboardApp({
               <button
                 key={id}
                 type="button"
-                onClick={() => {
-                  setTab(id)
-                  closeDrawer()
-                }}
+                onClick={() => selectTab(id)}
                 className={`dashboard-mobile-tab ${tab === id ? 'dashboard-mobile-tab--active' : ''}`}
               >
                 {label}
@@ -569,53 +605,23 @@ export default function DashboardApp({
           )}
 
           {tab === 'brands' && cms && (
-            <BrandsDashboardSection
-              cms={cms}
-              loading={loading}
-              setLoading={setLoading}
-              setCms={setCms}
-              showMsg={showMsg}
-            />
+            <BrandsDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
           )}
 
           {tab === 'hero' && cms && (
-            <HeroBannersDashboardSection
-              cms={cms}
-              loading={loading}
-              setLoading={setLoading}
-              setCms={setCms}
-              showMsg={showMsg}
-            />
+            <HeroBannersDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
           )}
 
           {tab === 'portfolio' && cms && (
-            <RecentWorkDashboardSection
-              cms={cms}
-              loading={loading}
-              setLoading={setLoading}
-              setCms={setCms}
-              showMsg={showMsg}
-            />
+            <RecentWorkDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
           )}
 
           {tab === 'reviews' && cms && (
-            <ReviewsDashboardSection
-              cms={cms}
-              loading={loading}
-              setLoading={setLoading}
-              setCms={setCms}
-              showMsg={showMsg}
-            />
+            <ReviewsDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
           )}
 
           {tab === 'brochure' && cms && (
-            <BrochureDashboardSection
-              cms={cms}
-              loading={loading}
-              setLoading={setLoading}
-              setCms={setCms}
-              showMsg={showMsg}
-            />
+            <BrochureDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
           )}
 
           {tab === 'blogs' && cms && (
@@ -684,8 +690,8 @@ export default function DashboardApp({
           onClose={closeDrawer}
           footer={
             <>
-              <button type="submit" form="dashboard-product-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save product'}
+              <button type="submit" form="dashboard-product-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save product'}
               </button>
               <button type="button" className="dashboard-btn-secondary" onClick={closeDrawer}>
                 Cancel
@@ -803,8 +809,8 @@ export default function DashboardApp({
           onClose={closeDrawer}
           footer={
             <>
-              <button type="submit" form="dashboard-service-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save service'}
+              <button type="submit" form="dashboard-service-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save service'}
               </button>
               <button type="button" className="dashboard-btn-secondary" onClick={closeDrawer}>
                 Cancel
@@ -898,8 +904,8 @@ export default function DashboardApp({
           onClose={closeDrawer}
           footer={
             <>
-              <button type="submit" form="dashboard-category-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save product category'}
+              <button type="submit" form="dashboard-category-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save product category'}
               </button>
               <button type="button" className="dashboard-btn-secondary" onClick={closeDrawer}>
                 Cancel
@@ -967,8 +973,8 @@ export default function DashboardApp({
           onClose={closeDrawer}
           footer={
             <>
-              <button type="submit" form="dashboard-blog-form" disabled={loading} className="btn-primary text-sm">
-                {loading ? 'Saving…' : 'Save post'}
+              <button type="submit" form="dashboard-blog-form" disabled={saving} className="btn-primary text-sm">
+                {saving ? 'Saving…' : 'Save post'}
               </button>
               <button type="button" className="dashboard-btn-secondary" onClick={closeDrawer}>
                 Cancel

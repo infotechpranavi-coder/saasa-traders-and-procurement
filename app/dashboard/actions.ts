@@ -139,8 +139,6 @@ export async function saveCategoryAction(input: {
 }): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
-  const cms = await readCms()
-  const exists = cms.categories.some((c) => c.id === input.id)
   const payload = {
     id: input.id,
     name: input.name,
@@ -149,10 +147,7 @@ export async function saveCategoryAction(input: {
     image: input.image,
     showInFooter: input.showInFooter,
   }
-  const result =
-    input.isEdit && exists
-      ? await updateCategory(payload)
-      : await createCategory(payload)
+  const result = input.isEdit ? await updateCategory(payload) : await createCategory(payload)
 
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }
@@ -192,12 +187,9 @@ export async function saveBrandCategoryAction(input: {
 }): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
-  const cms = await readCms()
-  const exists = cms.brandCategories.some((c) => c.id === input.id)
-  const result =
-    input.isEdit && exists
-      ? await updateBrandCategory({ id: input.id, name: input.name })
-      : await createBrandCategory({ id: input.id?.trim() || undefined, name: input.name })
+  const result = input.isEdit
+    ? await updateBrandCategory({ id: input.id, name: input.name })
+    : await createBrandCategory({ id: input.id?.trim() || undefined, name: input.name })
 
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }
