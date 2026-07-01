@@ -20,46 +20,72 @@ const emptyProject = (): PortfolioProject => ({
   year: '',
 })
 
+import type { ShowDashboardMsg } from '@/components/dashboard/useDashboardToast'
+
 interface RecentWorkDashboardSectionProps {
   cms: CmsData
   setCms: (cms: CmsData) => void
-  refreshCms: () => Promise<void>
-  showMsg: (msg: string) => void
+  showMsg: ShowDashboardMsg
 }
 
 export default function RecentWorkDashboardSection({
   cms,
   setCms,
-  refreshCms,
   showMsg,
 }: RecentWorkDashboardSectionProps) {
   const [saving, setSaving] = useState(false)
   const [editingProject, setEditingProject] = useState<PortfolioProject | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
+  const [formError, setFormError] = useState<string | null>(null)
 
   const projects = cms.portfolio ?? []
+
+  const scrollDrawerToTop = () => {
+    document.getElementById('dashboard-drawer-body')?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const failValidation = (msg: string) => {
+    setFormError(msg)
+    showMsg(msg, 'error')
+    scrollDrawerToTop()
+  }
+
+  const openEditor = (project: PortfolioProject, slug: string) => {
+    setFormError(null)
+    setEditingProject(project)
+    setOriginalSlug(slug)
+  }
+
+  const closeEditor = () => {
+    setFormError(null)
+    setEditingProject(null)
+    setOriginalSlug('')
+  }
 
   const saveProject = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingProject) return
     if (!editingProject.title?.trim()) {
-      showMsg('Title is required')
+      failValidation('Title is required — fill it in the Slider card section at the top.')
       return
     }
     if (!editingProject.image?.trim()) {
-      showMsg('Please upload or paste a card image')
+      failValidation('Card image is required — upload an image or paste a path in the Slider card section.')
       return
     }
+    setFormError(null)
     await runDashboardSave(
       setSaving,
-      () => savePortfolioAction(editingProject, originalSlug || undefined),
+      () =>
+        savePortfolioAction(
+          editingProject,
+          originalSlug && projects.some((p) => p.slug === originalSlug) ? originalSlug : undefined,
+        ),
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
-          setEditingProject(null)
-          setOriginalSlug('')
+          closeEditor()
         },
         successMessage: 'Recent work project saved',
         errorMessage: 'Failed to save project',
@@ -75,7 +101,6 @@ export default function RecentWorkDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         successMessage: 'Project deleted',
         errorMessage: 'Failed to delete',
       },
@@ -98,10 +123,7 @@ export default function RecentWorkDashboardSection({
               type="button"
               className="btn-primary text-sm py-2.5 px-5"
               disabled={saving}
-              onClick={() => {
-                setEditingProject(emptyProject())
-                setOriginalSlug('')
-              }}
+              onClick={() => openEditor(emptyProject(), '')}
             >
               + Add project
             </button>
@@ -143,10 +165,7 @@ export default function RecentWorkDashboardSection({
                       type="button"
                       className="dashboard-btn-edit"
                       disabled={saving}
-                      onClick={() => {
-                        setEditingProject({ ...project })
-                        setOriginalSlug(project.slug)
-                      }}
+                      onClick={() => openEditor({ ...project }, project.slug)}
                     >
                       Edit
                     </button>
@@ -166,23 +185,14 @@ export default function RecentWorkDashboardSection({
           open
           title={originalSlug ? 'Edit project' : 'New project'}
           subtitle='Card appears in the homepage "Explore Our Recent Work" section. Visitors can open a full detail page from the card.'
-          onClose={() => {
-            setEditingProject(null)
-            setOriginalSlug('')
-          }}
+          footerError={formError}
+          onClose={closeEditor}
           footer={
             <>
               <button type="submit" form="dashboard-recent-work-form" disabled={saving} className="btn-primary text-sm">
                 {saving ? 'Saving…' : 'Save project'}
               </button>
-              <button
-                type="button"
-                className="dashboard-btn-secondary"
-                onClick={() => {
-                  setEditingProject(null)
-                  setOriginalSlug('')
-                }}
-              >
+              <button type="button" className="dashboard-btn-secondary" onClick={closeEditor}>
                 Cancel
               </button>
             </>
@@ -195,7 +205,10 @@ export default function RecentWorkDashboardSection({
                 <Field
                   label="Title *"
                   value={editingProject.title}
-                  onChange={(v) => setEditingProject({ ...editingProject, title: v })}
+                  onChange={(v) => {
+                    setFormError(null)
+                    setEditingProject({ ...editingProject, title: v })
+                  }}
                 />
                 <Field
                   label="Slug"
@@ -213,7 +226,10 @@ export default function RecentWorkDashboardSection({
                   label="Card image *"
                   hint="Photo shown on the homepage slider card"
                   value={editingProject.image}
-                  onChange={(v) => setEditingProject({ ...editingProject, image: v })}
+                  onChange={(v) => {
+                    setFormError(null)
+                    setEditingProject({ ...editingProject, image: v })
+                  }}
                 />
               </div>
             </div>

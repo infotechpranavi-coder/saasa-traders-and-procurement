@@ -45,10 +45,10 @@ export default function ImageUrlField({ label, hint, value, onChange }: ImageUrl
       />
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <label className="dashboard-btn-secondary cursor-pointer text-xs">
-          {uploading ? 'Uploading…' : 'Upload image'}
+          {uploading ? 'Uploading…' : 'Upload image or video'}
           <input
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
+            accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,.mov"
             className="sr-only"
             disabled={uploading}
             onChange={(e) => {

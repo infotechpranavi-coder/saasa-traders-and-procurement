@@ -86,6 +86,8 @@ export function NavMegaMenuItem({ item, floating, onNavigate }: NavMegaMenuProps
 
   if (!item.hasDropdown || !item.children?.length) {
     const className = `nav-link flex items-center gap-1 whitespace-nowrap text-[14px] font-semibold ${
+      item.href === '/contact' ? 'nav-link-contact ' : ''
+    }${item.external ? 'nav-link-external ' : ''}${
       floating ? 'text-white/90 hover:text-white' : 'text-[#1a1a1a] hover:text-primary'
     }`
 
@@ -97,6 +99,7 @@ export function NavMegaMenuItem({ item, floating, onNavigate }: NavMegaMenuProps
           rel="noopener noreferrer"
           onClick={onNavigate}
           className={className}
+          title={item.label}
         >
           {item.label}
         </a>

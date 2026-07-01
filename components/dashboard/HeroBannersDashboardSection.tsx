@@ -17,17 +17,17 @@ const emptyBanner = (): HeroBanner => ({
   subtitle: '',
 })
 
+import type { ShowDashboardMsg } from '@/components/dashboard/useDashboardToast'
+
 interface HeroBannersDashboardSectionProps {
   cms: CmsData
   setCms: (cms: CmsData) => void
-  refreshCms: () => Promise<void>
-  showMsg: (msg: string) => void
+  showMsg: ShowDashboardMsg
 }
 
 export default function HeroBannersDashboardSection({
   cms,
   setCms,
-  refreshCms,
   showMsg,
 }: HeroBannersDashboardSectionProps) {
   const [saving, setSaving] = useState(false)
@@ -40,20 +40,23 @@ export default function HeroBannersDashboardSection({
     e.preventDefault()
     if (!editingBanner) return
     if (!editingBanner.image?.trim()) {
-      showMsg('Please upload or paste a background image')
+      showMsg('Please upload or paste a background image', 'error')
       return
     }
     if (!editingBanner.title?.trim() || !editingBanner.subtitle?.trim()) {
-      showMsg('Title and subtitle are required')
+      showMsg('Title and subtitle are required', 'error')
       return
     }
     await runDashboardSave(
       setSaving,
-      () => saveHeroBannerAction(editingBanner, originalSlug || undefined),
+      () =>
+        saveHeroBannerAction(
+          { ...editingBanner, position: Math.max(1, Number(editingBanner.position) || 1) },
+          originalSlug && cms.heroBanners.some((b) => b.slug === originalSlug) ? originalSlug : undefined,
+        ),
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setEditingBanner(null)
           setOriginalSlug('')
@@ -72,7 +75,6 @@ export default function HeroBannersDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         successMessage: 'Hero banner deleted',
         errorMessage: 'Failed to delete',
       },

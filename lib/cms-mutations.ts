@@ -1,5 +1,6 @@
-import { revalidatePath } from 'next/cache'
+import { queueNewsletterContentAlert } from '@/lib/email/newsletter-notify'
 import { readCms, writeCms } from '@/lib/cms'
+import { revalidatePublicPages } from '@/lib/revalidate-public'
 import { slugify } from '@/lib/slugify'
 import { normalizeProductCompanies } from '@/lib/product-companies'
 import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
@@ -8,9 +9,24 @@ export type CmsActionResult<T = undefined> =
   | { ok: true; data: T; cms: CmsData }
   | { ok: false; error: string }
 
-function revalidatePublicPages() {
-  revalidatePath('/', 'layout')
-  revalidatePath('/dashboard')
+async function persistCms<T>(cms: CmsData, data: T): Promise<CmsActionResult<T>> {
+  try {
+    await writeCms(cms)
+    revalidatePublicPages()
+    return { ok: true, data, cms }
+  } catch {
+    return { ok: false, error: 'Failed to save content. Check MongoDB connection and credentials.' }
+  }
+}
+
+async function persistCmsOnly(cms: CmsData): Promise<CmsActionResult> {
+  try {
+    await writeCms(cms)
+    revalidatePublicPages()
+    return { ok: true, data: undefined, cms }
+  } catch {
+    return { ok: false, error: 'Failed to save content. Check MongoDB connection and credentials.' }
+  }
 }
 
 function normalizeProduct(body: Product, fallbackSlug?: string): Product | null {
@@ -67,6 +83,7 @@ export async function createProduct(productInput: Product): Promise<CmsActionRes
   cms.products.push(product)
   await writeCms(cms)
   revalidatePublicPages()
+  queueNewsletterContentAlert({ kind: 'product', title: product.title, slug: product.slug })
   return { ok: true, data: product, cms }
 }
 
@@ -108,6 +125,7 @@ export async function createService(serviceInput: Service): Promise<CmsActionRes
   cms.services.push(service)
   await writeCms(cms)
   revalidatePublicPages()
+  queueNewsletterContentAlert({ kind: 'service', title: service.title, slug: service.slug })
   return { ok: true, data: service, cms }
 }
 
@@ -248,9 +266,11 @@ export async function createBlog(blogInput: BlogPost): Promise<CmsActionResult<B
   }
 
   cms.blogs.push(blog)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: blog, cms }
+  const result = await persistCms(cms, blog)
+  if (result.ok) {
+    queueNewsletterContentAlert({ kind: 'blog', title: blog.title, slug: blog.slug })
+  }
+  return result
 }
 
 export async function updateBlog(originalSlug: string, blogInput: BlogPost): Promise<CmsActionResult<BlogPost>> {
@@ -270,17 +290,13 @@ export async function updateBlog(originalSlug: string, blogInput: BlogPost): Pro
   }
 
   cms.blogs[index] = blog
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: blog, cms }
+  return persistCms(cms, blog)
 }
 
 export async function deleteBlog(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.blogs = cms.blogs.filter((b) => b.slug !== slug)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: undefined, cms }
+  return persistCmsOnly(cms)
 }
 
 function normalizeBrand(body: Brand, fallbackSlug?: string): Brand | null {
@@ -433,9 +449,7 @@ export async function createPortfolioProject(
   }
 
   cms.portfolio.push(project)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: project, cms }
+  return persistCms(cms, project)
 }
 
 export async function updatePortfolioProject(
@@ -454,17 +468,13 @@ export async function updatePortfolioProject(
   }
 
   cms.portfolio[index] = project
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: project, cms }
+  return persistCms(cms, project)
 }
 
 export async function deletePortfolioProject(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.portfolio = cms.portfolio.filter((p) => p.slug !== slug)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: undefined, cms }
+  return persistCmsOnly(cms)
 }
 
 function normalizeReview(body: CustomerReview, fallbackSlug?: string): CustomerReview | null {
@@ -493,9 +503,7 @@ export async function createReview(input: CustomerReview): Promise<CmsActionResu
   }
 
   cms.reviews.push(review)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: review, cms }
+  return persistCms(cms, review)
 }
 
 export async function updateReview(
@@ -514,17 +522,13 @@ export async function updateReview(
   }
 
   cms.reviews[index] = review
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: review, cms }
+  return persistCms(cms, review)
 }
 
 export async function deleteReview(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.reviews = cms.reviews.filter((r) => r.slug !== slug)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: undefined, cms }
+  return persistCmsOnly(cms)
 }
 
 function normalizeHeroBanner(body: HeroBanner, fallbackSlug?: string): HeroBanner | null {
@@ -560,9 +564,7 @@ export async function createHeroBanner(input: HeroBanner): Promise<CmsActionResu
   }
 
   cms.heroBanners = sortHeroBanners([...cms.heroBanners, banner])
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: banner, cms }
+  return persistCms(cms, banner)
 }
 
 export async function updateHeroBanner(
@@ -582,17 +584,13 @@ export async function updateHeroBanner(
 
   cms.heroBanners[index] = banner
   cms.heroBanners = sortHeroBanners(cms.heroBanners)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: banner, cms }
+  return persistCms(cms, banner)
 }
 
 export async function deleteHeroBanner(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.heroBanners = cms.heroBanners.filter((b) => b.slug !== slug)
-  await writeCms(cms)
-  revalidatePublicPages()
-  return { ok: true, data: undefined, cms }
+  return persistCmsOnly(cms)
 }
 
 export async function updateBrochure(brochure: BrochureFile | null): Promise<CmsActionResult<BrochureFile | null>> {
@@ -615,6 +613,5 @@ export async function updateBrochure(brochure: BrochureFile | null): Promise<Cms
 
   await writeCms(cms)
   revalidatePublicPages()
-  revalidatePath('/', 'layout')
   return { ok: true, data: cms.brochure, cms }
 }

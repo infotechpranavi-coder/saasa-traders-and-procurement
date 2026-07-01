@@ -1,4 +1,5 @@
 import type { CmsData } from '@/types/cms'
+import type { ShowDashboardMsg } from '@/components/dashboard/useDashboardToast'
 
 export type DashboardSaveResult = { ok: boolean; error?: string; cms?: CmsData }
 
@@ -6,7 +7,7 @@ export async function runDashboardSave(
   setSaving: (value: boolean) => void,
   run: () => Promise<DashboardSaveResult>,
   options: {
-    showMsg: (message: string) => void
+    showMsg: ShowDashboardMsg
     setCms?: (cms: CmsData) => void
     refreshCms?: () => Promise<void>
     onSuccess?: () => void
@@ -18,7 +19,7 @@ export async function runDashboardSave(
   try {
     const result = await run()
     if (!result.ok) {
-      options.showMsg(result.error || options.errorMessage || 'Save failed')
+      options.showMsg(result.error || options.errorMessage || 'Save failed', 'error')
       return false
     }
 
@@ -28,11 +29,11 @@ export async function runDashboardSave(
       await options.refreshCms()
     }
 
+    options.showMsg(options.successMessage, 'success')
     options.onSuccess?.()
-    options.showMsg(options.successMessage)
     return true
   } catch {
-    options.showMsg('Something went wrong. Please try again.')
+    options.showMsg('Something went wrong. Please try again.', 'error')
     return false
   } finally {
     setSaving(false)

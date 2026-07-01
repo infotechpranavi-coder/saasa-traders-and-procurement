@@ -118,6 +118,8 @@ export interface BrochureFile {
   url: string
   fileName: string
   uploadedAt?: string
+  /** Cloudinary public_id — used when deleting replaced catalog files */
+  publicId?: string
 }
 
 export interface CmsData {

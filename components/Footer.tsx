@@ -13,6 +13,11 @@ import type { SocialName } from '@/types'
 
 export default function Footer() {
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribeFeedback, setSubscribeFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(
+    null,
+  )
   const [cms, setCms] = useState<CmsData | null>(null)
   const { ref } = useScrollReveal()
 
@@ -41,6 +46,39 @@ export default function Footer() {
 
   const serviceLinks = footerServices.length > 0 ? footerServices : FOOTER_SERVICES
 
+  const subscribeNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email.trim()) return
+
+    setSubscribing(true)
+    setSubscribeFeedback(null)
+
+    try {
+      const res = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), name: name.trim() || undefined }),
+      })
+      const data = (await res.json()) as { ok?: boolean; error?: string; message?: string }
+
+      if (!res.ok || !data.ok) {
+        setSubscribeFeedback({ type: 'error', text: data.error || 'Subscription failed. Please try again.' })
+        return
+      }
+
+      setSubscribeFeedback({
+        type: 'success',
+        text: data.message || 'You are subscribed!',
+      })
+      setEmail('')
+      setName('')
+    } catch {
+      setSubscribeFeedback({ type: 'error', text: 'Something went wrong. Please try again.' })
+    } finally {
+      setSubscribing(false)
+    }
+  }
+
   return (
     <footer ref={ref} style={{ background: '#0D1B2A', position: 'relative', overflow: 'hidden' }}>
       <div
@@ -53,25 +91,65 @@ export default function Footer() {
       />
 
       <div className="relative border-b border-gray-700 py-12">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          <h3>
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <h3 className="shrink-0 text-white">
             Subscribe Our
             <br />
             Newsletter
           </h3>
-          <div className="flex gap-2 w-full max-w-md">
-            <input
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-gray-800/80 border border-gray-600 text-white placeholder-gray-400 rounded-full px-6 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
-            />
-            <button type="button" className="btn-primary text-sm px-6">
-              Subscribe
-              <ArrowUpRight className="w-4 h-4" strokeWidth={2.2} />
-            </button>
-          </div>
+          <form onSubmit={subscribeNewsletter} className="footer-newsletter-form w-full md:max-w-3xl">
+            <div className="footer-newsletter-row">
+              <label className="footer-newsletter-field footer-newsletter-field--name">
+                <span className="sr-only">Name</span>
+                <input
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value)
+                    if (subscribeFeedback) setSubscribeFeedback(null)
+                  }}
+                  disabled={subscribing}
+                  className="footer-newsletter-input"
+                />
+              </label>
+              <label className="footer-newsletter-field footer-newsletter-field--email">
+                <span className="sr-only">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  placeholder="Your email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (subscribeFeedback) setSubscribeFeedback(null)
+                  }}
+                  required
+                  disabled={subscribing}
+                  className="footer-newsletter-input"
+                />
+              </label>
+              <button
+                type="submit"
+                disabled={subscribing}
+                className="btn-primary footer-newsletter-submit text-sm disabled:opacity-60"
+              >
+                {subscribing ? '…' : 'Subscribe'}
+                <ArrowUpRight className="w-4 h-4" strokeWidth={2.2} />
+              </button>
+            </div>
+            {subscribeFeedback && (
+              <p
+                className={`footer-newsletter-feedback ${subscribeFeedback.type === 'success' ? 'footer-newsletter-feedback--success' : 'footer-newsletter-feedback--error'}`}
+                role="status"
+              >
+                {subscribeFeedback.text}
+              </p>
+            )}
+          </form>
         </div>
       </div>
 

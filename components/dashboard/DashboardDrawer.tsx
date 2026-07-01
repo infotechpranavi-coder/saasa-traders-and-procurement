@@ -10,9 +10,18 @@ interface DashboardDrawerProps {
   onClose: () => void
   children: ReactNode
   footer?: ReactNode
+  footerError?: string | null
 }
 
-export default function DashboardDrawer({ open, title, subtitle, onClose, children, footer }: DashboardDrawerProps) {
+export default function DashboardDrawer({
+  open,
+  title,
+  subtitle,
+  onClose,
+  children,
+  footer,
+  footerError,
+}: DashboardDrawerProps) {
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -41,8 +50,19 @@ export default function DashboardDrawer({ open, title, subtitle, onClose, childr
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="dashboard-drawer-body">{children}</div>
-        {footer && <div className="dashboard-drawer-footer">{footer}</div>}
+        <div id="dashboard-drawer-body" className="dashboard-drawer-body">
+          {children}
+        </div>
+        {footer && (
+          <div className="dashboard-drawer-footer">
+            {footerError ? (
+              <p className="dashboard-form-error" role="alert">
+                {footerError}
+              </p>
+            ) : null}
+            <div className="dashboard-drawer-footer-actions">{footer}</div>
+          </div>
+        )}
       </aside>
     </div>
   )

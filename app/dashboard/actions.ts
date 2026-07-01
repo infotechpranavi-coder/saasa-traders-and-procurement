@@ -1,11 +1,19 @@
 'use server'
 
-import { mkdir, writeFile } from 'fs/promises'
+import { unlink } from 'fs/promises'
 import path from 'path'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
+import { revalidatePublicPages } from '@/lib/revalidate-public'
 import { ADMIN_COOKIE, isValidAdminCredentials, isAdminAuthenticated } from '@/lib/auth'
 import { readCms } from '@/lib/cms'
+import {
+  cloudinaryPublicIdFromUrl,
+  cloudinaryResourceTypeFromUrl,
+  deleteFromCloudinary,
+  isCloudinaryConfigured,
+  uploadToCloudinary,
+} from '@/lib/cloudinary-storage'
 import {
   createCategory,
   createProduct,
@@ -37,6 +45,8 @@ import {
   updateReview,
 } from '@/lib/cms-mutations'
 import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
+import type { EnquiryRecord, NewsletterSubscriber } from '@/types/leads'
+import { listEnquiries, listNewsletterSubscribers, removeNewsletterSubscriber } from '@/lib/leads-db'
 
 async function requireAdmin(): Promise<boolean> {
   return isAdminAuthenticated()
@@ -167,9 +177,13 @@ export async function saveBlogAction(
 ): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
-  const result = originalSlug ? await updateBlog(originalSlug, blog) : await createBlog(blog)
-  if (!result.ok) return { ok: false, error: result.error }
-  return { ok: true, cms: result.cms }
+  try {
+    const result = originalSlug ? await updateBlog(originalSlug, blog) : await createBlog(blog)
+    if (!result.ok) return { ok: false, error: result.error }
+    return { ok: true, cms: result.cms }
+  } catch {
+    return { ok: false, error: 'Failed to save blog post' }
+  }
 }
 
 export async function removeBlogAction(slug: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
@@ -228,12 +242,16 @@ export async function savePortfolioAction(
 ): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
-  const result = originalSlug
-    ? await updatePortfolioProject(originalSlug, project)
-    : await createPortfolioProject(project)
+  try {
+    const result = originalSlug
+      ? await updatePortfolioProject(originalSlug, project)
+      : await createPortfolioProject(project)
 
-  if (!result.ok) return { ok: false, error: result.error }
-  return { ok: true, cms: result.cms }
+    if (!result.ok) return { ok: false, error: result.error }
+    return { ok: true, cms: result.cms }
+  } catch {
+    return { ok: false, error: 'Failed to save project' }
+  }
 }
 
 export async function removePortfolioAction(
@@ -252,9 +270,13 @@ export async function saveReviewAction(
 ): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
-  const result = originalSlug ? await updateReview(originalSlug, review) : await createReview(review)
-  if (!result.ok) return { ok: false, error: result.error }
-  return { ok: true, cms: result.cms }
+  try {
+    const result = originalSlug ? await updateReview(originalSlug, review) : await createReview(review)
+    if (!result.ok) return { ok: false, error: result.error }
+    return { ok: true, cms: result.cms }
+  } catch {
+    return { ok: false, error: 'Failed to save review' }
+  }
 }
 
 export async function removeReviewAction(slug: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
@@ -271,9 +293,13 @@ export async function saveHeroBannerAction(
 ): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
-  const result = originalSlug ? await updateHeroBanner(originalSlug, banner) : await createHeroBanner(banner)
-  if (!result.ok) return { ok: false, error: result.error }
-  return { ok: true, cms: result.cms }
+  try {
+    const result = originalSlug ? await updateHeroBanner(originalSlug, banner) : await createHeroBanner(banner)
+    if (!result.ok) return { ok: false, error: result.error }
+    return { ok: true, cms: result.cms }
+  } catch {
+    return { ok: false, error: 'Failed to save hero banner' }
+  }
 }
 
 export async function removeHeroBannerAction(slug: string): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
@@ -294,18 +320,38 @@ export async function saveBrochureAction(
   return { ok: true, cms: result.cms }
 }
 
+async function deleteBrochureAsset(brochure: { url?: string; publicId?: string } | null | undefined) {
+  if (!brochure) return
+
+  if (brochure.publicId || brochure.url?.includes('res.cloudinary.com')) {
+    const publicId = brochure.publicId ?? cloudinaryPublicIdFromUrl(brochure.url) ?? undefined
+    const resourceType = brochure.url ? cloudinaryResourceTypeFromUrl(brochure.url) : 'raw'
+    await deleteFromCloudinary(publicId, resourceType)
+    return
+  }
+
+  if (brochure.url?.startsWith('/uploads/brochures/')) {
+    const filePath = path.join(process.cwd(), 'public', brochure.url.replace(/^\//, ''))
+    try {
+      await unlink(filePath)
+    } catch {
+      // File may already be missing.
+    }
+  }
+}
+
 export async function removeBrochureAction(): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
+  const cms = await readCms()
+  const oldBrochure = cms.brochure
+
   const result = await updateBrochure(null)
   if (!result.ok) return { ok: false, error: result.error }
-  revalidatePath('/', 'layout')
-  revalidatePath('/dashboard')
-  return { ok: true, cms: result.cms }
-}
 
-function safeBrochureName(name: string) {
-  return name.replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-+/g, '-')
+  await deleteBrochureAsset(oldBrochure)
+  revalidatePublicPages()
+  return { ok: true, cms: result.cms }
 }
 
 export async function uploadBrochureFormAction(
@@ -330,30 +376,81 @@ export async function uploadBrochureFormAction(
   }
 
   if (file.size > 15 * 1024 * 1024) {
-    return { ok: false, error: 'Brochure must be 15 MB or smaller' }
+    return { ok: false, error: 'Catalog PDF must be 15 MB or smaller' }
+  }
+
+  if (!isCloudinaryConfigured()) {
+    return { ok: false, error: 'Cloudinary is not configured in .env' }
   }
 
   try {
-    const base = safeBrochureName(path.basename(file.name, ext)) || 'brochure'
-    const filename = `${Date.now()}-${base}.pdf`
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'brochures')
-    await mkdir(uploadsDir, { recursive: true })
-
+    const cms = await readCms()
+    const oldBrochure = cms.brochure
     const buffer = Buffer.from(await file.arrayBuffer())
-    await writeFile(path.join(uploadsDir, filename), buffer)
+
+    const uploaded = await uploadToCloudinary(buffer, {
+      originalName: file.name,
+      resourceType: 'raw',
+      subfolder: 'catalogs',
+    })
 
     const result = await updateBrochure({
-      url: `/uploads/brochures/${filename}`,
+      url: uploaded.url,
       fileName: file.name,
       uploadedAt: new Date().toISOString(),
+      publicId: uploaded.publicId,
     })
 
     if (!result.ok) return { ok: false, error: result.error }
 
-    revalidatePath('/', 'layout')
-    revalidatePath('/dashboard')
+    if (oldBrochure && oldBrochure.url !== uploaded.url) {
+      await deleteBrochureAsset(oldBrochure)
+    }
+
+    revalidatePublicPages()
     return { ok: true, cms: result.cms }
   } catch {
     return { ok: false, error: 'Failed to save brochure file' }
+  }
+}
+
+export async function getEnquiriesAction(): Promise<{ ok: boolean; error?: string; enquiries?: EnquiryRecord[] }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  try {
+    const enquiries = await listEnquiries()
+    return { ok: true, enquiries }
+  } catch {
+    return { ok: false, error: 'Failed to load enquiries' }
+  }
+}
+
+export async function getNewsletterSubscribersAction(): Promise<{
+  ok: boolean
+  error?: string
+  subscribers?: NewsletterSubscriber[]
+}> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  try {
+    const subscribers = await listNewsletterSubscribers()
+    return { ok: true, subscribers }
+  } catch {
+    return { ok: false, error: 'Failed to load newsletter subscribers' }
+  }
+}
+
+export async function removeNewsletterSubscriberAction(
+  email: string,
+): Promise<{ ok: boolean; error?: string; subscribers?: NewsletterSubscriber[] }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  try {
+    const removed = await removeNewsletterSubscriber(email)
+    if (!removed) return { ok: false, error: 'Subscriber not found' }
+    const subscribers = await listNewsletterSubscribers()
+    return { ok: true, subscribers }
+  } catch {
+    return { ok: false, error: 'Failed to remove subscriber' }
   }
 }

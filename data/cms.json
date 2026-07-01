@@ -3,122 +3,76 @@
     {
       "id": "excavators",
       "name": "Excavators",
-      "type": "product",
-      "description": "Hydraulic pumps, cylinders, and undercarriage parts for excavators and backhoes from leading OEM brands.",
-      "image": "/statsic/jcb.jpg"
+      "type": "product"
     },
     {
       "id": "bulldozers",
       "name": "Bulldozers",
-      "type": "product",
-      "description": "Undercarriage, blades, and drivetrain components for bulldozers and crawler dozers.",
-      "image": "/statsic/jcb.jpg"
+      "type": "product"
     },
     {
       "id": "wheel-loaders",
       "name": "Wheel Loaders",
-      "type": "product",
-      "description": "Bucket teeth, adapters, and loader wear parts for quarry and site material handling.",
-      "image": "/statsic/jcb.jpg"
+      "type": "product"
     },
     {
       "id": "cranes",
       "name": "Cranes",
-      "type": "product",
-      "description": "Wire ropes, hook blocks, and crane components for tower and mobile lifting operations.",
-      "image": "/statsic/drum mix.jpeg"
+      "type": "product"
     },
     {
       "id": "concrete-mixers",
       "name": "Concrete Mixers",
-      "type": "product",
-      "description": "Drum liners, mixing blades, and batch plant wear parts for ready-mix operations.",
-      "image": "/statsic/batchmix.jpeg"
+      "type": "product"
     },
     {
       "id": "road-rollers",
       "name": "Road Rollers",
-      "type": "product",
-      "description": "Drum kits, vibration components, and compaction parts for highway and site work.",
-      "image": "/statsic/road roller.jpg"
+      "type": "product"
     },
     {
       "id": "dump-trucks",
       "name": "Dump Trucks",
-      "type": "product",
-      "description": "Haul truck components, bodies, and fleet maintenance parts.",
-      "image": "/statsic/batchmix.jpeg"
+      "type": "product"
     },
     {
       "id": "compactors",
       "name": "Compactors",
-      "type": "product",
-      "description": "Compaction and asphalt equipment parts for road construction.",
-      "image": "/statsic/bitumen soreder.jpg"
+      "type": "product"
     },
     {
       "id": "engine-parts",
       "name": "Engine Parts",
-      "type": "product",
-      "description": "Diesel engine overhaul kits and turbocharger components for heavy equipment.",
-      "image": "/statsic/batchmix.jpeg"
+      "type": "product"
     },
     {
       "id": "powertrain-hydraulics",
       "name": "Powertrain & Hydraulics",
-      "type": "product",
-      "description": "Hydraulic seals, transmissions, and gearbox parts for earthmoving fleets.",
-      "image": "/statsic/drum mix.jpeg"
+      "type": "product"
     },
     {
       "id": "construction",
       "name": "Construction & Earthmoving",
-      "type": "service",
-      "description": "Equipment supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling machinery.",
-      "image": "/statsic/jcb.jpg"
+      "type": "service"
     },
     {
       "id": "transport",
       "name": "Transport & Fleet",
-      "type": "service",
-      "description": "Trucks, buses, and fleet procurement for material distribution and passenger transport.",
-      "image": "/statsic/road roller.jpg"
+      "type": "service"
     },
     {
       "id": "energy",
       "name": "Energy & Power",
-      "type": "service",
-      "description": "Industrial engines, generators, and power systems for job sites and remote operations.",
-      "image": "/statsic/drum mix.jpeg"
+      "type": "service"
     },
     {
       "id": "mining",
       "name": "Mining & Quarrying",
-      "type": "service",
-      "description": "Mining trucks, excavators, and quarry equipment sourcing with critical spares support.",
-      "image": "/statsic/bitumen soreder.jpg"
+      "type": "service"
     }
   ],
-  "brandCategories": [
-    {
-      "id": "g",
-      "name": "g"
-    }
-  ],
-  "brands": [
-    {
-      "slug": "g",
-      "name": "ggg",
-      "categoryId": "g",
-      "description": "gg",
-      "image": "/images/products/concrete-mixer.jpg",
-      "equipment": [],
-      "listedProducts": [],
-      "productSlugs": [
-        "diesel-engine-overhaul-kits"
-      ]
-    }
-  ],
+  "brandCategories": [],
+  "brands": [],
   "products": [
     {
       "slug": "hydraulic-pump-assemblies",
@@ -147,8 +101,7 @@
         "Demolition",
         "Utility trenching",
         "Port handling"
-      ],
-      "showOnHomepage": true
+      ]
     },
     {
       "slug": "undercarriage-track-chains",
@@ -177,8 +130,7 @@
         "Site grading",
         "Quarry extraction",
         "Land reclamation"
-      ],
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "loader-bucket-teeth-adapters",
@@ -207,8 +159,7 @@
         "Aggregate yards",
         "Material stockpiling",
         "Road base handling"
-      ],
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "crane-wire-rope-sheaves",
@@ -237,8 +188,7 @@
         "Infrastructure lifting",
         "Industrial plant erection",
         "Port crane maintenance"
-      ],
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "diesel-engine-overhaul-kits",
@@ -267,8 +217,7 @@
         "Field overhauls",
         "Rental fleet maintenance",
         "Mining equipment rebuilds"
-      ],
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "hydraulic-cylinder-seal-kits",
@@ -297,8 +246,7 @@
         "On-site cylinder repair",
         "Fleet preventive maintenance",
         "Rental equipment turnaround"
-      ],
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "concrete-mixer-drum-liners",
@@ -327,8 +275,7 @@
         "Precast batch plants",
         "Infrastructure pours",
         "Drum refurbishing workshops"
-      ],
-      "showOnHomepage": true
+      ]
     },
     {
       "slug": "road-roller-drum-kits",
@@ -357,8 +304,7 @@
         "Airfield paving",
         "Sub-base compaction",
         "Site preparation"
-      ],
-      "showOnHomepage": true
+      ]
     },
     {
       "slug": "transmission-gearbox-parts",
@@ -387,34 +333,7 @@
         "Dozer drivetrain repair",
         "Grader transmission service",
         "Fleet exchange programs"
-      ],
-      "showOnHomepage": false
-    },
-    {
-      "slug": "new",
-      "title": "new",
-      "label": "new",
-      "image": "/statsic/jcb.jpg",
-      "desc": "dedfweffv",
-      "specs": [
-        "eewf"
-      ],
-      "overview": [
-        "ewdcwe",
-        "fdgrg"
-      ],
-      "features": [
-        "wecfwef",
-        "sdfb"
-      ],
-      "applications": [
-        "wefwe",
-        "gvfnfg",
-        "fgbhrg"
-      ],
-      "companies": [],
-      "showOnHomepage": true,
-      "categoryId": "excavators"
+      ]
     }
   ],
   "services": [
@@ -439,9 +358,7 @@
         "Industrial plants",
         "Port terminals",
         "Infrastructure projects"
-      ],
-      "categoryId": "construction",
-      "showOnHomepage": true
+      ]
     },
     {
       "slug": "trucks-transport",
@@ -464,9 +381,7 @@
         "Building materials",
         "Bulk cargo",
         "Regional freight"
-      ],
-      "categoryId": "transport",
-      "showOnHomepage": true
+      ]
     },
     {
       "slug": "buses-transport",
@@ -489,9 +404,7 @@
         "Tourism operators",
         "Corporate shuttles",
         "Private charter fleets"
-      ],
-      "categoryId": "transport",
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "energy-engines-generators",
@@ -514,9 +427,7 @@
         "Mining operations",
         "Remote facilities",
         "Industrial backup power"
-      ],
-      "categoryId": "energy",
-      "showOnHomepage": false
+      ]
     },
     {
       "slug": "mining-quarrying",
@@ -539,9 +450,7 @@
         "Aggregate quarries",
         "Mineral extraction",
         "Bulk material processing"
-      ],
-      "categoryId": "mining",
-      "showOnHomepage": true
+      ]
     }
   ],
   "blogs": [
@@ -558,7 +467,7 @@
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
       ],
-      "featured": true
+      "featured": false
     },
     {
       "slug": "advantages-digital-supply",
@@ -572,7 +481,8 @@
         "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ]
+      ],
+      "featured": false
     },
     {
       "slug": "get-hired-supply-chain",
@@ -587,7 +497,8 @@
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
       ],
-      "highlight": true
+      "highlight": true,
+      "featured": false
     },
     {
       "slug": "future-of-freight",
@@ -601,7 +512,8 @@
         "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ]
+      ],
+      "featured": false
     },
     {
       "slug": "green-logistics",
@@ -615,7 +527,8 @@
         "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ]
+      ],
+      "featured": false
     },
     {
       "slug": "cold-chain-management",
@@ -629,7 +542,8 @@
         "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
         "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
         "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ]
+      ],
+      "featured": false
     }
   ],
   "portfolio": [
@@ -784,7 +698,7 @@
   ],
   "brochure": {
     "url": "/uploads/brochures/test-brochure.pdf",
-    "fileName": "SAASA-Brochure.pdf",
-    "uploadedAt": "2026-06-29T16:50:25.691Z"
+    "fileName": "test-brochure.pdf",
+    "uploadedAt": "2026-06-30T13:00:00.000Z"
   }
 }

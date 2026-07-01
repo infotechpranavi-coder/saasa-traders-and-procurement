@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import BrandLogo from './BrandLogo'
 import BrochureDownloadButton from './BrochureDownloadButton'
+import { useBrochureContext } from './BrochureProvider'
 import { MobileNavAccordion, NavMegaMenuItem } from './NavMegaMenu'
 import { COMPANY_NAME, COMPANY_TAGLINE } from '@/lib/brand'
 import { buildNavItems } from '@/lib/build-nav'
@@ -161,12 +162,14 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   }
 
   const navItems = useMemo(() => buildNavItems(cms), [cms])
+  const contextBrochure = useBrochureContext()
+  const brochure = cms?.brochure?.url ? cms.brochure : contextBrochure
 
   const solidNavContent = (
     <div className="flex h-[72px] min-w-0 items-center justify-between gap-2 overflow-hidden px-4 sm:h-[80px] sm:gap-3 sm:px-5 lg:h-[88px] lg:px-6 xl:px-8">
       <NavContent
         navItems={navItems}
-        brochure={cms?.brochure}
+        brochure={brochure}
         mode="solid"
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
@@ -185,7 +188,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   const navInner = isHero ? (
     <NavInner
       navItems={navItems}
-      brochure={cms?.brochure}
+      brochure={brochure}
       blend={navBlend}
       mobileOpen={mobileOpen}
       setMobileOpen={setMobileOpen}
@@ -232,7 +235,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           {mobileOpen && (
             <MobileMenu
               navItems={navItems}
-              brochure={cms?.brochure}
+              brochure={brochure}
               onClose={() => setMobileOpen(false)}
               solid={isSolidMenu}
               className={
@@ -254,7 +257,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
       {mobileOpen && (
         <MobileMenu
           navItems={navItems}
-          brochure={cms?.brochure}
+          brochure={brochure}
           onClose={() => setMobileOpen(false)}
           solid
           className="max-w-[1400px] mx-auto site-nav-mobile-menu lg:hidden"
@@ -297,7 +300,7 @@ function NavInner({
 
   return (
     <div className="relative w-full min-h-[80px] overflow-visible lg:min-h-[88px]">
-      <div className="relative flex min-h-[72px] w-full min-w-0 items-center justify-between gap-2 overflow-hidden px-4 sm:min-h-[80px] sm:gap-3 sm:px-5 lg:min-h-[88px] lg:px-6 xl:px-8">
+      <div className="relative flex min-h-[72px] w-full min-w-0 items-center justify-between gap-2 overflow-visible px-4 sm:min-h-[80px] sm:gap-3 sm:px-5 lg:min-h-[88px] lg:px-6 xl:px-8">
         <NavContent
           navItems={navItems}
           brochure={brochure}
@@ -360,14 +363,14 @@ function NavContent({
             priority
           />
         </span>
-        <div className="hidden min-w-0 max-w-[108px] sm:block sm:max-w-[118px] xl:max-w-[128px]">
+        <div className="hidden min-w-0 max-w-[108px] sm:block sm:max-w-[118px] 2xl:max-w-[128px]">
           <span
             className={`site-logo-text block text-[9px] sm:text-[10px] lg:text-[11px] leading-tight tracking-tight ${floating ? 'text-white' : 'text-[#0A0E1A]'}`}
           >
             {COMPANY_NAME}
           </span>
           <p
-            className={`hidden xl:block text-[7px] lg:text-[8px] tracking-[0.08em] font-medium mt-0.5 uppercase leading-tight ${floating ? 'text-white/55' : 'text-gray-500'}`}
+            className={`hidden 2xl:block text-[7px] lg:text-[8px] tracking-[0.08em] font-medium mt-0.5 uppercase leading-tight ${floating ? 'text-white/55' : 'text-gray-500'}`}
           >
             {COMPANY_TAGLINE}
           </p>
@@ -490,8 +493,10 @@ function NavSearch({
 
   const openSearch = () => {
     setSearchOpen(true)
-    setShowSuggestions(true)
+    setShowSuggestions(false)
   }
+
+  const hasQuery = searchQuery.trim().length > 0
 
   useEffect(() => {
     if (!open) return
@@ -521,10 +526,10 @@ function NavSearch({
     ? 'bg-white/10 text-white ring-1 ring-white/20'
     : 'bg-[#f0f0f0] text-gray-700 ring-1 ring-gray-200'
 
-  const suggestions = showSuggestions && open && (
+  const suggestions = showSuggestions && open && hasQuery && (
     <div
       className={`nav-search-suggestions absolute z-50 max-h-[320px] overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-[0_16px_36px_rgba(0,0,0,0.18)] ${
-        compact ? 'left-0 right-0 top-[52px] w-full min-w-[280px]' : 'right-0 top-[52px] w-[min(280px,calc(100vw-2rem))]'
+        compact ? 'left-0 right-0 top-[calc(100%+0.5rem)] w-full min-w-[280px]' : 'right-0 top-[calc(100%+0.5rem)] w-[min(320px,calc(100vw-2rem))]'
       }`}
     >
       {searchLoading && <p className="px-2 py-2 text-sm text-gray-500">Loading...</p>}
@@ -572,13 +577,18 @@ function NavSearch({
           closeSearch()
         }}
       >
-        <div className={`nav-search-expanded flex h-11 items-center gap-1.5 rounded-full px-2.5 ${shellClass} ${compact ? 'w-full' : 'w-[128px] lg:w-[140px] xl:w-[160px] 2xl:w-[168px]'}`}>
+        <div className={`nav-search-expanded flex h-11 items-center gap-1.5 rounded-full px-2.5 ${shellClass} ${compact ? 'w-full' : 'w-[min(220px,26vw)] lg:w-[min(240px,22vw)] xl:w-[min(260px,18vw)]'}`}>
           <SearchIcon />
           <input
             ref={inputRef}
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            onFocus={() => setShowSuggestions(true)}
+            onChange={(e) => {
+              onSearchChange(e.target.value)
+              setShowSuggestions(e.target.value.trim().length > 0)
+            }}
+            onFocus={() => {
+              if (searchQuery.trim().length > 0) setShowSuggestions(true)
+            }}
             placeholder="Search..."
             aria-label="Search site"
             className={`w-full bg-transparent text-sm outline-none ${

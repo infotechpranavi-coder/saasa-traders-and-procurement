@@ -1,3 +1,5 @@
+import { DEMO_SERVICE_IMAGES } from '@/lib/static-machinery-images'
+
 export interface ExpertiseService {
   slug: string
   title: string
@@ -12,7 +14,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'construction-equipment',
     title: 'Construction equipment, Earthmoving, Industrial, and Port',
-    image: '/statsic/jcb.jpg',
+    image: DEMO_SERVICE_IMAGES['construction-equipment'],
     summary:
       'Supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling equipment used on major construction and industrial projects.',
     overview: [
@@ -31,7 +33,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'trucks-transport',
     title: 'Trucks for Transport and Distribution of Materials',
-    image: '/statsic/batchmix.jpeg',
+    image: DEMO_SERVICE_IMAGES['trucks-transport'],
     summary:
       'Heavy-duty trucks and distribution fleets for moving construction materials, aggregates, and bulk goods across regional and international routes.',
     overview: [
@@ -50,7 +52,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'buses-transport',
     title: 'Buses for people transport companies',
-    image: '/statsic/road roller.jpg',
+    image: DEMO_SERVICE_IMAGES['buses-transport'],
     summary:
       'Coach and transit buses for passenger transport operators, including procurement support and aftermarket parts for fleet maintenance.',
     overview: [
@@ -69,7 +71,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'energy-engines-generators',
     title: 'Energy | Engines and Generators',
-    image: '/statsic/drum mix.jpeg',
+    image: DEMO_SERVICE_IMAGES['energy-engines-generators'],
     summary:
       'Industrial engines, generator sets, and power system components for construction sites, mines, and remote operations.',
     overview: [
@@ -88,7 +90,7 @@ export const expertiseServices: ExpertiseService[] = [
   {
     slug: 'mining-quarrying',
     title: 'Mining and Quarrying equipment',
-    image: '/statsic/bitumen soreder.jpg',
+    image: DEMO_SERVICE_IMAGES['mining-quarrying'],
     summary:
       'Heavy mining trucks, excavators, and wear parts for open-pit mining and quarry extraction operations worldwide.',
     overview: [

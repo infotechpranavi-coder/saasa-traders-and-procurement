@@ -29,7 +29,7 @@ export default function BrochureDownloadButton({
   if (!brochure?.url) return null
 
   const catalogLabel = 'Download Catalog'
-  const label = 'Download Brochure'
+  const label = 'Download Catalog'
 
   if (variant === 'floating') {
     return (

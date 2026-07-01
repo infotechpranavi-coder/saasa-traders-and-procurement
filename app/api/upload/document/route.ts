@@ -1,17 +1,26 @@
-import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { isAdminAuthenticated } from '@/lib/auth'
+import { isCloudinaryConfigured, uploadToCloudinary } from '@/lib/cloudinary-storage'
 
 const MAX_BYTES = 15 * 1024 * 1024
-const ALLOWED_TYPES = new Set(['application/pdf'])
 
-function safeName(name: string) {
-  return name.replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-+/g, '-')
+function isPdf(file: File) {
+  const ext = path.extname(file.name).toLowerCase()
+  return (
+    ext === '.pdf' ||
+    file.type === 'application/pdf' ||
+    file.type === 'application/x-pdf' ||
+    (file.type === 'application/octet-stream' && ext === '.pdf')
+  )
 }
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (!isCloudinaryConfigured()) {
+    return Response.json({ ok: false, error: 'Cloudinary is not configured in .env' }, { status: 503 })
   }
 
   try {
@@ -22,32 +31,29 @@ export async function POST(request: Request) {
       return Response.json({ ok: false, error: 'No file provided' }, { status: 400 })
     }
 
-    if (!ALLOWED_TYPES.has(file.type)) {
-      const ext = path.extname(file.name).toLowerCase()
-      if (ext !== '.pdf' && file.type !== 'application/octet-stream') {
-        return Response.json({ ok: false, error: 'Only PDF brochures are allowed' }, { status: 400 })
-      }
+    if (!isPdf(file)) {
+      return Response.json({ ok: false, error: 'Only PDF catalogs are allowed' }, { status: 400 })
     }
 
     if (file.size > MAX_BYTES) {
-      return Response.json({ ok: false, error: 'Brochure must be 15 MB or smaller' }, { status: 400 })
+      return Response.json({ ok: false, error: 'Catalog PDF must be 15 MB or smaller' }, { status: 400 })
     }
 
-    const ext = path.extname(file.name).toLowerCase() || '.pdf'
-    const base = safeName(path.basename(file.name, ext)) || 'brochure'
-    const filename = `${Date.now()}-${base}${ext}`
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'brochures')
-    await mkdir(uploadsDir, { recursive: true })
-
     const buffer = Buffer.from(await file.arrayBuffer())
-    await writeFile(path.join(uploadsDir, filename), buffer)
+    const uploaded = await uploadToCloudinary(buffer, {
+      originalName: file.name,
+      resourceType: 'raw',
+      subfolder: 'catalogs',
+    })
 
     return Response.json({
       ok: true,
-      url: `/uploads/brochures/${filename}`,
+      url: uploaded.url,
       fileName: file.name,
+      publicId: uploaded.publicId,
     })
-  } catch {
-    return Response.json({ ok: false, error: 'Upload failed' }, { status: 500 })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Upload failed'
+    return Response.json({ ok: false, error: message }, { status: 500 })
   }
 }

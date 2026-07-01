@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+import { unstable_noStore as noStore } from 'next/cache'
 import type { Category, CmsData, CustomerReview, HeroBanner, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost, BrochureFile } from '@/types/cms'
 import { products as seedProducts, productCategories } from '@/data/products'
 import { expertiseServices as seedServices } from '@/data/expertise-services'
@@ -7,7 +8,16 @@ import { seedBlogs } from '@/data/blog-seed'
 import { seedHeroBanners } from '@/data/hero-banners-seed'
 import { seedPortfolio } from '@/data/portfolio-seed'
 import { seedReviews } from '@/data/reviews-seed'
+import { applyDemoProductServiceSeed } from '@/lib/static-machinery-images'
 import { slugify } from '@/lib/slugify'
+import { CMS_COLLECTION, CMS_DOCUMENT_ID, getMongoDb, isMongoConfigured } from '@/lib/mongodb'
+import type { Db } from 'mongodb'
+
+interface CmsDocument {
+  _id: string
+  data: CmsData
+  updatedAt?: string
+}
 
 const CMS_FILE = path.join(process.cwd(), 'data', 'cms.json')
 
@@ -26,7 +36,7 @@ function normalizeCms(data: Partial<CmsData>, seedDefaults = false): CmsData {
   }
 }
 
-function buildSeed(): CmsData {
+export function buildSeedCms(): CmsData {
   const categories: Category[] = productCategories.map((name) => ({
     id: slugify(name),
     name,
@@ -40,7 +50,7 @@ function buildSeed(): CmsData {
     { id: 'mining', name: 'Mining & Quarrying', type: 'service' },
   ]
 
-  return {
+  return applyDemoProductServiceSeed({
     categories: [...categories, ...serviceCategories],
     brandCategories: [],
     brands: [],
@@ -51,24 +61,71 @@ function buildSeed(): CmsData {
     reviews: seedReviews,
     heroBanners: seedHeroBanners,
     brochure: null,
-  }
+  })
 }
 
-export async function readCms(): Promise<CmsData> {
+export async function readCmsJsonFile(): Promise<CmsData | null> {
   try {
     const raw = await fs.readFile(CMS_FILE, 'utf-8')
     const json = JSON.parse(raw) as Partial<CmsData>
     return normalizeCms(json)
   } catch {
-    const seed = buildSeed()
-    await writeCms(seed)
-    return seed
+    return null
   }
 }
 
+async function writeCmsToMongo(db: Db, data: CmsData): Promise<void> {
+  await db.collection<CmsDocument>(CMS_COLLECTION).updateOne(
+    { _id: CMS_DOCUMENT_ID },
+    { $set: { data, updatedAt: new Date().toISOString() } },
+    { upsert: true },
+  )
+}
+
+async function readCmsFromMongo(): Promise<CmsData | null> {
+  const db = await getMongoDb()
+  if (!db) return null
+
+  const doc = await db.collection<CmsDocument>(CMS_COLLECTION).findOne({
+    _id: CMS_DOCUMENT_ID,
+  })
+
+  if (!doc?.data) return null
+  return normalizeCms(doc.data)
+}
+
+export async function readCms(): Promise<CmsData> {
+  noStore()
+
+  if (isMongoConfigured()) {
+    const existing = await readCmsFromMongo()
+    if (existing) return existing
+
+    const { seedDemoCmsToMongo } = await import('@/lib/seed-remote-cms')
+    return seedDemoCmsToMongo(false)
+  }
+
+  const fromFile = await readCmsJsonFile()
+  if (fromFile) return fromFile
+
+  const seed = buildSeedCms()
+  await writeCms(seed)
+  return seed
+}
+
 export async function writeCms(data: CmsData): Promise<void> {
+  if (isMongoConfigured()) {
+    const db = await getMongoDb()
+    if (!db) {
+      throw new Error('MongoDB is configured but the database connection failed')
+    }
+    await writeCmsToMongo(db, data)
+    return
+  }
+
   await fs.mkdir(path.dirname(CMS_FILE), { recursive: true })
-  await fs.writeFile(CMS_FILE, JSON.stringify(data, null, 2), 'utf-8')
+  const json = JSON.stringify(data, null, 2)
+  await fs.writeFile(CMS_FILE, json, 'utf-8')
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -154,30 +211,28 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | undefined>
   return cms.blogs.find((b) => b.slug === slug)
 }
 
-function mapHomepageProducts(products: Product[]): HomepageExpertiseItem[] {
-  return products
-    .filter((p) => p.showOnHomepage)
-    .map((p) => ({
-      kind: 'product' as const,
-      slug: p.slug,
-      title: p.title,
-      image: p.image,
-      summary: p.desc,
-      href: `/products/${p.slug}`,
-    }))
+function mapHomepageProducts(products: Product[], onlyFlagged = true): HomepageExpertiseItem[] {
+  const list = onlyFlagged ? products.filter((p) => p.showOnHomepage) : products
+  return list.map((p) => ({
+    kind: 'product' as const,
+    slug: p.slug,
+    title: p.title,
+    image: p.image,
+    summary: p.desc,
+    href: `/products/${p.slug}`,
+  }))
 }
 
-function mapHomepageServices(services: Service[]): HomepageExpertiseItem[] {
-  return services
-    .filter((s) => s.showOnHomepage)
-    .map((s) => ({
-      kind: 'service' as const,
-      slug: s.slug,
-      title: s.title,
-      image: s.image,
-      summary: s.summary,
-      href: `/services/${s.slug}`,
-    }))
+function mapHomepageServices(services: Service[], onlyFlagged = true): HomepageExpertiseItem[] {
+  const list = onlyFlagged ? services.filter((s) => s.showOnHomepage) : services
+  return list.map((s) => ({
+    kind: 'service' as const,
+    slug: s.slug,
+    title: s.title,
+    image: s.image,
+    summary: s.summary,
+    href: `/services/${s.slug}`,
+  }))
 }
 
 /** Products & services ticked “Show on homepage” in the dashboard. */
@@ -187,7 +242,8 @@ export async function getHomepageExpertiseItems(): Promise<HomepageExpertiseItem
 
   if (selected.length > 0) return selected
 
-  return mapHomepageServices(cms.services.slice(0, 4))
+  // No flags set — show first four services so the section is never empty.
+  return mapHomepageServices(cms.services.slice(0, 4), false)
 }
 
 export async function getPortfolioProjects(): Promise<PortfolioProject[]> {

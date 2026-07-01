@@ -11,7 +11,7 @@ import {
 import { CONTACT_SERVICE_OPTIONS } from '@/lib/site-content'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
 
-interface ContactForm {
+interface ContactFormFields {
   name: string
   email: string
   phone: string
@@ -20,21 +20,49 @@ interface ContactForm {
 }
 
 export default function ContactForm() {
-  const [form, setForm] = useState<ContactForm>({
+  const [form, setForm] = useState<ContactFormFields>({
     name: '',
     email: '',
     phone: '',
     service: '',
     message: '',
   })
+  const [submitting, setSubmitting] = useState(false)
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
+    if (feedback) setFeedback(null)
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    alert('Thank you! We will contact you soon.')
+    setSubmitting(true)
+    setFeedback(null)
+
+    try {
+      const res = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = (await res.json()) as { ok?: boolean; error?: string; message?: string }
+
+      if (!res.ok || !data.ok) {
+        setFeedback({ type: 'error', text: data.error || 'Failed to send enquiry. Please try again.' })
+        return
+      }
+
+      setFeedback({
+        type: 'success',
+        text: data.message || 'Thank you! We will contact you soon.',
+      })
+      setForm({ name: '', email: '', phone: '', service: '', message: '' })
+    } catch {
+      setFeedback({ type: 'error', text: 'Something went wrong. Please try again.' })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const info = [{ icon: Clock, title: 'Working Hours', desc: 'Mon - Sat: 9AM - 7PM' }]
@@ -107,7 +135,8 @@ export default function ContactForm() {
                   onChange={handleChange}
                   placeholder="Full Name"
                   required
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none"
+                  disabled={submitting}
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none disabled:opacity-60"
                 />
                 <input
                   name="email"
@@ -116,7 +145,8 @@ export default function ContactForm() {
                   onChange={handleChange}
                   placeholder="Email Address"
                   required
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none"
+                  disabled={submitting}
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none disabled:opacity-60"
                 />
               </div>
               <input
@@ -124,13 +154,15 @@ export default function ContactForm() {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="Phone Number"
-                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none"
+                disabled={submitting}
+                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none disabled:opacity-60"
               />
               <select
                 name="service"
                 value={form.service}
                 onChange={handleChange}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-500 transition-colors focus:border-primary focus:outline-none"
+                disabled={submitting}
+                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-500 transition-colors focus:border-primary focus:outline-none disabled:opacity-60"
               >
                 <option value="">Select requirement</option>
                 {CONTACT_SERVICE_OPTIONS.map((option) => (
@@ -143,10 +175,23 @@ export default function ContactForm() {
                 onChange={handleChange}
                 placeholder="Your Message"
                 rows={5}
-                className="resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none"
+                disabled={submitting}
+                className="resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none disabled:opacity-60"
               />
-              <button type="submit" className="btn-primary justify-center py-4 text-base">
-                Send Message
+              {feedback && (
+                <p
+                  className={`rounded-xl px-4 py-3 text-sm ${
+                    feedback.type === 'success'
+                      ? 'bg-emerald-50 text-emerald-800'
+                      : 'bg-red-50 text-red-800'
+                  }`}
+                  role="status"
+                >
+                  {feedback.text}
+                </p>
+              )}
+              <button type="submit" disabled={submitting} className="btn-primary justify-center py-4 text-base disabled:opacity-60">
+                {submitting ? 'Sending…' : 'Send Message'}
                 <ArrowUpRight className="h-5 w-5" strokeWidth={2.2} />
               </button>
             </form>

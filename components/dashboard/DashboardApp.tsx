@@ -10,6 +10,8 @@ import DashboardDrawer from '@/components/dashboard/DashboardDrawer'
 import HeroBannersDashboardSection from '@/components/dashboard/HeroBannersDashboardSection'
 import PointListEditor from '@/components/dashboard/PointListEditor'
 import ProductCompaniesEditor from '@/components/dashboard/ProductCompaniesEditor'
+import EnquiriesDashboardSection from '@/components/dashboard/EnquiriesDashboardSection'
+import NewsletterDashboardSection from '@/components/dashboard/NewsletterDashboardSection'
 import RecentWorkDashboardSection from '@/components/dashboard/RecentWorkDashboardSection'
 import ReviewsDashboardSection from '@/components/dashboard/ReviewsDashboardSection'
 import { COMPANY_NAME } from '@/lib/brand'
@@ -18,7 +20,6 @@ import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
 import { normalizeProductCompanies } from '@/lib/product-companies'
 import {
-  getDashboardData,
   loginAction,
   logoutAction,
   removeBlogAction,
@@ -31,8 +32,21 @@ import {
   saveServiceAction,
 } from '@/app/dashboard/actions'
 import { runDashboardSave } from '@/components/dashboard/dashboard-save'
+import DashboardToast from '@/components/dashboard/DashboardToast'
+import { useDashboardToast } from '@/components/dashboard/useDashboardToast'
 
-type Tab = 'products' | 'services' | 'categories' | 'brands' | 'hero' | 'blogs' | 'portfolio' | 'reviews' | 'brochure'
+type Tab =
+  | 'products'
+  | 'services'
+  | 'categories'
+  | 'brands'
+  | 'hero'
+  | 'blogs'
+  | 'portfolio'
+  | 'reviews'
+  | 'brochure'
+  | 'enquiries'
+  | 'newsletter'
 
 const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'products', label: 'Products' },
@@ -43,7 +57,9 @@ const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'portfolio', label: 'Recent work' },
   { id: 'reviews', label: 'Reviews' },
   { id: 'blogs', label: 'Blogs' },
-  { id: 'brochure', label: 'Brochure' },
+  { id: 'brochure', label: 'Catalog' },
+  { id: 'enquiries', label: 'Enquiries' },
+  { id: 'newsletter', label: 'Newsletter' },
 ]
 
 function isDashboardTab(value: string | null): value is Tab {
@@ -105,7 +121,7 @@ export default function DashboardApp({
   const [tab, setTab] = useState<Tab>('products')
   const [cms, setCms] = useState<CmsData | null>(initialCms)
   const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState('')
+  const { toast, showMsg } = useDashboardToast()
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [editingService, setEditingService] = useState<Service | null>(null)
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null)
@@ -136,11 +152,6 @@ export default function DashboardApp({
     setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
     setOriginalSlug('')
   }
-
-  const refreshCms = useCallback(async () => {
-    const data = await getDashboardData()
-    if (data.cms) setCms(data.cms)
-  }, [])
 
   useEffect(() => {
     const tabFromUrl = searchParams.get('tab')
@@ -180,16 +191,11 @@ export default function DashboardApp({
     setCms(null)
   }
 
-  const showMsg = (text: string) => {
-    setMessage(text)
-    setTimeout(() => setMessage(''), 3000)
-  }
-
   const saveProduct = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingProduct) return
     if (!editingProduct.categoryId) {
-      showMsg('Please select a product category')
+      showMsg('Please select a product category', 'error')
       return
     }
     const payload: Product = {
@@ -205,7 +211,6 @@ export default function DashboardApp({
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setEditingProduct(null)
           setOriginalSlug('')
@@ -225,7 +230,6 @@ export default function DashboardApp({
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setEditingService(null)
           setOriginalSlug('')
@@ -241,7 +245,7 @@ export default function DashboardApp({
     await runDashboardSave(
       setSaving,
       () => removeProductAction(slug),
-      { showMsg, setCms, refreshCms, successMessage: 'Product deleted', errorMessage: 'Failed to delete product' },
+      { showMsg, setCms, successMessage: 'Product deleted', errorMessage: 'Failed to delete product' },
     )
   }
 
@@ -250,14 +254,14 @@ export default function DashboardApp({
     await runDashboardSave(
       setSaving,
       () => removeServiceAction(slug),
-      { showMsg, setCms, refreshCms, successMessage: 'Service deleted', errorMessage: 'Failed to delete service' },
+      { showMsg, setCms, successMessage: 'Service deleted', errorMessage: 'Failed to delete service' },
     )
   }
 
   const saveCategory = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!categoryForm.type) {
-      showMsg('Please select a category type')
+      showMsg('Please select a category type', 'error')
       return
     }
     const isEdit = Boolean(categoryForm.id && cms?.categories.some((c) => c.id === categoryForm.id))
@@ -267,7 +271,6 @@ export default function DashboardApp({
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setCategoryDrawerOpen(false)
           setCategoryForm({ id: '', name: '', type: '', description: '', image: '', showInFooter: false })
@@ -283,20 +286,28 @@ export default function DashboardApp({
     await runDashboardSave(
       setSaving,
       () => removeCategoryAction(id),
-      { showMsg, setCms, refreshCms, successMessage: 'Category deleted', errorMessage: 'Failed to delete category' },
+      { showMsg, setCms, successMessage: 'Category deleted', errorMessage: 'Failed to delete category' },
     )
   }
 
   const saveBlog = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingBlog) return
+    if (!editingBlog.title?.trim()) {
+      showMsg('Title is required', 'error')
+      return
+    }
+    const isEdit = Boolean(originalSlug && cms?.blogs.some((b) => b.slug === originalSlug))
+    const payload: BlogPost = {
+      ...editingBlog,
+      body: (editingBlog.body ?? []).map((paragraph) => paragraph.trim()).filter(Boolean),
+    }
     await runDashboardSave(
       setSaving,
-      () => saveBlogAction(editingBlog, originalSlug || undefined),
+      () => saveBlogAction(payload, isEdit ? originalSlug : undefined),
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setEditingBlog(null)
           setOriginalSlug('')
@@ -312,7 +323,7 @@ export default function DashboardApp({
     await runDashboardSave(
       setSaving,
       () => removeBlogAction(slug),
-      { showMsg, setCms, refreshCms, successMessage: 'Blog post deleted', errorMessage: 'Failed to delete blog post' },
+      { showMsg, setCms, successMessage: 'Blog post deleted', errorMessage: 'Failed to delete blog post' },
     )
   }
 
@@ -377,7 +388,7 @@ export default function DashboardApp({
         </div>
       </header>
 
-      {message && <div className="dashboard-toast">{message}</div>}
+      <DashboardToast toast={toast} />
 
       <div className="dashboard-body">
         <aside className="dashboard-sidebar">
@@ -424,8 +435,8 @@ export default function DashboardApp({
                     type="button"
                     className="btn-primary text-sm py-2.5 px-5"
                     onClick={() => {
+                      closeDrawer()
                       setEditingProduct(emptyProduct())
-                      setOriginalSlug('')
                     }}
                   >
                     + Add product
@@ -463,6 +474,7 @@ export default function DashboardApp({
                         type="button"
                         className="dashboard-btn-edit"
                         onClick={() => {
+                          closeDrawer()
                           setEditingProduct({ ...p })
                           setOriginalSlug(p.slug)
                         }}
@@ -494,8 +506,8 @@ export default function DashboardApp({
                     type="button"
                     className="btn-primary text-sm py-2.5 px-5"
                     onClick={() => {
+                      closeDrawer()
                       setEditingService(emptyService())
-                      setOriginalSlug('')
                     }}
                   >
                     + Add service
@@ -519,6 +531,7 @@ export default function DashboardApp({
                         type="button"
                         className="dashboard-btn-edit"
                         onClick={() => {
+                          closeDrawer()
                           setEditingService({ ...s })
                           setOriginalSlug(s.slug)
                         }}
@@ -605,24 +618,28 @@ export default function DashboardApp({
           )}
 
           {tab === 'brands' && cms && (
-            <BrandsDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
+            <BrandsDashboardSection cms={cms} setCms={setCms} showMsg={showMsg} />
           )}
 
           {tab === 'hero' && cms && (
-            <HeroBannersDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
+            <HeroBannersDashboardSection cms={cms} setCms={setCms} showMsg={showMsg} />
           )}
 
           {tab === 'portfolio' && cms && (
-            <RecentWorkDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
+            <RecentWorkDashboardSection cms={cms} setCms={setCms} showMsg={showMsg} />
           )}
 
           {tab === 'reviews' && cms && (
-            <ReviewsDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
+            <ReviewsDashboardSection cms={cms} setCms={setCms} showMsg={showMsg} />
           )}
 
           {tab === 'brochure' && cms && (
-            <BrochureDashboardSection cms={cms} setCms={setCms} refreshCms={refreshCms} showMsg={showMsg} />
+            <BrochureDashboardSection cms={cms} setCms={setCms} showMsg={showMsg} />
           )}
+
+          {tab === 'enquiries' && <EnquiriesDashboardSection showMsg={showMsg} />}
+
+          {tab === 'newsletter' && <NewsletterDashboardSection showMsg={showMsg} />}
 
           {tab === 'blogs' && cms && (
             <section className="dashboard-panel">
@@ -638,8 +655,8 @@ export default function DashboardApp({
                     type="button"
                     className="btn-primary text-sm py-2.5 px-5"
                     onClick={() => {
+                      closeDrawer()
                       setEditingBlog(emptyBlog())
-                      setOriginalSlug('')
                     }}
                   >
                     + Add post
@@ -662,6 +679,7 @@ export default function DashboardApp({
                         type="button"
                         className="dashboard-btn-edit"
                         onClick={() => {
+                          closeDrawer()
                           setEditingBlog({ ...post })
                           setOriginalSlug(post.slug)
                         }}

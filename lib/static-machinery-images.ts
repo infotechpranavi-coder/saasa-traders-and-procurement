@@ -1,3 +1,5 @@
+import type { CmsData } from '@/types/cms'
+
 /** Local construction machinery photos in /public/statsic */
 export const STATIC_MACHINERY_IMAGES = {
   batchMix: '/statsic/batchmix.jpeg',
@@ -27,4 +29,25 @@ export const DEMO_SERVICE_IMAGES: Record<string, string> = {
   'buses-transport': STATIC_MACHINERY_IMAGES.roadRoller,
   'energy-engines-generators': STATIC_MACHINERY_IMAGES.drumMix,
   'mining-quarrying': STATIC_MACHINERY_IMAGES.bitumenSpreader,
+}
+
+/** Force demo seed products/services to /statsic photos and homepage expertise visibility. */
+export function applyDemoProductServiceSeed<T extends Pick<CmsData, 'products' | 'services'>>(data: T): T {
+  return {
+    ...data,
+    products: data.products.map((product) => ({
+      ...product,
+      image: DEMO_PRODUCT_IMAGES[product.slug] ?? product.image,
+      showOnHomepage: true,
+    })),
+    services: data.services.map((service) => ({
+      ...service,
+      image: DEMO_SERVICE_IMAGES[service.slug] ?? service.image,
+      showOnHomepage: true,
+    })),
+  }
+}
+
+export function isStatsicImagePath(path: string): boolean {
+  return path.startsWith('/statsic/')
 }

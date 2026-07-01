@@ -14,17 +14,17 @@ const emptyReview = (): CustomerReview => ({
   image: '',
 })
 
+import type { ShowDashboardMsg } from '@/components/dashboard/useDashboardToast'
+
 interface ReviewsDashboardSectionProps {
   cms: CmsData
   setCms: (cms: CmsData) => void
-  refreshCms: () => Promise<void>
-  showMsg: (msg: string) => void
+  showMsg: ShowDashboardMsg
 }
 
 export default function ReviewsDashboardSection({
   cms,
   setCms,
-  refreshCms,
   showMsg,
 }: ReviewsDashboardSectionProps) {
   const [saving, setSaving] = useState(false)
@@ -35,16 +35,19 @@ export default function ReviewsDashboardSection({
     e.preventDefault()
     if (!editingReview) return
     if (!editingReview.name?.trim() || !editingReview.quote?.trim()) {
-      showMsg('Customer name and review text are required')
+      showMsg('Customer name and review text are required', 'error')
       return
     }
     await runDashboardSave(
       setSaving,
-      () => saveReviewAction(editingReview, originalSlug || undefined),
+      () =>
+        saveReviewAction(
+          editingReview,
+          originalSlug && (cms.reviews ?? []).some((r) => r.slug === originalSlug) ? originalSlug : undefined,
+        ),
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setEditingReview(null)
           setOriginalSlug('')
@@ -63,7 +66,6 @@ export default function ReviewsDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         successMessage: 'Review deleted',
         errorMessage: 'Failed to delete',
       },

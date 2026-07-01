@@ -1,6 +1,5 @@
 /**
- * Remote image URLs for CMS paths and static site sections.
- * Local /public files are optional — these always resolve to construction machinery photos.
+ * CMS image resolution — local /public paths first, remote URLs as-is, Pexels only on error.
  */
 const pexels = (id: number, w = 1400) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`
@@ -21,7 +20,7 @@ export const CONSTRUCTION_PHOTOS = {
 
 export const DEFAULT_IMAGE = CONSTRUCTION_PHOTOS.excavator
 
-const REMOTE_IMAGE_MAP: Record<string, string> = {
+export const REMOTE_IMAGE_MAP: Record<string, string> = {
   '/images/products/hydraulic-pump.jpg': CONSTRUCTION_PHOTOS.excavator,
   '/images/products/track-chains.jpg': CONSTRUCTION_PHOTOS.bulldozer,
   '/images/products/bucket-teeth.jpg': CONSTRUCTION_PHOTOS.excavatorOrange,
@@ -61,12 +60,23 @@ export function resolveCmsImage(src?: string): string {
   const trimmed = src?.trim()
   if (!trimmed) return DEFAULT_IMAGE
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed
-  if (trimmed.startsWith('/statsic/')) return encodeURI(trimmed)
   if (REMOTE_IMAGE_MAP[trimmed]) return REMOTE_IMAGE_MAP[trimmed]
+  // Local public assets (statsic, images, uploads) — served from /public
   if (trimmed.startsWith('/')) return encodeURI(trimmed)
   return DEFAULT_IMAGE
 }
 
+const STATIC_FALLBACKS: Record<string, string> = {
+  '/statsic/jcb.jpg': CONSTRUCTION_PHOTOS.excavatorOrange,
+  '/statsic/batchmix.jpeg': CONSTRUCTION_PHOTOS.constructionSite,
+  '/statsic/road roller.jpg': CONSTRUCTION_PHOTOS.constructionWorkers,
+  '/statsic/drum mix.jpeg': CONSTRUCTION_PHOTOS.crane,
+  '/statsic/bitumen soreder.jpg': CONSTRUCTION_PHOTOS.miningTruck,
+}
+
 export function getCmsImageFallback(src?: string): string {
-  return resolveCmsImage(src)
+  const trimmed = src?.trim()
+  if (trimmed && REMOTE_IMAGE_MAP[trimmed]) return REMOTE_IMAGE_MAP[trimmed]
+  if (trimmed && STATIC_FALLBACKS[trimmed]) return STATIC_FALLBACKS[trimmed]
+  return DEFAULT_IMAGE
 }

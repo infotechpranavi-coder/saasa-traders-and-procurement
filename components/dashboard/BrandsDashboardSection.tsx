@@ -25,17 +25,17 @@ const emptyBrand = (): Brand => ({
 
 type BrandsSubTab = 'categories' | 'companies'
 
+import type { ShowDashboardMsg } from '@/components/dashboard/useDashboardToast'
+
 interface BrandsDashboardSectionProps {
   cms: CmsData
   setCms: (cms: CmsData) => void
-  refreshCms: () => Promise<void>
-  showMsg: (msg: string) => void
+  showMsg: ShowDashboardMsg
 }
 
 export default function BrandsDashboardSection({
   cms,
   setCms,
-  refreshCms,
   showMsg,
 }: BrandsDashboardSectionProps) {
   const [saving, setSaving] = useState(false)
@@ -62,7 +62,6 @@ export default function BrandsDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => setBrandCategoryForm(null),
         successMessage: 'Brand category saved',
         errorMessage: 'Failed to save brand category',
@@ -78,7 +77,6 @@ export default function BrandsDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         successMessage: 'Brand category deleted',
         errorMessage: 'Failed to delete',
       },
@@ -89,7 +87,7 @@ export default function BrandsDashboardSection({
     e.preventDefault()
     if (!editingBrand) return
     if (!editingBrand.categoryId) {
-      showMsg('Select a brand category')
+      showMsg('Select a brand category', 'error')
       return
     }
     await runDashboardSave(
@@ -98,7 +96,6 @@ export default function BrandsDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         onSuccess: () => {
           setEditingBrand(null)
           setOriginalSlug('')
@@ -117,7 +114,6 @@ export default function BrandsDashboardSection({
       {
         showMsg,
         setCms,
-        refreshCms,
         successMessage: 'Company deleted',
         errorMessage: 'Failed to delete',
       },
