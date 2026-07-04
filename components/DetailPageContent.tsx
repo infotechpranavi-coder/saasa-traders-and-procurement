@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import CmsImage from './CmsImage'
+import ProductImageGallery from './ProductImageGallery'
 import type { ProductCompany } from '@/types/cms'
 
 interface DetailPageContentProps {
   image: string
+  images?: string[]
   title: string
   label: string
   overview: string[]
@@ -18,6 +19,7 @@ interface DetailPageContentProps {
 
 export default function DetailPageContent({
   image,
+  images,
   title,
   label,
   overview,
@@ -27,6 +29,9 @@ export default function DetailPageContent({
   secondaryItems,
   companies = [],
 }: DetailPageContentProps) {
+  const galleryImages =
+    images && images.length > 0 ? images : image.trim() ? [image] : []
+
   return (
     <article className="product-detail-article">
       <div className="product-detail-sheet">
@@ -37,9 +42,9 @@ export default function DetailPageContent({
 
         <div className="product-detail-grid">
           <div className="product-detail-main">
-            <div className="product-detail-media">
-              <CmsImage src={image} alt={title} fill priority />
-            </div>
+            {galleryImages.length > 0 && (
+              <ProductImageGallery images={galleryImages} title={title} />
+            )}
 
             <div className="product-detail-overview">
               {overview.map((paragraph) => (

@@ -37,6 +37,8 @@ export interface Product {
   label: string
   categoryId?: string
   image: string
+  /** Additional product photos for the detail-page gallery (first item mirrors `image`). */
+  images?: string[]
   desc: string
   specs: string[]
   overview: string[]

@@ -19,7 +19,9 @@ import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from
 import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
 import { normalizeProductCompanies } from '@/lib/product-companies'
+import { getProductImages, normalizeProductImageFields } from '@/lib/product-images'
 import ImageUrlField from '@/components/dashboard/ImageUrlField'
+import MultiImageUrlField from '@/components/dashboard/MultiImageUrlField'
 import BulkImportPanel from '@/components/superadmin/BulkImportPanel'
 import {
   loginAction,
@@ -74,6 +76,7 @@ const emptyProduct = (): Product => ({
   title: '',
   label: '',
   image: '',
+  images: [],
   desc: '',
   specs: [],
   overview: [],
@@ -212,8 +215,14 @@ export default function DashboardApp({
       showMsg('Please select a product category', 'error')
       return
     }
+    const { image, images } = normalizeProductImageFields(
+      editingProduct.image,
+      editingProduct.images?.length ? editingProduct.images : getProductImages(editingProduct),
+    )
     const payload: Product = {
       ...editingProduct,
+      image,
+      images,
       overview: editingProduct.overview.map((s) => s.trim()).filter(Boolean),
       features: editingProduct.features.map((s) => s.trim()).filter(Boolean),
       applications: editingProduct.applications.map((s) => s.trim()).filter(Boolean),
@@ -776,11 +785,20 @@ export default function DashboardApp({
                     ))}
                   </select>
                 </div>
-                <ImageUrlField
-                  label="Product image"
-                  imagesOnly
-                  value={editingProduct.image}
-                  onChange={(v) => setEditingProduct({ ...editingProduct, image: v })}
+                <MultiImageUrlField
+                  label="Product images"
+                  images={
+                    editingProduct.images?.length
+                      ? editingProduct.images
+                      : getProductImages(editingProduct)
+                  }
+                  onChange={(images) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      images,
+                      image: images.find((s) => s.trim())?.trim() ?? '',
+                    })
+                  }
                 />
                 <Field label="Slug" value={editingProduct.slug} onChange={(v) => setEditingProduct({ ...editingProduct, slug: v })} />
               </div>

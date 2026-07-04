@@ -2,6 +2,7 @@ import { queueNewsletterContentAlert } from '@/lib/email/newsletter-notify'
 import { readCms, writeCms } from '@/lib/cms'
 import { revalidatePublicPages } from '@/lib/revalidate-public'
 import { slugify } from '@/lib/slugify'
+import { normalizeProductImageFields } from '@/lib/product-images'
 import { normalizeProductCompanies } from '@/lib/product-companies'
 import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
 
@@ -34,13 +35,15 @@ function normalizeProduct(body: Product, fallbackSlug?: string): Product | null 
   if (!title) return null
 
   const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(title)
+  const { image, images } = normalizeProductImageFields(body.image, body.images)
 
   return {
     ...body,
     slug,
     title,
     label: body.label?.trim() || '',
-    image: body.image?.trim() || '',
+    image,
+    images,
     desc: body.desc?.trim() || '',
     specs: body.specs ?? [],
     overview: body.overview ?? [],

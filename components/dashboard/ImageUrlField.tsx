@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { uploadCmsFile, CMS_IMAGE_ACCEPT } from '@/lib/upload-cms-file'
 
 interface ImageUrlFieldProps {
   label: string
@@ -27,31 +28,24 @@ export default function ImageUrlField({
   const uploadFile = async (file: File) => {
     setUploading(true)
     setError('')
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-      const res = await fetch('/api/upload', { method: 'POST', body: formData })
-      const data = (await res.json()) as { ok?: boolean; url?: string; error?: string }
-      if (!res.ok || !data.url) {
-        setError(data.error || 'Upload failed')
-        return
-      }
-      onChange(data.url)
-    } catch {
-      setError('Upload failed')
-    } finally {
-      setUploading(false)
-    }
+    const result = await uploadCmsFile(file)
+    if (result.ok) onChange(result.url)
+    else setError(result.error)
+    setUploading(false)
   }
 
   const accept = imagesOnly
-    ? 'image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif'
-    : 'image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,.mov'
+    ? CMS_IMAGE_ACCEPT
+    : `${CMS_IMAGE_ACCEPT},video/mp4,video/webm,video/quicktime,.mov`
 
   return (
     <div>
-      <label className="mb-1 block text-xs font-semibold text-gray-600">{label}</label>
-      <p className="mb-1.5 text-xs text-gray-500">{hint ?? defaultHint}</p>
+      {label ? (
+        <>
+          <label className="mb-1 block text-xs font-semibold text-gray-600">{label}</label>
+          <p className="mb-1.5 text-xs text-gray-500">{hint ?? defaultHint}</p>
+        </>
+      ) : null}
       <input
         className="dashboard-input"
         value={value}

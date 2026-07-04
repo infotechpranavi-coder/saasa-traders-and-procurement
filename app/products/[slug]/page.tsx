@@ -34,6 +34,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
           >
             <DetailPageContent
               image={product.image}
+              images={product.images}
               title={product.title}
               label={product.label}
               overview={product.overview}
