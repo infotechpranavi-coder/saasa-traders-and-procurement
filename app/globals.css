@@ -2355,6 +2355,70 @@ html {
   }
 }
 
+.bulk-import-panel {
+  margin: 0 1.35rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px dashed #fdba74;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff7ed 0%, #fff 100%);
+}
+
+@media (min-width: 768px) {
+  .bulk-import-panel {
+    margin: 0 1.5rem 0;
+  }
+}
+
+.bulk-import-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.bulk-import-panel-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #9a3412;
+}
+
+.bulk-import-panel-desc {
+  margin: 0.35rem 0 0;
+  max-width: 42rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #57534e;
+}
+
+.bulk-import-panel-desc code {
+  font-size: 0.75rem;
+  background: #ffedd5;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.bulk-import-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.bulk-import-panel-actions .dashboard-btn-secondary,
+.bulk-import-panel-actions .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bulk-import-panel-report {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: #44403c;
+}
+
 .dashboard-table-scroll {
   flex: 1;
   min-height: 0;

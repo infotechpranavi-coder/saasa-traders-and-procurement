@@ -1,6 +1,8 @@
 import { uploadToCloudinary, isCloudinaryConfigured } from '@/lib/cloudinary-storage'
 import path from 'path'
-import { isAdminAuthenticated } from '@/lib/auth'
+import fs from 'fs/promises'
+import { randomUUID } from 'crypto'
+import { isCmsEditorAuthenticated } from '@/lib/auth'
 
 const IMAGE_MAX_BYTES = 8 * 1024 * 1024
 const VIDEO_MAX_BYTES = 50 * 1024 * 1024
@@ -21,13 +23,23 @@ function detectResourceType(file: File): CloudinaryResourceType | null {
   return null
 }
 
-export async function POST(request: Request) {
-  if (!(await isAdminAuthenticated())) {
-    return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
-  }
+async function saveToLocalUploads(
+  buffer: Buffer,
+  originalName: string,
+  resourceType: CloudinaryResourceType,
+): Promise<string> {
+  const ext = path.extname(originalName).toLowerCase() || (resourceType === 'image' ? '.jpg' : '.mp4')
+  const subfolder = resourceType === 'video' ? 'videos' : 'images'
+  const filename = `${randomUUID()}${ext}`
+  const dir = path.join(process.cwd(), 'public', 'uploads', subfolder)
+  await fs.mkdir(dir, { recursive: true })
+  await fs.writeFile(path.join(dir, filename), buffer)
+  return `/uploads/${subfolder}/${filename}`
+}
 
-  if (!isCloudinaryConfigured()) {
-    return Response.json({ ok: false, error: 'Cloudinary is not configured in .env' }, { status: 503 })
+export async function POST(request: Request) {
+  if (!(await isCmsEditorAuthenticated())) {
+    return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -58,17 +70,27 @@ export async function POST(request: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer())
-    const uploaded = await uploadToCloudinary(buffer, {
-      originalName: file.name,
-      resourceType,
-      subfolder: resourceType === 'video' ? 'videos' : 'images',
-    })
 
+    if (isCloudinaryConfigured()) {
+      const uploaded = await uploadToCloudinary(buffer, {
+        originalName: file.name,
+        resourceType,
+        subfolder: resourceType === 'video' ? 'videos' : 'images',
+      })
+
+      return Response.json({
+        ok: true,
+        url: uploaded.url,
+        publicId: uploaded.publicId,
+        resourceType: uploaded.resourceType,
+      })
+    }
+
+    const localUrl = await saveToLocalUploads(buffer, file.name, resourceType)
     return Response.json({
       ok: true,
-      url: uploaded.url,
-      publicId: uploaded.publicId,
-      resourceType: uploaded.resourceType,
+      url: localUrl,
+      resourceType,
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Upload failed'

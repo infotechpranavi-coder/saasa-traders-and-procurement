@@ -19,6 +19,8 @@ import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from
 import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
 import { normalizeProductCompanies } from '@/lib/product-companies'
+import ImageUrlField from '@/components/dashboard/ImageUrlField'
+import BulkImportPanel from '@/components/superadmin/BulkImportPanel'
 import {
   loginAction,
   logoutAction,
@@ -31,6 +33,7 @@ import {
   saveProductAction,
   saveServiceAction,
 } from '@/app/dashboard/actions'
+import { loginSuperAdminAction, logoutSuperAdminAction } from '@/app/superadmin/actions'
 import { runDashboardSave } from '@/components/dashboard/dashboard-save'
 import DashboardToast from '@/components/dashboard/DashboardToast'
 import { useDashboardToast } from '@/components/dashboard/useDashboardToast'
@@ -108,9 +111,13 @@ const emptyBlog = (): BlogPost => ({
 export default function DashboardApp({
   initialAuthenticated,
   initialCms,
+  mode = 'admin',
+  enableBulkImport = false,
 }: {
   initialAuthenticated: boolean
   initialCms: CmsData | null
+  mode?: 'admin' | 'superadmin'
+  enableBulkImport?: boolean
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -174,7 +181,10 @@ export default function DashboardApp({
   const login = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoginError('')
-    const result = await loginAction(username, password)
+    const result =
+      mode === 'superadmin'
+        ? await loginSuperAdminAction(username, password)
+        : await loginAction(username, password)
     if (!result.ok) {
       setLoginError(result.error || 'Invalid username or password')
       return
@@ -186,7 +196,11 @@ export default function DashboardApp({
   }
 
   const logout = async () => {
-    await logoutAction()
+    if (mode === 'superadmin') {
+      await logoutSuperAdminAction()
+    } else {
+      await logoutAction()
+    }
     setAuthenticated(false)
     setCms(null)
   }
@@ -334,8 +348,14 @@ export default function DashboardApp({
           <div className="mb-5 flex justify-center">
             <BrandLogo className="brand-logo brand-logo--nav mx-auto" />
           </div>
-          <h1 className="hp-title text-2xl mb-1 text-center">{COMPANY_NAME} Admin</h1>
-          <p className="hp-body text-sm mb-6">Sign in with your admin username and password to manage site content.</p>
+          <h1 className="hp-title text-2xl mb-1 text-center">
+            {COMPANY_NAME} {mode === 'superadmin' ? 'Super Admin' : 'Admin'}
+          </h1>
+          <p className="hp-body text-sm mb-6">
+            {mode === 'superadmin'
+              ? 'Superadmin sign-in — bulk Excel import plus full content management.'
+              : 'Sign in with your admin username and password to manage site content.'}
+          </p>
           <label className="block text-sm font-semibold text-gray-700 mb-1">Username</label>
           <input
             type="text"
@@ -376,7 +396,9 @@ export default function DashboardApp({
       <header className="dashboard-header">
         <div className="flex items-center gap-3">
           <BrandLogo className="brand-logo brand-logo--dashboard" />
-          <span className="site-logo-text text-xl text-white">{COMPANY_NAME} Dashboard</span>
+          <span className="site-logo-text text-xl text-white">
+            {COMPANY_NAME} {mode === 'superadmin' ? 'Super Admin' : 'Dashboard'}
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/" className="text-sm text-white/80 hover:text-white">
@@ -458,6 +480,9 @@ export default function DashboardApp({
                   </select>
                 </div>
               </div>
+              {enableBulkImport && cms && (
+                <BulkImportPanel kind="products" setCms={setCms} showMsg={showMsg} />
+              )}
               <div className="dashboard-table-scroll">
                 <div className="dashboard-table">
                 {filteredDashboardProducts.map((p) => (
@@ -514,6 +539,9 @@ export default function DashboardApp({
                   </button>
                 </div>
               </div>
+              {enableBulkImport && cms && (
+                <BulkImportPanel kind="services" setCms={setCms} showMsg={showMsg} />
+              )}
               <div className="dashboard-table-scroll">
                 <div className="dashboard-table">
                 {cms.services.map((s) => (
@@ -571,6 +599,9 @@ export default function DashboardApp({
                   </button>
                 </div>
               </div>
+              {enableBulkImport && cms && (
+                <BulkImportPanel kind="categories" setCms={setCms} showMsg={showMsg} />
+              )}
               <div className="dashboard-table-scroll">
                 <div className="dashboard-table">
                 {cms.categories.map((c) => {
@@ -745,7 +776,12 @@ export default function DashboardApp({
                     ))}
                   </select>
                 </div>
-                <Field label="Image URL" value={editingProduct.image} onChange={(v) => setEditingProduct({ ...editingProduct, image: v })} />
+                <ImageUrlField
+                  label="Product image"
+                  imagesOnly
+                  value={editingProduct.image}
+                  onChange={(v) => setEditingProduct({ ...editingProduct, image: v })}
+                />
                 <Field label="Slug" value={editingProduct.slug} onChange={(v) => setEditingProduct({ ...editingProduct, slug: v })} />
               </div>
             </div>
@@ -857,7 +893,12 @@ export default function DashboardApp({
                     ))}
                   </select>
                 </div>
-                <Field label="Image URL" value={editingService.image} onChange={(v) => setEditingService({ ...editingService, image: v })} />
+                <ImageUrlField
+                  label="Service image"
+                  imagesOnly
+                  value={editingService.image}
+                  onChange={(v) => setEditingService({ ...editingService, image: v })}
+                />
                 <TextArea label="Summary" value={editingService.summary} onChange={(v) => setEditingService({ ...editingService, summary: v })} rows={2} />
               </div>
             </div>
@@ -951,8 +992,9 @@ export default function DashboardApp({
               onChange={(v) => setCategoryForm({ ...categoryForm, description: v })}
               rows={3}
             />
-            <Field
-              label="Image URL (category page hero)"
+            <ImageUrlField
+              label="Category image (page hero)"
+              imagesOnly
               value={categoryForm.image}
               onChange={(v) => setCategoryForm({ ...categoryForm, image: v })}
             />
@@ -1006,7 +1048,12 @@ export default function DashboardApp({
               <div className="space-y-3">
                 <Field label="Title" value={editingBlog.title} onChange={(v) => setEditingBlog({ ...editingBlog, title: v })} />
                 <Field label="Slug" value={editingBlog.slug} onChange={(v) => setEditingBlog({ ...editingBlog, slug: v })} />
-                <Field label="Image URL" value={editingBlog.image} onChange={(v) => setEditingBlog({ ...editingBlog, image: v })} />
+                <ImageUrlField
+                  label="Blog image"
+                  imagesOnly
+                  value={editingBlog.image}
+                  onChange={(v) => setEditingBlog({ ...editingBlog, image: v })}
+                />
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Author" value={editingBlog.author} onChange={(v) => setEditingBlog({ ...editingBlog, author: v })} />
                   <Field label="Date" value={editingBlog.date} onChange={(v) => setEditingBlog({ ...editingBlog, date: v })} />

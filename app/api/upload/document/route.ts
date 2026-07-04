@@ -1,5 +1,5 @@
 import path from 'path'
-import { isAdminAuthenticated } from '@/lib/auth'
+import { isCmsEditorAuthenticated } from '@/lib/auth'
 import { isCloudinaryConfigured, uploadToCloudinary } from '@/lib/cloudinary-storage'
 
 const MAX_BYTES = 15 * 1024 * 1024
@@ -15,7 +15,7 @@ function isPdf(file: File) {
 }
 
 export async function POST(request: Request) {
-  if (!(await isAdminAuthenticated())) {
+  if (!(await isCmsEditorAuthenticated())) {
     return Response.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
   }
 

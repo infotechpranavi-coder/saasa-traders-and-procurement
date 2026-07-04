@@ -7,11 +7,22 @@ interface ImageUrlFieldProps {
   hint?: string
   value: string
   onChange: (value: string) => void
+  /** When true, only image files (no video). Default false. */
+  imagesOnly?: boolean
 }
 
-export default function ImageUrlField({ label, hint, value, onChange }: ImageUrlFieldProps) {
+export default function ImageUrlField({
+  label,
+  hint,
+  value,
+  onChange,
+  imagesOnly = false,
+}: ImageUrlFieldProps) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
+
+  const defaultHint =
+    'Paste an image URL or path (e.g. https://… or /statsic/jcb.jpg), or upload a file from your computer.'
 
   const uploadFile = async (file: File) => {
     setUploading(true)
@@ -33,22 +44,26 @@ export default function ImageUrlField({ label, hint, value, onChange }: ImageUrl
     }
   }
 
+  const accept = imagesOnly
+    ? 'image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif'
+    : 'image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,.mov'
+
   return (
     <div>
       <label className="mb-1 block text-xs font-semibold text-gray-600">{label}</label>
-      {hint && <p className="mb-1.5 text-xs text-gray-500">{hint}</p>}
+      <p className="mb-1.5 text-xs text-gray-500">{hint ?? defaultHint}</p>
       <input
         className="dashboard-input"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="/statsic/jcb.jpg or /uploads/your-image.jpg"
+        placeholder="https://… or /statsic/jcb.jpg"
       />
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <label className="dashboard-btn-secondary cursor-pointer text-xs">
-          {uploading ? 'Uploading…' : 'Upload image or video'}
+          {uploading ? 'Uploading…' : 'Upload from computer'}
           <input
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,.mov"
+            accept={accept}
             className="sr-only"
             disabled={uploading}
             onChange={(e) => {

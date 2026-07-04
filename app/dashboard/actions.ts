@@ -5,7 +5,7 @@ import path from 'path'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { revalidatePublicPages } from '@/lib/revalidate-public'
-import { ADMIN_COOKIE, isValidAdminCredentials, isAdminAuthenticated } from '@/lib/auth'
+import { ADMIN_COOKIE, isValidAdminCredentials, isAdminAuthenticated, isCmsEditorAuthenticated } from '@/lib/auth'
 import { readCms } from '@/lib/cms'
 import {
   cloudinaryPublicIdFromUrl,
@@ -49,7 +49,7 @@ import type { EnquiryRecord, NewsletterSubscriber } from '@/types/leads'
 import { listEnquiries, listNewsletterSubscribers, removeNewsletterSubscriber } from '@/lib/leads-db'
 
 async function requireAdmin(): Promise<boolean> {
-  return isAdminAuthenticated()
+  return isCmsEditorAuthenticated()
 }
 
 export async function getDashboardData(): Promise<{ authenticated: boolean; cms: CmsData | null }> {
