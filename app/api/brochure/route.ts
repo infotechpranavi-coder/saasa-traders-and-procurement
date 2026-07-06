@@ -51,8 +51,8 @@ export async function POST(request: Request) {
     if (emailConfigured) {
       const enquiry = {
         name: parsed.data.name,
-        email: parsed.data.email || '',
-        phone: parsed.data.phone,
+        email: parsed.data.email,
+        phone: parsed.data.phone || '',
         company: parsed.data.company,
         service: 'Product catalog download',
         message: `Catalog download via website form.${parsed.data.company ? `\nCompany: ${parsed.data.company}` : ''}`,
@@ -61,16 +61,14 @@ export async function POST(request: Request) {
         source: 'brochure-form' as const,
       }
 
-      if (parsed.data.email) {
-        try {
-          emailSent = await sendBrochureEmail({
-            to: parsed.data.email,
-            name: parsed.data.name,
-            brochure,
-          })
-        } catch (error) {
-          console.error('[brochure] customer email failed:', error)
-        }
+      try {
+        emailSent = await sendBrochureEmail({
+          to: parsed.data.email,
+          name: parsed.data.name,
+          brochure,
+        })
+      } catch (error) {
+        console.error('[brochure] customer email failed:', error)
       }
 
       try {

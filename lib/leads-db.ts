@@ -151,8 +151,8 @@ export async function getEnquiryById(id: string): Promise<EnquiryRecord | null> 
 
 export async function saveBrochureEnquiry(input: {
   name: string
-  phone: string
-  email?: string
+  email: string
+  phone?: string
   company?: string
 }): Promise<EnquiryRecord> {
   const messageLines = ['Catalog download via website form.']
@@ -160,7 +160,7 @@ export async function saveBrochureEnquiry(input: {
 
   return saveEnquiry({
     name: input.name,
-    email: input.email?.trim().toLowerCase() || '',
+    email: input.email.trim().toLowerCase(),
     phone: input.phone,
     company: input.company,
     service: 'Product catalog download',
