@@ -1,3 +1,6 @@
+export type EnquirySource = 'contact-form' | 'brochure-form'
+export type EnquiryType = 'contact' | 'brochure'
+
 export interface EnquiryRecord {
   id?: string
   name: string
@@ -5,8 +8,10 @@ export interface EnquiryRecord {
   phone?: string
   service?: string
   message?: string
+  company?: string
+  type: EnquiryType
   createdAt: string
-  source: 'contact-form'
+  source: EnquirySource
 }
 
 export interface NewsletterSubscriber {

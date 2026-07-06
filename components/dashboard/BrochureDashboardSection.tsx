@@ -15,10 +15,10 @@ interface BrochureDashboardSectionProps {
 }
 
 const CATALOG_PLACEMENTS = [
-  { label: 'Navbar', detail: 'Top right — Download Catalog button' },
-  { label: 'Floating buttons', detail: 'Bottom-right quick actions on every page' },
+  { label: 'Navbar', detail: 'Catalog button → /brochure lead form, then PDF download' },
+  { label: 'Floating buttons', detail: 'PDF icon → /brochure download form' },
   { label: 'Mobile menu', detail: 'Inside the hamburger navigation drawer' },
-  { label: 'Footer', detail: 'Contact column download link' },
+  { label: 'Footer', detail: 'Contact column catalog link' },
 ] as const
 
 function formatUploadedAt(value?: string) {

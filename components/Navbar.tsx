@@ -29,6 +29,7 @@ const STATIC_SEARCH_ITEMS: SearchItem[] = [
   { title: 'Services', href: '/services', type: 'page', keywords: 'services expertise offerings' },
   { title: 'Products', href: '/products', type: 'page', keywords: 'products parts machinery' },
   { title: 'Blog', href: '/blog', type: 'page', keywords: 'blog news articles posts' },
+  { title: 'FAQ', href: '/faq', type: 'page', keywords: 'faq questions help support answers' },
   { title: 'Contact Us', href: '/contact', type: 'page', keywords: 'contact phone email quote procurement yaounde cameroon' },
   { title: 'Strong Brands', href: '/products/brands', type: 'page', keywords: 'brands oem manufacturers equipment' },
 ]

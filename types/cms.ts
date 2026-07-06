@@ -124,6 +124,22 @@ export interface BrochureFile {
   publicId?: string
 }
 
+export type HeroStatType = 'manual' | 'years_since'
+
+/** One stat shown in the homepage hero footer bar */
+export interface HeroStatSetting {
+  label: string
+  value: string
+  /** `years_since` uses `siteSettings.establishedYear` to compute e.g. 10+ */
+  type: HeroStatType
+}
+
+export interface SiteSettings {
+  /** e.g. 2016 — used when a hero stat has type `years_since` */
+  establishedYear: number
+  heroStats: [HeroStatSetting, HeroStatSetting, HeroStatSetting]
+}
+
 export interface CmsData {
   categories: Category[]
   brandCategories: BrandCategory[]
@@ -135,4 +151,5 @@ export interface CmsData {
   reviews: CustomerReview[]
   heroBanners: HeroBanner[]
   brochure: BrochureFile | null
+  siteSettings: SiteSettings
 }

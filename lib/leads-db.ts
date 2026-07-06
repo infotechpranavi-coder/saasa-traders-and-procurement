@@ -6,7 +6,12 @@ import {
   isMongoConfigured,
 } from '@/lib/mongodb'
 
-export async function saveEnquiry(input: Omit<EnquiryRecord, 'createdAt' | 'source'>): Promise<EnquiryRecord> {
+export async function saveEnquiry(
+  input: Omit<EnquiryRecord, 'createdAt' | 'source' | 'type'> & {
+    source?: EnquiryRecord['source']
+    type?: EnquiryRecord['type']
+  },
+): Promise<EnquiryRecord> {
   if (!isMongoConfigured()) {
     throw new Error('MongoDB is not configured')
   }
@@ -21,8 +26,10 @@ export async function saveEnquiry(input: Omit<EnquiryRecord, 'createdAt' | 'sour
     phone: input.phone?.trim() || undefined,
     service: input.service?.trim() || undefined,
     message: input.message?.trim() || undefined,
+    company: input.company?.trim() || undefined,
+    type: input.type ?? 'contact',
     createdAt: new Date().toISOString(),
-    source: 'contact-form',
+    source: input.source ?? 'contact-form',
   }
 
   await db.collection<EnquiryRecord>(ENQUIRIES_COLLECTION).insertOne(record)
@@ -93,6 +100,8 @@ export async function listEnquiries(limit = 200): Promise<EnquiryRecord[]> {
   return docs.map(({ _id, ...rest }) => ({
     ...rest,
     id: _id ? String(_id) : undefined,
+    type: rest.type ?? (rest.source === 'brochure-form' ? 'brochure' : 'contact'),
+    source: rest.source ?? 'contact-form',
   }))
 }
 
@@ -120,6 +129,45 @@ export async function removeNewsletterSubscriber(email: string): Promise<boolean
   const normalized = email.trim().toLowerCase()
   const result = await db.collection(NEWSLETTER_COLLECTION).deleteOne({ email: normalized })
   return result.deletedCount > 0
+}
+
+export async function getEnquiryById(id: string): Promise<EnquiryRecord | null> {
+  if (!isMongoConfigured()) return null
+
+  const db = await getMongoDb()
+  if (!db) return null
+
+  const { ObjectId } = await import('mongodb')
+  if (!ObjectId.isValid(id)) return null
+
+  const doc = await db
+    .collection<EnquiryRecord & { _id?: { toString(): string } }>(ENQUIRIES_COLLECTION)
+    .findOne({ _id: new ObjectId(id) })
+
+  if (!doc) return null
+  const { _id, ...rest } = doc
+  return { ...rest, id: String(_id) }
+}
+
+export async function saveBrochureEnquiry(input: {
+  name: string
+  phone: string
+  email?: string
+  company?: string
+}): Promise<EnquiryRecord> {
+  const messageLines = ['Catalog download via website form.']
+  if (input.company) messageLines.push(`Company: ${input.company}`)
+
+  return saveEnquiry({
+    name: input.name,
+    email: input.email?.trim().toLowerCase() || '',
+    phone: input.phone,
+    company: input.company,
+    service: 'Product catalog download',
+    message: messageLines.join('\n'),
+    type: 'brochure',
+    source: 'brochure-form',
+  })
 }
 
 export async function listActiveNewsletterSubscribers(): Promise<NewsletterSubscriber[]> {

@@ -5,14 +5,10 @@ import Link from 'next/link'
 import { ArrowUpRight, ArrowRight } from 'lucide-react'
 import CmsImage from './CmsImage'
 import type { HeroBanner } from '@/types/cms'
+import { normalizeSiteSettings, resolveHeroStats } from '@/lib/site-settings'
+import type { SiteSettings } from '@/types/cms'
 
 const SLIDE_MS = 6000
-
-const stats = [
-  { value: '150+', label: 'PRODUCT LINES' },
-  { value: '25+', label: 'YEARS' },
-  { value: '2K+', label: 'CLIENTS' },
-]
 
 function smoothstep(value: number) {
   const t = Math.min(Math.max(value, 0), 1)
@@ -25,10 +21,12 @@ function lerp(current: number, target: number, factor: number) {
 
 interface HeroProps {
   banners: HeroBanner[]
+  siteSettings?: SiteSettings
 }
 
-export default function Hero({ banners }: HeroProps) {
+export default function Hero({ banners, siteSettings }: HeroProps) {
   const slides = banners
+  const stats = resolveHeroStats(normalizeSiteSettings(siteSettings))
   const stageRef = useRef<HTMLElement>(null)
   const [activeSlide, setActiveSlide] = useState(0)
   const [displaySlide, setDisplaySlide] = useState(0)

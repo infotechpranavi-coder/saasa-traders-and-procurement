@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       phone: body.phone,
       service: body.service,
       message: body.message,
+      type: 'contact',
+      source: 'contact-form',
     })
 
     let emailSent = false

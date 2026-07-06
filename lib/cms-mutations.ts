@@ -4,7 +4,8 @@ import { revalidatePublicPages } from '@/lib/revalidate-public'
 import { slugify } from '@/lib/slugify'
 import { normalizeProductImageFields } from '@/lib/product-images'
 import { normalizeProductCompanies } from '@/lib/product-companies'
-import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile, SiteSettings } from '@/types/cms'
+import { normalizeSiteSettings } from '@/lib/site-settings'
 
 export type CmsActionResult<T = undefined> =
   | { ok: true; data: T; cms: CmsData }
@@ -617,4 +618,12 @@ export async function updateBrochure(brochure: BrochureFile | null): Promise<Cms
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: cms.brochure, cms }
+}
+
+export async function updateSiteSettings(settingsInput: SiteSettings): Promise<CmsActionResult<SiteSettings>> {
+  const cms = await readCms()
+  cms.siteSettings = normalizeSiteSettings(settingsInput)
+  await writeCms(cms)
+  revalidatePublicPages()
+  return { ok: true, data: cms.siteSettings, cms }
 }

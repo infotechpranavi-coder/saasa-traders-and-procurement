@@ -6,7 +6,8 @@ import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { revalidatePublicPages } from '@/lib/revalidate-public'
 import { ADMIN_COOKIE, isValidAdminCredentials, isAdminAuthenticated, isCmsEditorAuthenticated } from '@/lib/auth'
-import { readCms } from '@/lib/cms'
+import { readCms, getBrochure } from '@/lib/cms'
+import { getEnquiryById, listEnquiries, listNewsletterSubscribers, removeNewsletterSubscriber } from '@/lib/leads-db'
 import {
   cloudinaryPublicIdFromUrl,
   cloudinaryResourceTypeFromUrl,
@@ -46,7 +47,7 @@ import {
 } from '@/lib/cms-mutations'
 import type { BlogPost, Brand, BrandCategory, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile } from '@/types/cms'
 import type { EnquiryRecord, NewsletterSubscriber } from '@/types/leads'
-import { listEnquiries, listNewsletterSubscribers, removeNewsletterSubscriber } from '@/lib/leads-db'
+import { sendBrochureEmail, sendEnquiryNotification } from '@/lib/email/resend-mail'
 
 async function requireAdmin(): Promise<boolean> {
   return isCmsEditorAuthenticated()
@@ -452,5 +453,51 @@ export async function removeNewsletterSubscriberAction(
     return { ok: true, subscribers }
   } catch {
     return { ok: false, error: 'Failed to remove subscriber' }
+  }
+}
+
+export async function resendBrochureToCustomerAction(
+  enquiryId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const enquiry = await getEnquiryById(enquiryId)
+  if (!enquiry || enquiry.type !== 'brochure') {
+    return { ok: false, error: 'Brochure enquiry not found' }
+  }
+  if (!enquiry.email?.trim()) {
+    return { ok: false, error: 'This enquiry has no customer email' }
+  }
+
+  const brochure = await getBrochure()
+  if (!brochure?.url) return { ok: false, error: 'Catalog PDF is not configured' }
+
+  try {
+    const sent = await sendBrochureEmail({
+      to: enquiry.email,
+      name: enquiry.name,
+      brochure,
+    })
+    return sent ? { ok: true } : { ok: false, error: 'Failed to send catalog email' }
+  } catch {
+    return { ok: false, error: 'Failed to send catalog email' }
+  }
+}
+
+export async function resendBrochureAdminNotifyAction(
+  enquiryId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
+
+  const enquiry = await getEnquiryById(enquiryId)
+  if (!enquiry || enquiry.type !== 'brochure') {
+    return { ok: false, error: 'Brochure enquiry not found' }
+  }
+
+  try {
+    const sent = await sendEnquiryNotification(enquiry)
+    return sent ? { ok: true } : { ok: false, error: 'Failed to notify admin' }
+  } catch {
+    return { ok: false, error: 'Failed to notify admin' }
   }
 }

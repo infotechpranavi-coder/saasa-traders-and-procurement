@@ -14,6 +14,7 @@ import EnquiriesDashboardSection from '@/components/dashboard/EnquiriesDashboard
 import NewsletterDashboardSection from '@/components/dashboard/NewsletterDashboardSection'
 import RecentWorkDashboardSection from '@/components/dashboard/RecentWorkDashboardSection'
 import ReviewsDashboardSection from '@/components/dashboard/ReviewsDashboardSection'
+import SettingsDashboardSection from '@/components/dashboard/SettingsDashboardSection'
 import { COMPANY_NAME } from '@/lib/brand'
 import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from '@/types/cms'
 import { slugify } from '@/lib/slugify'
@@ -52,8 +53,9 @@ type Tab =
   | 'brochure'
   | 'enquiries'
   | 'newsletter'
+  | 'settings'
 
-const NAV_TABS: { id: Tab; label: string }[] = [
+const BASE_NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'products', label: 'Products' },
   { id: 'services', label: 'Services' },
   { id: 'categories', label: 'Product categories' },
@@ -67,8 +69,31 @@ const NAV_TABS: { id: Tab; label: string }[] = [
   { id: 'newsletter', label: 'Newsletter' },
 ]
 
-function isDashboardTab(value: string | null): value is Tab {
-  return value !== null && NAV_TABS.some((item) => item.id === value)
+const SUPERADMIN_NAV_TABS: { id: Tab; label: string }[] = [{ id: 'settings', label: 'Site settings' }]
+
+type NavSection = { label: string; tabs: { id: Tab; label: string }[] }
+
+function getNavTabs(mode: 'admin' | 'superadmin') {
+  return mode === 'superadmin' ? [...BASE_NAV_TABS, ...SUPERADMIN_NAV_TABS] : BASE_NAV_TABS
+}
+
+function getNavSections(mode: 'admin' | 'superadmin'): NavSection[] {
+  if (mode === 'admin') {
+    return [{ label: 'Manage', tabs: BASE_NAV_TABS }]
+  }
+
+  const contentTabs = BASE_NAV_TABS.filter((t) => t.id !== 'enquiries' && t.id !== 'newsletter')
+  const leadTabs = BASE_NAV_TABS.filter((t) => t.id === 'enquiries' || t.id === 'newsletter')
+
+  return [
+    { label: 'Superadmin', tabs: SUPERADMIN_NAV_TABS },
+    { label: 'Content', tabs: contentTabs },
+    { label: 'Leads', tabs: leadTabs },
+  ]
+}
+
+function isDashboardTab(value: string | null, mode: 'admin' | 'superadmin'): value is Tab {
+  return value !== null && getNavTabs(mode).some((item) => item.id === value)
 }
 
 const emptyProduct = (): Product => ({
@@ -153,6 +178,9 @@ export default function DashboardApp({
   })
   const [productCategoryFilter, setProductCategoryFilter] = useState('')
   const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false)
+  const navTabs = getNavTabs(mode)
+  const navSections = getNavSections(mode)
+  const dashboardPath = mode === 'superadmin' ? '/superadmin' : '/dashboard'
 
   const closeDrawer = () => {
     setEditingProduct(null)
@@ -165,10 +193,10 @@ export default function DashboardApp({
 
   useEffect(() => {
     const tabFromUrl = searchParams.get('tab')
-    if (isDashboardTab(tabFromUrl)) {
+    if (isDashboardTab(tabFromUrl, mode)) {
       setTab(tabFromUrl)
     }
-  }, [searchParams])
+  }, [searchParams, mode])
 
   const selectTab = useCallback(
     (id: Tab) => {
@@ -176,9 +204,9 @@ export default function DashboardApp({
       closeDrawer()
       const params = new URLSearchParams(searchParams.toString())
       params.set('tab', id)
-      router.replace(`/dashboard?${params.toString()}`, { scroll: false })
+      router.replace(`${dashboardPath}?${params.toString()}`, { scroll: false })
     },
-    [router, searchParams],
+    [router, searchParams, dashboardPath],
   )
 
   const login = async (e: React.FormEvent) => {
@@ -362,16 +390,22 @@ export default function DashboardApp({
           </h1>
           <p className="hp-body text-sm mb-6">
             {mode === 'superadmin'
-              ? 'Superadmin sign-in — bulk Excel import plus full content management.'
+              ? 'Sign in with your superadmin credentials. Manage hero stats, bulk Excel import, catalog gate, and all site content.'
               : 'Sign in with your admin username and password to manage site content.'}
           </p>
+          {mode === 'superadmin' && (
+            <p className="mb-4 rounded-lg bg-orange-50 px-3 py-2 text-xs text-orange-900">
+              URL: <strong>/superadmin</strong> — use env <code className="text-[11px]">SUPERADMIN_USERNAME</code> /{' '}
+              <code className="text-[11px]">SUPERADMIN_PASSWORD</code> (defaults: superadmin / superadmin123).
+            </p>
+          )}
           <label className="block text-sm font-semibold text-gray-700 mb-1">Username</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="dashboard-input mb-4"
-            placeholder="Admin username"
+            placeholder={mode === 'superadmin' ? 'Superadmin username' : 'Admin username'}
             autoComplete="username"
             required
           />
@@ -410,6 +444,11 @@ export default function DashboardApp({
           </span>
         </div>
         <div className="flex items-center gap-3">
+          {mode === 'superadmin' && (
+            <Link href="/dashboard" className="text-sm text-white/70 hover:text-white">
+              Admin dashboard
+            </Link>
+          )}
           <Link href="/" className="text-sm text-white/80 hover:text-white">
             View site
           </Link>
@@ -424,23 +463,27 @@ export default function DashboardApp({
       <div className="dashboard-body">
         <aside className="dashboard-sidebar">
           <div className="dashboard-sidebar-inner">
-            <p className="dashboard-sidebar-label">Content</p>
-            {NAV_TABS.map(({ id, label }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => selectTab(id)}
-                className={`dashboard-nav-item ${tab === id ? 'dashboard-nav-item--active' : ''}`}
-              >
-                {label}
-              </button>
+            {navSections.map((section) => (
+              <div key={section.label} className="dashboard-sidebar-group">
+                <p className="dashboard-sidebar-label">{section.label}</p>
+                {section.tabs.map(({ id, label }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => selectTab(id)}
+                    className={`dashboard-nav-item ${tab === id ? 'dashboard-nav-item--active' : ''}`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
         </aside>
 
         <main className="dashboard-main">
           <div className="dashboard-mobile-tabs lg:hidden">
-            {NAV_TABS.map(({ id, label }) => (
+            {navTabs.map(({ id, label }) => (
               <button
                 key={id}
                 type="button"
@@ -680,6 +723,10 @@ export default function DashboardApp({
           {tab === 'enquiries' && <EnquiriesDashboardSection showMsg={showMsg} />}
 
           {tab === 'newsletter' && <NewsletterDashboardSection showMsg={showMsg} />}
+
+          {tab === 'settings' && mode === 'superadmin' && cms && (
+            <SettingsDashboardSection cms={cms} setCms={setCms} showMsg={showMsg} />
+          )}
 
           {tab === 'blogs' && cms && (
             <section className="dashboard-panel">

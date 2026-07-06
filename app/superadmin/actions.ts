@@ -11,7 +11,8 @@ import { readCms } from '@/lib/cms'
 import type { BulkImportKind } from '@/lib/bulk-import/helpers'
 import { importCmsFromExcel } from '@/lib/bulk-import/import-cms'
 import { buildSampleWorkbook, sampleFileName } from '@/lib/bulk-import/samples'
-import type { CmsData } from '@/types/cms'
+import { updateSiteSettings } from '@/lib/cms-mutations'
+import type { CmsData, SiteSettings } from '@/types/cms'
 
 export async function getSuperAdminData(): Promise<{ authenticated: boolean; cms: CmsData | null }> {
   const authenticated = await isSuperAdminAuthenticated()
@@ -119,4 +120,18 @@ export async function importBulkExcelAction(
     const message = error instanceof Error ? error.message : 'Import failed'
     return { ok: false, error: message }
   }
+}
+
+export async function saveSiteSettingsAction(
+  settings: SiteSettings,
+): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
+  if (!(await isSuperAdminAuthenticated())) {
+    return { ok: false, error: 'Unauthorized' }
+  }
+
+  const result = await updateSiteSettings(settings)
+  if (!result.ok) return { ok: false, error: result.error }
+  revalidatePath('/')
+  revalidatePath('/superadmin')
+  return { ok: true, cms: result.cms }
 }

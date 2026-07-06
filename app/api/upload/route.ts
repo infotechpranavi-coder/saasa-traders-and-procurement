@@ -4,7 +4,7 @@ import fs from 'fs/promises'
 import { randomUUID } from 'crypto'
 import { isCmsEditorAuthenticated } from '@/lib/auth'
 
-const IMAGE_MAX_BYTES = 8 * 1024 * 1024
+const IMAGE_MAX_BYTES = 25 * 1024 * 1024
 const VIDEO_MAX_BYTES = 50 * 1024 * 1024
 
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       return Response.json(
         {
           ok: false,
-          error: resourceType === 'video' ? 'Video must be 50 MB or smaller' : 'Image must be 8 MB or smaller',
+          error: resourceType === 'video' ? 'Video must be 50 MB or smaller' : 'Image must be 25 MB or smaller',
         },
         { status: 400 },
       )

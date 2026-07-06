@@ -1,6 +1,9 @@
 import { Resend } from 'resend'
 import { COMPANY_EMAIL, COMPANY_NAME } from '@/lib/brand'
 import type { EnquiryRecord, NewsletterContentAlert } from '@/types/leads'
+import type { BrochureFile } from '@/types/cms'
+import { brochureDownloadFilename } from '@/lib/brochure-filename'
+import { readBrochurePdfBuffer } from '@/lib/brochure-file'
 
 let resendClient: Resend | null = null
 
@@ -46,10 +49,16 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
   if (!resend) return false
 
   const to = getEnquiryToEmail()
+  const subject =
+    enquiry.type === 'brochure'
+      ? `New catalog download request from ${enquiry.name}`
+      : `New enquiry from ${enquiry.name}`
+
   const lines = [
     `Name: ${enquiry.name}`,
-    `Email: ${enquiry.email}`,
+    enquiry.email ? `Email: ${enquiry.email}` : null,
     enquiry.phone ? `Phone: ${enquiry.phone}` : null,
+    enquiry.company ? `Company: ${enquiry.company}` : null,
     enquiry.service ? `Requirement: ${enquiry.service}` : null,
     enquiry.message ? `\nMessage:\n${enquiry.message}` : null,
     `\nSubmitted: ${enquiry.createdAt}`,
@@ -58,14 +67,15 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
   const { error } = await resend.emails.send({
     from: `${COMPANY_NAME} <${getFromEmail()}>`,
     to: [to],
-    replyTo: enquiry.email,
-    subject: `New enquiry from ${enquiry.name}`,
+    replyTo: enquiry.email || undefined,
+    subject,
     text: lines.join('\n'),
     html: `<div style="font-family:sans-serif;line-height:1.6;color:#111">
-      <h2 style="color:#ea580c">New contact enquiry</h2>
+      <h2 style="color:#ea580c">${enquiry.type === 'brochure' ? 'New catalog download request' : 'New contact enquiry'}</h2>
       <p><strong>Name:</strong> ${escapeHtml(enquiry.name)}</p>
-      <p><strong>Email:</strong> <a href="mailto:${escapeHtml(enquiry.email)}">${escapeHtml(enquiry.email)}</a></p>
+      ${enquiry.email ? `<p><strong>Email:</strong> <a href="mailto:${escapeHtml(enquiry.email)}">${escapeHtml(enquiry.email)}</a></p>` : ''}
       ${enquiry.phone ? `<p><strong>Phone:</strong> ${escapeHtml(enquiry.phone)}</p>` : ''}
+      ${enquiry.company ? `<p><strong>Company:</strong> ${escapeHtml(enquiry.company)}</p>` : ''}
       ${enquiry.service ? `<p><strong>Requirement:</strong> ${escapeHtml(enquiry.service)}</p>` : ''}
       ${enquiry.message ? `<p><strong>Message:</strong></p><p>${escapeHtml(enquiry.message).replace(/\n/g, '<br>')}</p>` : ''}
       <p style="color:#666;font-size:12px">Submitted ${escapeHtml(enquiry.createdAt)}</p>
@@ -74,6 +84,48 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
 
   if (error) {
     console.error('[resend] enquiry notification failed:', error.message)
+    return false
+  }
+
+  return true
+}
+
+export async function sendBrochureEmail(input: {
+  to: string
+  name: string
+  brochure: BrochureFile
+}): Promise<boolean> {
+  const resend = getResend()
+  if (!resend) return false
+
+  const buffer = await readBrochurePdfBuffer(input.brochure)
+  const filename = brochureDownloadFilename(input.brochure)
+  const brochureUrl = `${siteBaseUrl()}/brochure`
+
+  const greeting = input.name.trim() ? `Hi ${input.name.trim()},` : 'Hi there,'
+
+  const { error } = await resend.emails.send({
+    from: `${COMPANY_NAME} <${getFromEmail()}>`,
+    to: [input.to],
+    subject: `${COMPANY_NAME} — Product Catalog`,
+    text: `${greeting}\n\nThank you for your interest in ${COMPANY_NAME}. Please find our product catalog attached.\n\nYou can also visit ${brochureUrl} anytime.\n\n— ${COMPANY_NAME}`,
+    html: `<div style="font-family:sans-serif;line-height:1.6;color:#111">
+      <p>${escapeHtml(greeting)}</p>
+      <p>Thank you for your interest in <strong>${escapeHtml(COMPANY_NAME)}</strong>.</p>
+      <p>Please find our product catalog attached to this email.</p>
+      <p><a href="${escapeHtml(brochureUrl)}" style="color:#ea580c">Visit our catalog page →</a></p>
+      <p style="color:#666;font-size:12px">— ${escapeHtml(COMPANY_NAME)}</p>
+    </div>`,
+    attachments: [
+      {
+        filename,
+        content: buffer,
+      },
+    ],
+  })
+
+  if (error) {
+    console.error('[resend] brochure email failed:', error.message)
     return false
   }
 

@@ -54,6 +54,7 @@ export function buildNavItems(cms: CmsData | null): NavItem[] {
       children: productCategories.length > 0 ? productChildren : undefined,
     },
     { label: 'Blog', href: '/blog', hasDropdown: false },
+    { label: 'FAQ', href: '/faq', hasDropdown: false },
     {
       label: MAIN_SAASA_SITE_LABEL,
       href: MAIN_SAASA_SITE_URL,

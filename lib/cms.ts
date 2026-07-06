@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 import { unstable_noStore as noStore } from 'next/cache'
-import type { Category, CmsData, CustomerReview, HeroBanner, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost, BrochureFile } from '@/types/cms'
+import type { Category, CmsData, CustomerReview, HeroBanner, HomepageExpertiseItem, PortfolioProject, Product, Service, BlogPost, BrochureFile, SiteSettings } from '@/types/cms'
 import { products as seedProducts, productCategories } from '@/data/products'
 import { expertiseServices as seedServices } from '@/data/expertise-services'
 import { seedBlogs } from '@/data/blog-seed'
@@ -9,6 +9,7 @@ import { seedHeroBanners } from '@/data/hero-banners-seed'
 import { seedPortfolio } from '@/data/portfolio-seed'
 import { seedReviews } from '@/data/reviews-seed'
 import { applyDemoProductServiceSeed } from '@/lib/static-machinery-images'
+import { normalizeSiteSettings } from '@/lib/site-settings'
 import { slugify } from '@/lib/slugify'
 import { CMS_COLLECTION, CMS_DOCUMENT_ID, getMongoDb, isMongoConfigured } from '@/lib/mongodb'
 import type { Db } from 'mongodb'
@@ -33,6 +34,7 @@ function normalizeCms(data: Partial<CmsData>, seedDefaults = false): CmsData {
     reviews: Array.isArray(data.reviews) ? data.reviews : seedDefaults ? seedReviews : [],
     heroBanners: Array.isArray(data.heroBanners) ? data.heroBanners : seedDefaults ? seedHeroBanners : [],
     brochure: data.brochure ?? null,
+    siteSettings: normalizeSiteSettings(data.siteSettings),
   }
 }
 
@@ -61,6 +63,7 @@ export function buildSeedCms(): CmsData {
     reviews: seedReviews,
     heroBanners: seedHeroBanners,
     brochure: null,
+    siteSettings: normalizeSiteSettings(),
   })
 }
 
@@ -264,6 +267,11 @@ export async function getCustomerReviews(): Promise<CustomerReview[]> {
 export async function getHeroBanners(): Promise<HeroBanner[]> {
   const cms = await readCms()
   return [...cms.heroBanners].sort((a, b) => a.position - b.position || a.slug.localeCompare(b.slug))
+}
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const cms = await readCms()
+  return cms.siteSettings
 }
 
 export async function getBrochure(): Promise<BrochureFile | null> {

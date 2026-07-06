@@ -22,7 +22,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export default function FloatingContactButtons() {
   const pathname = usePathname()
 
-  if (pathname?.startsWith('/dashboard')) {
+  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/superadmin')) {
     return null
   }
 

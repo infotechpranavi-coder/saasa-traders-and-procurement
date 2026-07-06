@@ -29,6 +29,7 @@ export const FOOTER_QUICK_LINKS = [
   { label: 'Our Services', href: '/services' },
   { label: 'Strong Brands', href: '/products/brands' },
   { label: 'Our Blog', href: '/blog' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'SAASA B2E Group', href: 'https://saasab2e.com/', external: true },
   { label: 'Contact Us', href: '/contact' },
 ] as const

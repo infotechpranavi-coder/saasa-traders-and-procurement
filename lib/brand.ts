@@ -12,7 +12,7 @@ export const LOGO_ALT = `${COMPANY_NAME} logo`
 
 export const COMPANY_ADDRESS = 'Hisar, Haryana, India'
 
-export const COMPANY_EMAILS = ['info@saasab2e.com', 'daanish@sasab2e.com'] as const
+export const COMPANY_EMAILS = ['info@saasab2e.com', 'daanish@saasab2e.com'] as const
 export const COMPANY_EMAIL = COMPANY_EMAILS[0]
 
 export const COMPANY_PHONES = [

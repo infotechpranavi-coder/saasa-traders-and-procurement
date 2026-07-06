@@ -10,6 +10,8 @@ const PUBLIC_PATHS = [
   '/work',
   '/about',
   '/contact',
+  '/faq',
+  '/brochure',
 ] as const
 
 export function revalidatePublicPages() {
