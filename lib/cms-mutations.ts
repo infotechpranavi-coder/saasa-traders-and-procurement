@@ -4,6 +4,7 @@ import { revalidatePublicPages } from '@/lib/revalidate-public'
 import { slugify } from '@/lib/slugify'
 import { normalizeProductImageFields } from '@/lib/product-images'
 import { normalizeProductCompanies } from '@/lib/product-companies'
+import { removeProductFromBrandLinks, syncProductBrandLinks } from '@/lib/product-brand-links'
 import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile, SiteSettings } from '@/types/cms'
 import { normalizeSiteSettings } from '@/lib/site-settings'
 
@@ -75,7 +76,10 @@ function normalizeService(body: Service, fallbackSlug?: string): Service | null 
   }
 }
 
-export async function createProduct(productInput: Product): Promise<CmsActionResult<Product>> {
+export async function createProduct(
+  productInput: Product,
+  linkedBrandSlugs?: string[],
+): Promise<CmsActionResult<Product>> {
   const product = normalizeProduct(productInput)
   if (!product) return { ok: false, error: 'Title is required' }
 
@@ -85,13 +89,20 @@ export async function createProduct(productInput: Product): Promise<CmsActionRes
   }
 
   cms.products.push(product)
+  if (linkedBrandSlugs) {
+    syncProductBrandLinks(cms, product.slug, linkedBrandSlugs)
+  }
   await writeCms(cms)
   revalidatePublicPages()
   queueNewsletterContentAlert({ kind: 'product', title: product.title, slug: product.slug })
   return { ok: true, data: product, cms }
 }
 
-export async function updateProduct(originalSlug: string, productInput: Product): Promise<CmsActionResult<Product>> {
+export async function updateProduct(
+  originalSlug: string,
+  productInput: Product,
+  linkedBrandSlugs?: string[],
+): Promise<CmsActionResult<Product>> {
   const product = normalizeProduct(productInput, originalSlug)
   if (!product || !originalSlug) return { ok: false, error: 'Invalid product data' }
 
@@ -104,6 +115,9 @@ export async function updateProduct(originalSlug: string, productInput: Product)
   }
 
   cms.products[index] = product
+  if (linkedBrandSlugs) {
+    syncProductBrandLinks(cms, product.slug, linkedBrandSlugs, originalSlug)
+  }
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: product, cms }
@@ -112,6 +126,7 @@ export async function updateProduct(originalSlug: string, productInput: Product)
 export async function deleteProduct(slug: string): Promise<CmsActionResult> {
   const cms = await readCms()
   cms.products = cms.products.filter((p) => p.slug !== slug)
+  removeProductFromBrandLinks(cms, slug)
   await writeCms(cms)
   revalidatePublicPages()
   return { ok: true, data: undefined, cms }

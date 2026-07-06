@@ -9,7 +9,7 @@ import BrandsDashboardSection from '@/components/dashboard/BrandsDashboardSectio
 import DashboardDrawer from '@/components/dashboard/DashboardDrawer'
 import HeroBannersDashboardSection from '@/components/dashboard/HeroBannersDashboardSection'
 import PointListEditor from '@/components/dashboard/PointListEditor'
-import ProductCompaniesEditor from '@/components/dashboard/ProductCompaniesEditor'
+import ProductBrandLinker from '@/components/dashboard/ProductBrandLinker'
 import EnquiriesDashboardSection from '@/components/dashboard/EnquiriesDashboardSection'
 import NewsletterDashboardSection from '@/components/dashboard/NewsletterDashboardSection'
 import RecentWorkDashboardSection from '@/components/dashboard/RecentWorkDashboardSection'
@@ -20,6 +20,7 @@ import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from
 import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
 import { normalizeProductCompanies } from '@/lib/product-companies'
+import { getBrandSlugsForProduct } from '@/lib/product-brand-links'
 import { getProductImages, normalizeProductImageFields } from '@/lib/product-images'
 import ImageUrlField from '@/components/dashboard/ImageUrlField'
 import MultiImageUrlField from '@/components/dashboard/MultiImageUrlField'
@@ -158,6 +159,7 @@ export default function DashboardApp({
   const [saving, setSaving] = useState(false)
   const { toast, showMsg } = useDashboardToast()
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [linkedBrandSlugs, setLinkedBrandSlugs] = useState<string[]>([])
   const [editingService, setEditingService] = useState<Service | null>(null)
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null)
   const [originalSlug, setOriginalSlug] = useState('')
@@ -184,6 +186,7 @@ export default function DashboardApp({
 
   const closeDrawer = () => {
     setEditingProduct(null)
+    setLinkedBrandSlugs([])
     setEditingService(null)
     setEditingBlog(null)
     setCategoryDrawerOpen(false)
@@ -258,7 +261,7 @@ export default function DashboardApp({
     }
     await runDashboardSave(
       setSaving,
-      () => saveProductAction(payload, originalSlug || undefined),
+      () => saveProductAction(payload, originalSlug || undefined, linkedBrandSlugs),
       {
         showMsg,
         setCms,
@@ -511,6 +514,7 @@ export default function DashboardApp({
                     onClick={() => {
                       closeDrawer()
                       setEditingProduct(emptyProduct())
+                      setLinkedBrandSlugs([])
                     }}
                   >
                     + Add product
@@ -554,6 +558,7 @@ export default function DashboardApp({
                           closeDrawer()
                           setEditingProduct({ ...p })
                           setOriginalSlug(p.slug)
+                          if (cms) setLinkedBrandSlugs(getBrandSlugsForProduct(cms, p.slug))
                         }}
                       >
                         Edit
@@ -910,10 +915,12 @@ export default function DashboardApp({
             </div>
 
             <div className="dashboard-form-section">
-              <p className="dashboard-form-section-title">Companies & equipment we supply</p>
-              <ProductCompaniesEditor
-                companies={editingProduct.companies ?? []}
-                onChange={(companies) => setEditingProduct({ ...editingProduct, companies })}
+              <p className="dashboard-form-section-title">Companies</p>
+              <ProductBrandLinker
+                brands={cms.brands}
+                brandCategories={cms.brandCategories}
+                linkedBrandSlugs={linkedBrandSlugs}
+                onChange={setLinkedBrandSlugs}
               />
             </div>
           </form>

@@ -97,13 +97,14 @@ export async function logoutAction(): Promise<{ ok: boolean }> {
 
 export async function saveProductAction(
   product: Product,
-  originalSlug?: string
+  originalSlug?: string,
+  linkedBrandSlugs?: string[],
 ): Promise<{ ok: boolean; error?: string; cms?: CmsData }> {
   if (!(await requireAdmin())) return { ok: false, error: 'Unauthorized' }
 
   const result = originalSlug
-    ? await updateProduct(originalSlug, product)
-    : await createProduct(product)
+    ? await updateProduct(originalSlug, product, linkedBrandSlugs)
+    : await createProduct(product, linkedBrandSlugs)
 
   if (!result.ok) return { ok: false, error: result.error }
   return { ok: true, cms: result.cms }

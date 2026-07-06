@@ -128,3 +128,43 @@ export function cloudinaryResourceTypeFromUrl(url: string): CloudinaryResourceTy
   if (url.includes('/raw/upload/')) return 'raw'
   return 'image'
 }
+
+export function createCloudinaryUploadSignature(options: {
+  originalName: string
+  resourceType: Extract<CloudinaryResourceType, 'image' | 'video'>
+  subfolder?: string
+}): {
+  cloudName: string
+  apiKey: string
+  timestamp: number
+  signature: string
+  folder: string
+  publicId: string
+  resourceType: Extract<CloudinaryResourceType, 'image' | 'video'>
+} {
+  ensureCloudinaryConfig()
+
+  const ext = path.extname(options.originalName) || ''
+  const base = safePublicId(path.basename(options.originalName, ext)) || 'upload'
+  const folder = [folderPrefix(), options.subfolder].filter(Boolean).join('/')
+  const publicId = `${Date.now()}-${base}`
+  const timestamp = Math.round(Date.now() / 1000)
+
+  const paramsToSign = {
+    timestamp,
+    folder,
+    public_id: publicId,
+  }
+
+  const signature = cloudinary.utils.api_sign_request(paramsToSign, process.env.CLOUDINARY_API_SECRET!)
+
+  return {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME!,
+    apiKey: process.env.CLOUDINARY_API_KEY!,
+    timestamp,
+    signature,
+    folder,
+    publicId,
+    resourceType: options.resourceType,
+  }
+}

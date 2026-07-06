@@ -2,6 +2,9 @@
 const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['cloudinary', 'mongodb'],
+    serverActions: {
+      bodySizeLimit: '30mb',
+    },
   },
   images: {
     remotePatterns: [
