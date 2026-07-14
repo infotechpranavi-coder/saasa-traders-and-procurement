@@ -7,6 +7,7 @@ import Solutions from '../components/Solutions'
 import HomePortfolio from '../components/HomePortfolio'
 import HomeTestimonials from '../components/HomeTestimonials'
 import HomeBlog from '../components/HomeBlog'
+import HomeCatalogCta from '../components/HomeCatalogCta'
 import Footer from '../components/Footer'
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <Stats />
       <Process />
       <Solutions />
+      <HomeCatalogCta />
       <HomePortfolio />
       <HomeTestimonials />
       <HomeBlog />

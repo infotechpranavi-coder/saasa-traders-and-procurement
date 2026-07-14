@@ -16,6 +16,7 @@ interface BrochureDashboardSectionProps {
 
 const CATALOG_PLACEMENTS = [
   { label: 'Navbar', detail: 'Catalog button → /brochure lead form, then PDF download' },
+  { label: 'Homepage CTA', detail: 'Catalog download section → /brochure form (same as floating button)' },
   { label: 'Floating buttons', detail: 'PDF icon → /brochure download form' },
   { label: 'Mobile menu', detail: 'Inside the hamburger navigation drawer' },
   { label: 'Footer', detail: 'Contact column catalog link' },

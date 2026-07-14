@@ -138,7 +138,7 @@ export default function ReviewsDashboardSection({
         <DashboardDrawer
           open
           title={originalSlug ? 'Edit review' : 'New review'}
-          subtitle="Customer testimonials on the homepage — use construction machinery images for avatars if needed."
+          subtitle="Customer testimonials on the homepage — leave image URL empty to show a default user icon."
           onClose={() => {
             setEditingReview(null)
             setOriginalSlug('')
@@ -166,7 +166,7 @@ export default function ReviewsDashboardSection({
             <Field label="Slug" value={editingReview.slug} onChange={(v) => setEditingReview({ ...editingReview, slug: v })} />
             <Field label="Role / title" value={editingReview.role} onChange={(v) => setEditingReview({ ...editingReview, role: v })} />
             <Field
-              label="Image URL"
+              label="Image URL (optional)"
               value={editingReview.image}
               onChange={(v) => setEditingReview({ ...editingReview, image: v })}
             />

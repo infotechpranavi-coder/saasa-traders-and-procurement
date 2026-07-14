@@ -1,5 +1,6 @@
 'use client'
 
+import { UserRound } from 'lucide-react'
 import CmsImage from './CmsImage'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
@@ -60,13 +61,19 @@ export default function Testimonials({ reviews }: TestimonialsProps) {
 
               <div className="testimonial-author">
                 <div className="testimonial-avatar relative overflow-hidden">
-                  <CmsImage
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
-                  />
+                  {testimonial.image?.trim() ? (
+                    <CmsImage
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                    />
+                  ) : (
+                    <div className="testimonial-avatar-fallback" aria-hidden>
+                      <UserRound className="testimonial-avatar-icon" strokeWidth={1.8} />
+                    </div>
+                  )}
                 </div>
                 <div>
                   <div className="testimonial-name">{testimonial.name}</div>

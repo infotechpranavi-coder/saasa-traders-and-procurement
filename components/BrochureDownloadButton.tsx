@@ -6,7 +6,7 @@ import { FileDown } from 'lucide-react'
 import { useBrochureContext } from './BrochureProvider'
 import type { BrochureFile } from '@/types/cms'
 
-type BrochureVariant = 'navbar' | 'floating' | 'inline'
+type BrochureVariant = 'navbar' | 'floating' | 'inline' | 'cta'
 
 interface BrochureDownloadButtonProps {
   brochure?: BrochureFile | null
@@ -71,6 +71,21 @@ export default function BrochureDownloadButton({
       >
         <FileDown className="h-4 w-4 shrink-0" strokeWidth={2.2} />
         {!iconOnly && <span className="nav-brochure-btn-text">Catalog</span>}
+      </Link>
+    )
+  }
+
+  if (variant === 'cta') {
+    return (
+      <Link
+        href={CATALOG_HREF}
+        onClick={handleClick}
+        className={`btn-primary home-catalog-cta__btn ${className}`}
+        aria-label={catalogLabel}
+        title={catalogLabel}
+      >
+        <FileDown className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+        {catalogLabel}
       </Link>
     )
   }
