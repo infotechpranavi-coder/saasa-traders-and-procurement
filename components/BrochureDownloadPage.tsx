@@ -65,7 +65,6 @@ export default function BrochureDownloadPage({ brochure }: BrochureDownloadPageP
   const downloadRef = useRef<HTMLAnchorElement>(null)
 
   const downloadName = brochureDownloadFilename(brochure)
-  const fileLabel = brochure.fileName?.trim() || downloadName
 
   useEffect(() => {
     if (window.location.hash === '#download') {
@@ -148,10 +147,7 @@ export default function BrochureDownloadPage({ brochure }: BrochureDownloadPageP
               <span className="brochure-file-chip__icon" aria-hidden>
                 <FileDown className="h-5 w-5" strokeWidth={2.1} />
               </span>
-              <div className="min-w-0">
-                <p className="brochure-file-chip__label">Ready to download</p>
-                <p className="brochure-file-chip__name">{fileLabel}</p>
-              </div>
+              <p className="brochure-file-chip__label">Ready to download</p>
             </div>
 
             <p className="brochure-intro__note">

@@ -5630,21 +5630,10 @@ html {
 
 .brochure-file-chip__label {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.9375rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.brochure-file-chip__name {
-  margin: 0.2rem 0 0;
-  font-size: 0.9rem;
-  font-weight: 700;
+  letter-spacing: 0.02em;
   color: #fff;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .brochure-intro__note {
