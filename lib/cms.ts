@@ -10,6 +10,7 @@ import { seedPortfolio } from '@/data/portfolio-seed'
 import { seedReviews } from '@/data/reviews-seed'
 import { applyDemoProductServiceSeed } from '@/lib/static-machinery-images'
 import { normalizeSiteSettings } from '@/lib/site-settings'
+import { brandBelongsToCategory } from '@/lib/brand-categories'
 import { slugify } from '@/lib/slugify'
 import { CMS_COLLECTION, CMS_DOCUMENT_ID, getMongoDb, isMongoConfigured } from '@/lib/mongodb'
 import type { Db } from 'mongodb'
@@ -173,7 +174,7 @@ export async function getBrandBySlug(slug: string) {
 
 export async function getBrandsByCategory(categoryId: string) {
   const cms = await readCms()
-  return cms.brands.filter((b) => b.categoryId === categoryId)
+  return cms.brands.filter((brand) => brandBelongsToCategory(brand, categoryId))
 }
 
 export async function getProductsByBrand(brandSlug: string): Promise<Product[]> {

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Brand, CmsData } from '@/types/cms'
 import { parseLines } from '@/lib/utils'
+import { brandBelongsToCategory, getBrandCategoryIds } from '@/lib/brand-categories'
 import {
   removeBrandAction,
   removeBrandCategoryAction,
@@ -16,6 +17,7 @@ const emptyBrand = (): Brand => ({
   slug: '',
   name: '',
   categoryId: '',
+  categoryIds: [],
   description: '',
   image: '',
   equipment: [],
@@ -86,8 +88,8 @@ export default function BrandsDashboardSection({
   const saveBrand = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingBrand) return
-    if (!editingBrand.categoryId) {
-      showMsg('Select a brand category', 'error')
+    if (!getBrandCategoryIds(editingBrand).length) {
+      showMsg('Select at least one brand category', 'error')
       return
     }
     await runDashboardSave(
@@ -128,6 +130,19 @@ export default function BrandsDashboardSection({
     setEditingBrand({ ...editingBrand, productSlugs: Array.from(selected) })
   }
 
+  const toggleBrandCategory = (categoryId: string) => {
+    if (!editingBrand) return
+    const selected = new Set(getBrandCategoryIds(editingBrand))
+    if (selected.has(categoryId)) selected.delete(categoryId)
+    else selected.add(categoryId)
+    const categoryIds = Array.from(selected)
+    setEditingBrand({
+      ...editingBrand,
+      categoryId: categoryIds[0] || '',
+      categoryIds,
+    })
+  }
+
   return (
     <>
       <section className="dashboard-panel">
@@ -136,7 +151,7 @@ export default function BrandsDashboardSection({
             <div>
               <h2 className="dashboard-page-title">Strong Brands</h2>
               <p className="dashboard-page-desc">
-                Manage brand categories, company names, and the products listed under each company on the Strong Brands pages.
+                Manage brand categories, company names, and the products listed under each company on the Strong Brands pages. A company can appear under multiple brand categories.
               </p>
             </div>
           </div>
@@ -180,8 +195,8 @@ export default function BrandsDashboardSection({
                     <div className="min-w-0">
                       <p className="dashboard-row-title">{category.name}</p>
                       <p className="dashboard-row-meta">
-                        {category.id} · {cms.brands.filter((b) => b.categoryId === category.id).length} compan
-                        {cms.brands.filter((b) => b.categoryId === category.id).length === 1 ? 'y' : 'ies'}
+                        {category.id} · {cms.brands.filter((brand) => brandBelongsToCategory(brand, category.id)).length} compan
+                        {cms.brands.filter((brand) => brandBelongsToCategory(brand, category.id)).length === 1 ? 'y' : 'ies'}
                       </p>
                     </div>
                     <div className="dashboard-row-actions">
@@ -228,7 +243,9 @@ export default function BrandsDashboardSection({
                         <div className="min-w-0">
                           <p className="dashboard-row-title">{brand.name}</p>
                           <p className="dashboard-row-meta">
-                            {brand.slug} · {brandCategoryNameById[brand.categoryId] ?? brand.categoryId} · {listedCount}{' '}
+                            {brand.slug} · {getBrandCategoryIds(brand)
+                              .map((categoryId) => brandCategoryNameById[categoryId] ?? categoryId)
+                              .join(', ')} · {listedCount}{' '}
                             product{listedCount === 1 ? '' : 's'}
                           </p>
                         </div>
@@ -237,7 +254,13 @@ export default function BrandsDashboardSection({
                             type="button"
                             className="dashboard-btn-edit"
                             onClick={() => {
-                              setEditingBrand({ ...brand, listedProducts: brand.listedProducts ?? [] })
+                              const categoryIds = getBrandCategoryIds(brand)
+                              setEditingBrand({
+                                ...brand,
+                                listedProducts: brand.listedProducts ?? [],
+                                categoryIds,
+                                categoryId: categoryIds[0] || brand.categoryId,
+                              })
                               setOriginalSlug(brand.slug)
                             }}
                           >
@@ -295,7 +318,7 @@ export default function BrandsDashboardSection({
         <DashboardDrawer
           open
           title={originalSlug ? 'Edit company' : 'New company'}
-          subtitle="Company appears on Strong Brands. Add product names and/or link catalog items."
+          subtitle="Company appears on Strong Brands. Pick one or more categories, then add product names and/or link catalog items."
           onClose={() => {
             setEditingBrand(null)
             setOriginalSlug('')
@@ -329,20 +352,30 @@ export default function BrandsDashboardSection({
                 />
                 <Field label="Slug" value={editingBrand.slug} onChange={(v) => setEditingBrand({ ...editingBrand, slug: v })} />
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Brand category *</label>
-                  <select
-                    className="dashboard-input"
-                    value={editingBrand.categoryId}
-                    onChange={(e) => setEditingBrand({ ...editingBrand, categoryId: e.target.value })}
-                    required
-                  >
-                    <option value="">Select category…</option>
-                    {cms.brandCategories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">Brand categories *</label>
+                  <p className="mb-2 text-xs text-gray-500">
+                    Select every category where this company should appear.
+                  </p>
+                  <div className="max-h-48 overflow-y-auto rounded-lg border border-gray-200 divide-y divide-gray-100">
+                    {cms.brandCategories.length === 0 ? (
+                      <p className="px-3 py-4 text-sm text-gray-500">Create a brand category first.</p>
+                    ) : (
+                      cms.brandCategories.map((category) => (
+                        <label
+                          key={category.id}
+                          className="flex cursor-pointer items-center gap-3 px-3 py-2.5 text-sm hover:bg-gray-50"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={getBrandCategoryIds(editingBrand).includes(category.id)}
+                            onChange={() => toggleBrandCategory(category.id)}
+                            className="rounded border-gray-300 text-primary focus:ring-primary"
+                          />
+                          <span className="font-medium text-gray-800">{category.name}</span>
+                        </label>
+                      ))
+                    )}
+                  </div>
                 </div>
                 <Field
                   label="Image URL"

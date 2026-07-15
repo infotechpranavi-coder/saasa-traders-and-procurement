@@ -89,7 +89,7 @@ export default function HeroBannersDashboardSection({
             <div>
               <h2 className="dashboard-page-title">Homepage hero banners</h2>
               <p className="dashboard-page-desc">
-                {banners.length} banner{banners.length === 1 ? '' : 's'} — rotating slides on the homepage hero. Buttons (Free Quote,
+                {banners.length} banner{banners.length === 1 ? '' : 's'} — rotating slides on the homepage hero. Buttons (Get Quote,
                 View Products) stay the same on every slide.
               </p>
             </div>

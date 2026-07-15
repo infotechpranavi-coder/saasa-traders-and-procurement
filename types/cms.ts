@@ -22,7 +22,10 @@ export interface BrandCategory {
 export interface Brand {
   slug: string
   name: string
+  /** Primary category retained for compatibility with existing CMS data. */
   categoryId: string
+  /** All brand categories where this company should appear. */
+  categoryIds?: string[]
   description?: string
   image?: string
   equipment?: string[]

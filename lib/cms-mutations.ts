@@ -5,6 +5,7 @@ import { slugify } from '@/lib/slugify'
 import { normalizeProductImageFields } from '@/lib/product-images'
 import { normalizeProductCompanies } from '@/lib/product-companies'
 import { removeProductFromBrandLinks, syncProductBrandLinks } from '@/lib/product-brand-links'
+import { getBrandCategoryIds } from '@/lib/brand-categories'
 import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile, SiteSettings } from '@/types/cms'
 import { normalizeSiteSettings } from '@/lib/site-settings'
 
@@ -323,13 +324,14 @@ function normalizeBrand(body: Brand, fallbackSlug?: string): Brand | null {
   if (!name) return null
 
   const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(name)
-  const categoryId = body.categoryId?.trim()
-  if (!categoryId) return null
+  const categoryIds = getBrandCategoryIds(body)
+  if (!categoryIds.length) return null
 
   return {
     slug,
     name,
-    categoryId,
+    categoryId: categoryIds[0],
+    categoryIds,
     description: body.description?.trim() || '',
     image: body.image?.trim() || '',
     equipment: (body.equipment ?? []).map((item) => item.trim()).filter(Boolean),
@@ -379,7 +381,7 @@ export async function updateBrandCategory(input: {
 
 export async function deleteBrandCategory(id: string): Promise<CmsActionResult> {
   const cms = await readCms()
-  if (cms.brands.some((b) => b.categoryId === id)) {
+  if (cms.brands.some((brand) => getBrandCategoryIds(brand).includes(id))) {
     return { ok: false, error: 'Brand category has brands assigned. Reassign or delete them first.' }
   }
 
@@ -394,7 +396,7 @@ export async function createBrand(brandInput: Brand): Promise<CmsActionResult<Br
   if (!brand) return { ok: false, error: 'Name and brand category are required' }
 
   const cms = await readCms()
-  if (!cms.brandCategories.some((c) => c.id === brand.categoryId)) {
+  if (brand.categoryIds?.some((categoryId) => !cms.brandCategories.some((c) => c.id === categoryId))) {
     return { ok: false, error: 'Brand category not found' }
   }
   if (cms.brands.some((b) => b.slug === brand.slug)) {
@@ -415,7 +417,7 @@ export async function updateBrand(originalSlug: string, brandInput: Brand): Prom
   const index = cms.brands.findIndex((b) => b.slug === originalSlug)
   if (index === -1) return { ok: false, error: 'Brand not found' }
 
-  if (!cms.brandCategories.some((c) => c.id === brand.categoryId)) {
+  if (brand.categoryIds?.some((categoryId) => !cms.brandCategories.some((c) => c.id === categoryId))) {
     return { ok: false, error: 'Brand category not found' }
   }
   if (brand.slug !== originalSlug && cms.brands.some((b) => b.slug === brand.slug)) {

@@ -152,7 +152,7 @@ export default function Hero({ banners, siteSettings }: HeroProps) {
 
               <div className="hero-cinematic-actions">
                 <Link href="/contact" className="hero-cinematic-btn hero-cinematic-btn--primary">
-                  Free Quote
+                  Get Quote
                   <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
                 </Link>
                 <Link href="/products" className="hero-cinematic-btn hero-cinematic-btn--outline">

@@ -1,6 +1,7 @@
 'use client'
 
 import type { Brand, BrandCategory } from '@/types/cms'
+import { getBrandCategoryIds } from '@/lib/brand-categories'
 
 interface ProductBrandLinkerProps {
   brands: Brand[]
@@ -53,7 +54,9 @@ export default function ProductBrandLinker({
                 />
                 <span className="font-medium text-gray-800">{brand.name}</span>
                 <span className="text-xs text-gray-400 ml-auto">
-                  {categoryNameById[brand.categoryId] ?? brand.categoryId}
+                  {getBrandCategoryIds(brand)
+                    .map((categoryId) => categoryNameById[categoryId] ?? categoryId)
+                    .join(', ')}
                 </span>
               </label>
             )

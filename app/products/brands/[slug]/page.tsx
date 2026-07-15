@@ -5,6 +5,7 @@ import ProductGrid from '../../../../components/ProductGrid'
 import CmsImage from '../../../../components/CmsImage'
 import Link from 'next/link'
 import { COMPANY_NAME } from '@/lib/brand'
+import { getBrandCategoryIds } from '@/lib/brand-categories'
 import {
   getBrandBySlug,
   getBrandCategories,
@@ -30,7 +31,9 @@ export default async function BrandDetailPage({ params }: { params: { slug: stri
     getBrandCategories(),
   ])
 
-  const brandCategory = brandCategories.find((c) => c.id === brand.categoryId)
+  const brandCategoryNames = getBrandCategoryIds(brand)
+    .map((categoryId) => brandCategories.find((category) => category.id === categoryId)?.name)
+    .filter(Boolean)
   const description =
     brand.description?.trim() ||
     `Explore ${brand.name} equipment and parts supplied through SAASA B2E TRADES.`
@@ -61,7 +64,7 @@ export default async function BrandDetailPage({ params }: { params: { slug: stri
           </nav>
 
           <p className="category-hero-eyebrow">
-            {brandCategory?.name ?? 'Strong Brands'}
+            {brandCategoryNames.join(' · ') || 'Strong Brands'}
           </p>
           <h1 className="category-hero-title">{brand.name}</h1>
           <p className="category-hero-lead">{description}</p>

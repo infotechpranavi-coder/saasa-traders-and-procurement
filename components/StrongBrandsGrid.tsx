@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Brand, BrandCategory } from '@/types/cms'
+import { brandBelongsToCategory, getBrandCategoryIds } from '@/lib/brand-categories'
 
 interface StrongBrandsGridProps {
   brandCategories: BrandCategory[]
@@ -10,12 +11,15 @@ export default function StrongBrandsGrid({ brandCategories, brands }: StrongBran
   const grouped = brandCategories
     .map((category) => ({
       category,
-      brands: brands.filter((brand) => brand.categoryId === category.id),
+      brands: brands.filter((brand) => brandBelongsToCategory(brand, category.id)),
     }))
     .filter((group) => group.brands.length > 0)
 
   const uncategorized = brands.filter(
-    (brand) => !brandCategories.some((category) => category.id === brand.categoryId),
+    (brand) =>
+      !getBrandCategoryIds(brand).some((categoryId) =>
+        brandCategories.some((category) => category.id === categoryId),
+      ),
   )
 
   if (grouped.length === 0 && uncategorized.length === 0) {
