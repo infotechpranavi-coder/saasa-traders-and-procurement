@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -12,44 +11,15 @@ import {
   Wrench,
   ArrowRight,
   Package,
-  Cpu,
   Layers,
-  Phone,
-  Mail,
-  MapPin,
-  Clock,
   Sparkles,
+  Target,
+  Eye,
+  History,
+  Compass,
+  Handshake,
 } from 'lucide-react'
-import {
-  COMPANY_NAME,
-  OFFICES,
-  INDIA_OFFICE,
-  UAE_OFFICE,
-  CAMEROON_OFFICE,
-  COMPANY_PHONE_TEL,
-  COMPANY_PHONE,
-} from '@/lib/brand'
-
-const tabs = ['Our Mission', 'Our Vision', 'Our History'] as const
-type TabKey = (typeof tabs)[number]
-
-const tabContent: Record<TabKey, { text: string; image: string; alt: string }> = {
-  'Our Mission': {
-    text: 'To connect businesses across Africa and the Middle East with quality products, reliable machinery, and dependable trading support that helps them grow, operate efficiently, and meet their commitments on time.',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Global logistics and trade connection across Africa and Middle East',
-  },
-  'Our Vision': {
-    text: 'To become the most trusted multi-sector trading partner for Africa and the Middle East, recognised for transparent dealing, product quality, and service that businesses can rely on year after year.',
-    image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Multi-sector trading partner for Africa and Middle East',
-  },
-  'Our History': {
-    text: 'SAASA B2E Group began with a focus on business consulting, recruitment, and company formation services for clients across Africa and the Middle East. Over more than seven years of working closely with businesses in these markets, we saw a common challenge: companies found it difficult to source quality products and equipment at fair prices with reliable delivery. SAASA B2E Trades was established to solve this, drawing on our supplier network in India, our trade base in Dubai, and our registered office in Yaoundé, Cameroon.',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
-    alt: 'Dubai trade base and global international commerce',
-  },
-}
+import { COMPANY_NAME } from '@/lib/brand'
 
 const supplyPillars = [
   {
@@ -79,7 +49,7 @@ const supplyPillars = [
   {
     title: 'Pharmaceutical Machines',
     desc: 'Tablet presses, capsule filling machines, blister packing lines, liquid filling systems, and allied processing equipment for pharmaceutical manufacturers and packaging units.',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
+    image: '/static/pharmaceutical-machine.jpg',
     badge: 'cGMP Machinery',
     href: '/services/pharmaceutical-machines',
     target: 'Pharma Manufacturers & Packaging Units',
@@ -87,7 +57,7 @@ const supplyPillars = [
   {
     title: 'IT Equipment',
     desc: 'Laptops, desktops, servers, networking hardware, printers, and peripherals for offices, schools, hospitals, and government institutions.',
-    image: 'https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=800&q=80',
+    image: '/static/it-equipment.jpg',
     badge: 'Enterprise Technology',
     href: '/contact',
     target: 'Offices, Schools, Hospitals & Institutions',
@@ -128,8 +98,6 @@ const whyChooseItems = [
 ]
 
 export default function AboutClient() {
-  const [activeTab, setActiveTab] = useState<TabKey>('Our Mission')
-
   return (
     <div className="space-y-20 pb-16">
       {/* 1. Main Overview & Story Section */}
@@ -150,7 +118,7 @@ export default function AboutClient() {
               </p>
 
               {/* 3 Quick Stat Highlights */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-2 mb-8">
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-2 mb-2">
                 <div className="rounded-2xl bg-[#f8fafc] border border-gray-100 p-4 text-center">
                   <div className="text-2xl sm:text-3xl font-extrabold text-primary">7+</div>
                   <div className="text-xs font-semibold text-gray-600 mt-1 uppercase tracking-wider">Years Experience</div>
@@ -166,50 +134,240 @@ export default function AboutClient() {
               </div>
             </div>
 
-            {/* Right: Interactive Mission / Vision / History Card */}
+            {/* Right: Premium Trust & Logistics Showcase Card */}
             <div className="lg:col-span-5">
-              <div className="bg-[#f8fafc] rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm relative overflow-hidden">
-                <div className="flex gap-2 p-1.5 bg-gray-200/70 rounded-2xl mb-6">
-                  {tabs.map((tab) => (
-                    <button
-                      key={tab}
-                      type="button"
-                      onClick={() => setActiveTab(tab)}
-                      className={`flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                        activeTab === tab
-                          ? 'bg-white text-[#0d1b2a] shadow-sm'
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="relative h-44 sm:h-52 rounded-2xl overflow-hidden mb-5">
+              <div className="relative rounded-3xl bg-gradient-to-br from-[#0d1b2a] to-[#1b263b] p-7 sm:p-9 text-white shadow-xl overflow-hidden border border-gray-800">
+                <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden mb-6 shadow-inner">
                   <Image
-                    src={tabContent[activeTab].image}
-                    alt={tabContent[activeTab].alt}
+                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80"
+                    alt="International shipping and global trade corridor"
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 400px"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 450px"
+                    priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute bottom-3 left-3 text-xs font-bold text-white uppercase tracking-wider bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
-                    {activeTab}
-                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b2a]/80 via-transparent to-transparent" />
+                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow">
+                    Global Trade Corridor
+                  </div>
                 </div>
 
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
-                  {tabContent[activeTab].text}
-                </p>
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
+                    <Handshake className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-white">Trusted Cross-Border Execution</h3>
+                    <p className="text-xs text-gray-400">India · United Arab Emirates · Cameroon</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5 text-xs sm:text-sm text-gray-300 mb-6">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span>Direct relationships with certified manufacturers</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span>100% pre-shipment quality &amp; spec audits</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span>End-to-end maritime freight &amp; customs clearance</span>
+                  </div>
+                </div>
+
+                <Link
+                  href="/contact"
+                  className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold shadow-lg"
+                >
+                  <span>Request Sourcing Consultation</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. What We Supply (Catalogue Pictures & 5 Pillars) */}
+      {/* 2. Dedicated Section: Our Vision, Mission & History */}
+      <section className="py-20 bg-gradient-to-b from-[#f8fafc] via-white to-[#f8fafc] border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="section-label justify-center mb-3">
+              <Compass className="h-4 w-4 text-primary" />
+              <span>OUR GUIDING PRINCIPLES &amp; HERITAGE</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-extrabold text-[#0d1b2a] tracking-tight">
+              Our Vision, Mission &amp; History
+            </h2>
+            <p className="text-gray-600 text-base sm:text-lg mt-3">
+              The foundational values that guide our global operations, the standards we uphold, and our journey from regional consulting to a multi-sector international trading leader.
+            </p>
+          </div>
+
+          {/* Cards for Mission & Vision */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            {/* Mission Card */}
+            <div className="relative rounded-3xl bg-white border border-gray-200/80 p-8 sm:p-10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-100/50 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-14 h-14 rounded-2xl bg-orange-500/10 text-primary flex items-center justify-center">
+                    <Target className="w-7 h-7" strokeWidth={2.2} />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3.5 py-1.5 rounded-full">
+                    Our Mission
+                  </span>
+                </div>
+
+                <h3 className="text-2xl font-extrabold text-[#0d1b2a] mb-4">
+                  Delivering Reliability in Global Trade
+                </h3>
+
+                <p className="text-gray-700 text-base leading-relaxed mb-6 font-medium">
+                  To connect businesses across Africa and the Middle East with quality products, reliable machinery, and dependable trading support that helps them grow, operate efficiently, and meet their commitments on time.
+                </p>
+
+                <div className="space-y-3.5 pt-5 border-t border-gray-100">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600">
+                      <strong className="text-gray-900">Direct Sourcing:</strong> Sourcing directly from verified manufacturers in India and international equipment hubs to ensure transparent, competitive pricing.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600">
+                      <strong className="text-gray-900">Quality First:</strong> Independent third-party pre-shipment inspections ensuring zero discrepancies upon arrival.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600">
+                      <strong className="text-gray-900">Doorstep Delivery:</strong> End-to-end maritime logistics, customs clearance, and lifecycle spares replenishment.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Vision Card */}
+            <div className="relative rounded-3xl bg-white border border-gray-200/80 p-8 sm:p-10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100/50 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-primary flex items-center justify-center">
+                    <Eye className="w-7 h-7 text-primary" strokeWidth={2.2} />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3.5 py-1.5 rounded-full">
+                    Our Vision
+                  </span>
+                </div>
+
+                <h3 className="text-2xl font-extrabold text-[#0d1b2a] mb-4">
+                  The Most Trusted Trade Partner
+                </h3>
+
+                <p className="text-gray-700 text-base leading-relaxed mb-6 font-medium">
+                  To become the most trusted multi-sector trading partner for Africa and the Middle East, recognised for transparent dealing, product quality, and service that businesses can rely on year after year.
+                </p>
+
+                <div className="space-y-3.5 pt-5 border-t border-gray-100">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600">
+                      <strong className="text-gray-900">Catalyzing Growth:</strong> Enabling regional distributors, contractors, and industries with continuous, resilient material supply.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600">
+                      <strong className="text-gray-900">Cross-Border Stability:</strong> Bridging the manufacturing corridors of India and Dubai with emerging African seaports.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600">
+                      <strong className="text-gray-900">Long-Term Value:</strong> Building enduring business relationships rooted in transparency, compliance, and shared prosperity.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* History & Journey Timeline Card */}
+          <div className="rounded-3xl bg-white border border-gray-200/80 p-8 sm:p-12 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-gray-100">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-3.5 py-1.5 rounded-full mb-3">
+                  <History className="w-3.5 h-3.5" />
+                  <span>Our Heritage &amp; Evolution</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0d1b2a]">
+                  Our History &amp; Growth Story
+                </h3>
+              </div>
+              <p className="text-gray-600 text-sm sm:text-base max-w-xl leading-relaxed">
+                SAASA B2E Group began with a focus on business consulting, recruitment, and company formation. Over more than 7 years, we recognized that clients struggled to source quality products and machinery at fair prices with dependable delivery. SAASA B2E Trades was founded to bridge this gap.
+              </p>
+            </div>
+
+            {/* Milestones Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Milestone 1 */}
+              <div className="relative p-6 rounded-2xl bg-[#f8fafc] border border-gray-100 flex flex-col justify-between hover:border-orange-200 transition-all">
+                <div>
+                  <span className="text-3xl font-black text-primary mb-2 block">2019</span>
+                  <h4 className="text-base font-bold text-[#0d1b2a] mb-2">Founding &amp; UAE Trade Desk</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    Established in India and Dubai, setting up global trade facilitation and connecting Asian manufacturers with emerging regional buyers.
+                  </p>
+                </div>
+              </div>
+
+              {/* Milestone 2 */}
+              <div className="relative p-6 rounded-2xl bg-[#f8fafc] border border-gray-100 flex flex-col justify-between hover:border-orange-200 transition-all">
+                <div>
+                  <span className="text-3xl font-black text-primary mb-2 block">2021</span>
+                  <h4 className="text-base font-bold text-[#0d1b2a] mb-2">Heavy Machinery Procurement</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    Expanded into construction equipment, asphalt plants, batch mix equipment, and genuine OEM spare parts for major infrastructure contractors.
+                  </p>
+                </div>
+              </div>
+
+              {/* Milestone 3 */}
+              <div className="relative p-6 rounded-2xl bg-[#f8fafc] border border-gray-100 flex flex-col justify-between hover:border-orange-200 transition-all">
+                <div>
+                  <span className="text-3xl font-black text-primary mb-2 block">2023</span>
+                  <h4 className="text-base font-bold text-[#0d1b2a] mb-2">Cameroon African Office</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    Opened registered office in Yaoundé, Cameroon, enabling on-ground CEMAC trade coordination, rapid customs clearance, and direct local support.
+                  </p>
+                </div>
+              </div>
+
+              {/* Milestone 4 */}
+              <div className="relative p-6 rounded-2xl bg-[#f8fafc] border border-gray-100 flex flex-col justify-between hover:border-orange-200 transition-all">
+                <div>
+                  <span className="text-3xl font-black text-primary mb-2 block">Today</span>
+                  <h4 className="text-base font-bold text-[#0d1b2a] mb-2">Multi-Sector Powerhouse</h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    Supplying FMCG commodities, commercial vehicles, heavy machinery, pharmaceutical processing equipment, and IT hardware across 15+ markets.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. What We Supply (Catalogue Pictures & 5 Pillars) */}
       <section className="py-16 bg-[#f8fafc] border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
@@ -274,7 +432,7 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* 3. Why Choose SAASA B2E Trades */}
+      {/* 4. Why Choose SAASA B2E Trades */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
@@ -315,62 +473,6 @@ export default function AboutClient() {
                 </div>
               )
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Global Offices & Direct Regional Desks */}
-      <section className="py-16 bg-[#0F1419] text-white rounded-3xl mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-10 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-8 border-b border-gray-800">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">Global Presence</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-                Our Regional Trade Desks
-              </h2>
-              <p className="text-gray-400 text-sm sm:text-base mt-2 max-w-xl">
-                On-the-ground support across India, the United Arab Emirates, and Cameroon for rapid trade coordination.
-              </p>
-            </div>
-            <Link
-              href="/contact"
-              className="btn-primary shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl"
-            >
-              Contact Our Trade Desk
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {OFFICES.map((office) => (
-              <div
-                key={office.name}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
-              >
-                <div className="inline-block text-xs font-bold uppercase tracking-wider text-primary bg-primary/20 px-3 py-1 rounded-full mb-3">
-                  {office.name}
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">{office.city}</h3>
-                <p className="text-sm text-gray-400 mb-4">{office.address}</p>
-
-                <div className="space-y-2 pt-3 border-t border-white/10 text-xs sm:text-sm">
-                  <a
-                    href={`tel:${office.phoneTel}`}
-                    className="flex items-center gap-2 text-gray-300 hover:text-primary transition-colors"
-                  >
-                    <Phone className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <span>{office.phone}</span>
-                  </a>
-                  <a
-                    href={`mailto:${office.email}`}
-                    className="flex items-center gap-2 text-gray-300 hover:text-primary transition-colors truncate"
-                  >
-                    <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <span className="truncate">{office.email}</span>
-                  </a>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
