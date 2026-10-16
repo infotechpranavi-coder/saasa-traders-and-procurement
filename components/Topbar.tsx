@@ -6,7 +6,7 @@ import type { SocialName } from '@/types'
 export default function Topbar() {
   return (
     <div className="hero-topbar relative z-[60] bg-primary text-white text-[13px] py-2.5 px-4 lg:px-8">
-      <div className="max-w-[1400px] mx-auto flex flex-wrap items-center justify-between gap-y-2 gap-x-6">
+      <div className="max-w-[1536px] 2xl:max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-y-2 gap-x-6">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
           <a href={`tel:${INDIA_OFFICE.phoneTel}`} className="flex items-center gap-1.5 hover:opacity-85 transition-opacity whitespace-nowrap">
             <PhoneIcon />

@@ -79,7 +79,7 @@ export function buildNavItems(cms: CmsData | null): NavItem[] {
 
   return [
     { label: 'Home', href: '/', hasDropdown: false },
-    { label: 'About', href: '/about', hasDropdown: false },
+    { label: 'About Us', href: '/about', hasDropdown: false },
     {
       label: 'Services',
       href: '/services',
@@ -94,12 +94,12 @@ export function buildNavItems(cms: CmsData | null): NavItem[] {
     },
     { label: 'Blog', href: '/blog', hasDropdown: false },
     { label: 'FAQ', href: '/faq', hasDropdown: false },
+    { label: 'Contact Us', href: '/contact', hasDropdown: false },
     {
       label: MAIN_SAASA_SITE_LABEL,
       href: MAIN_SAASA_SITE_URL,
       hasDropdown: false,
       external: true,
     },
-    { label: 'Contact Us', href: '/contact', hasDropdown: false },
   ]
 }

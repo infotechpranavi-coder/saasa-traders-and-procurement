@@ -224,7 +224,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
             } as React.CSSProperties
           }
         >
-          <div className={isSolidShell ? 'max-w-[1400px] mx-auto' : 'hero-nav-floating-wrap max-w-[1400px] mx-auto'}>
+          <div className={isSolidShell ? 'max-w-[1536px] 2xl:max-w-[1600px] mx-auto' : 'hero-nav-floating-wrap max-w-[1536px] 2xl:max-w-[1600px] mx-auto'}>
             <div
               className={
                 isSolidShell ? 'hero-nav-shell site-nav-solid-shell' : 'hero-nav-shell hero-nav-blend-shell'
@@ -241,8 +241,8 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
               solid={isSolidMenu}
               className={
                 isSolidMenu
-                  ? 'max-w-[1400px] mx-auto site-nav-mobile-menu lg:hidden'
-                  : 'max-w-[1400px] mx-auto hero-nav-mobile-menu lg:hidden'
+                  ? 'max-w-[1536px] 2xl:max-w-[1600px] mx-auto site-nav-mobile-menu lg:hidden'
+                  : 'max-w-[1536px] 2xl:max-w-[1600px] mx-auto hero-nav-mobile-menu lg:hidden'
               }
             />
           )}
@@ -254,14 +254,14 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
 
   return (
     <nav className={`site-nav-default fixed top-0 left-0 right-0 z-[100] px-4 lg:px-8 ${scrolled ? 'site-nav-default--scrolled' : ''}`}>
-      <div className="hero-nav-shell site-nav-solid-shell max-w-[1400px] mx-auto">{solidNavContent}</div>
+      <div className="hero-nav-shell site-nav-solid-shell max-w-[1536px] 2xl:max-w-[1600px] mx-auto">{solidNavContent}</div>
       {mobileOpen && (
         <MobileMenu
           navItems={navItems}
           brochure={brochure}
           onClose={() => setMobileOpen(false)}
           solid
-          className="max-w-[1400px] mx-auto site-nav-mobile-menu lg:hidden"
+          className="max-w-[1536px] 2xl:max-w-[1600px] mx-auto site-nav-mobile-menu lg:hidden"
         />
       )}
     </nav>
@@ -370,7 +370,7 @@ function NavContent({
         </span>
         <div className="min-w-0 shrink-0">
           <span
-            className={`site-logo-text block font-black uppercase tracking-wide whitespace-nowrap text-sm sm:text-base lg:text-[18px] xl:text-[20px] 2xl:text-[22px] leading-none transition-colors ${
+            className={`site-logo-text block font-black uppercase tracking-wide whitespace-nowrap text-sm sm:text-base lg:text-[16px] xl:text-[18px] 2xl:text-[20px] leading-none transition-colors ${
               floating
                 ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]'
                 : 'text-[#0A0E1A]'
@@ -381,7 +381,7 @@ function NavContent({
         </div>
       </Link>
 
-      <div className="nav-center-links hidden min-w-0 flex-1 items-center justify-center gap-3 overflow-hidden px-1 lg:flex xl:gap-5 2xl:gap-6">
+      <div className="nav-center-links hidden min-w-0 flex-1 items-center justify-center gap-2 lg:flex xl:gap-3.5 2xl:gap-5 px-1">
         {navItems.map((item) => (
           <NavMegaMenuItem key={item.label} item={item} floating={floating} />
         ))}

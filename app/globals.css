@@ -5032,12 +5032,6 @@ html {
   font-size: 13px;
 }
 
-@media (min-width: 1024px) and (max-width: 1535px) {
-  .nav-link-contact {
-    display: none;
-  }
-}
-
 @media (min-width: 1280px) {
   .nav-center-links .nav-link {
     font-size: 14px;
