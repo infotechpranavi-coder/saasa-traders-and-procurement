@@ -9,6 +9,7 @@ import BrandsDashboardSection from '@/components/dashboard/BrandsDashboardSectio
 import DashboardDrawer from '@/components/dashboard/DashboardDrawer'
 import HeroBannersDashboardSection from '@/components/dashboard/HeroBannersDashboardSection'
 import PointListEditor from '@/components/dashboard/PointListEditor'
+import SpecificationsEditor from '@/components/dashboard/SpecificationsEditor'
 import ProductBrandLinker from '@/components/dashboard/ProductBrandLinker'
 import EnquiriesDashboardSection from '@/components/dashboard/EnquiriesDashboardSection'
 import NewsletterDashboardSection from '@/components/dashboard/NewsletterDashboardSection'
@@ -16,7 +17,7 @@ import RecentWorkDashboardSection from '@/components/dashboard/RecentWorkDashboa
 import ReviewsDashboardSection from '@/components/dashboard/ReviewsDashboardSection'
 import SettingsDashboardSection from '@/components/dashboard/SettingsDashboardSection'
 import { COMPANY_NAME } from '@/lib/brand'
-import type { BlogPost, Category, CategoryType, CmsData, Product, Service } from '@/types/cms'
+import type { BlogPost, Category, CategoryType, CmsData, Product, ProductSpecItem, Service } from '@/types/cms'
 import { slugify } from '@/lib/slugify'
 import { parseLines } from '@/lib/utils'
 import { normalizeProductCompanies } from '@/lib/product-companies'
@@ -105,12 +106,31 @@ const emptyProduct = (): Product => ({
   images: [],
   desc: '',
   specs: [],
+  specifications: [],
   overview: [],
   features: [],
   applications: [],
   companies: [],
   showOnHomepage: false,
 })
+
+function getProductSpecifications(p: Product): ProductSpecItem[] {
+  if (Array.isArray(p.specifications) && p.specifications.length > 0) {
+    return p.specifications
+  }
+  if (Array.isArray(p.specs) && p.specs.length > 0) {
+    return p.specs
+      .map((item) => {
+        const idx = item.indexOf(':')
+        if (idx > -1) {
+          return { name: item.slice(0, idx).trim(), value: item.slice(idx + 1).trim() }
+        }
+        return { name: 'Specification', value: item.trim() }
+      })
+      .filter((s) => s.value)
+  }
+  return []
+}
 
 const emptyService = (): Service => ({
   slug: '',
@@ -246,14 +266,29 @@ export default function DashboardApp({
       showMsg('Please select a product category', 'error')
       return
     }
+    const finalSlug = slugify(editingProduct.slug || editingProduct.title)
+    if (!finalSlug) {
+      showMsg('Please provide a valid title or slug for the product', 'error')
+      return
+    }
     const { image, images } = normalizeProductImageFields(
       editingProduct.image,
       editingProduct.images?.length ? editingProduct.images : getProductImages(editingProduct),
     )
+    const specifications = (editingProduct.specifications ?? [])
+      .map((s) => ({ name: s.name.trim(), value: s.value.trim() }))
+      .filter((s) => s.name || s.value)
+
     const payload: Product = {
       ...editingProduct,
+      slug: finalSlug,
       image,
       images,
+      specifications,
+      specs:
+        specifications.length > 0
+          ? specifications.map((s) => (s.name && s.value ? `${s.name}: ${s.value}` : s.name || s.value))
+          : (editingProduct.specs ?? []).map((s) => s.trim()).filter(Boolean),
       overview: editingProduct.overview.map((s) => s.trim()).filter(Boolean),
       features: editingProduct.features.map((s) => s.trim()).filter(Boolean),
       applications: editingProduct.applications.map((s) => s.trim()).filter(Boolean),
@@ -278,9 +313,18 @@ export default function DashboardApp({
   const saveService = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingService) return
+    const finalSlug = slugify(editingService.slug || editingService.title)
+    if (!finalSlug) {
+      showMsg('Please provide a valid title or slug for the service', 'error')
+      return
+    }
+    const payload: Service = {
+      ...editingService,
+      slug: finalSlug,
+    }
     await runDashboardSave(
       setSaving,
-      () => saveServiceAction(editingService, originalSlug || undefined),
+      () => saveServiceAction(payload, originalSlug || undefined),
       {
         showMsg,
         setCms,
@@ -351,9 +395,15 @@ export default function DashboardApp({
       showMsg('Title is required', 'error')
       return
     }
+    const finalSlug = slugify(editingBlog.slug || editingBlog.title)
+    if (!finalSlug) {
+      showMsg('Title or valid slug is required', 'error')
+      return
+    }
     const isEdit = Boolean(originalSlug && cms?.blogs.some((b) => b.slug === originalSlug))
     const payload: BlogPost = {
       ...editingBlog,
+      slug: finalSlug,
       body: (editingBlog.body ?? []).map((paragraph) => paragraph.trim()).filter(Boolean),
     }
     await runDashboardSave(
@@ -545,9 +595,17 @@ export default function DashboardApp({
                   <div key={p.slug} className="dashboard-table-row">
                     <div className="min-w-0">
                       <p className="dashboard-row-title truncate">{p.title}</p>
-                      <p className="dashboard-row-meta">
-                        {p.slug}
-                        {p.categoryId ? ` · ${categoryNameById[p.categoryId] ?? p.categoryId}` : ' · No category'}
+                      <p className="dashboard-row-meta flex items-center gap-2 flex-wrap">
+                        <span className="font-mono text-emerald-700">/products/{p.slug}</span>
+                        <span>{p.categoryId ? `· ${categoryNameById[p.categoryId] ?? p.categoryId}` : '· No category'}</span>
+                        <a
+                          href={`/products/${p.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline font-sans text-xs inline-flex items-center gap-0.5"
+                        >
+                          View live ↗
+                        </a>
                       </p>
                     </div>
                     <div className="dashboard-row-actions">
@@ -556,7 +614,7 @@ export default function DashboardApp({
                         className="dashboard-btn-edit"
                         onClick={() => {
                           closeDrawer()
-                          setEditingProduct({ ...p })
+                          setEditingProduct({ ...p, specifications: getProductSpecifications(p) })
                           setOriginalSlug(p.slug)
                           if (cms) setLinkedBrandSlugs(getBrandSlugsForProduct(cms, p.slug))
                         }}
@@ -814,7 +872,18 @@ export default function DashboardApp({
               <p className="dashboard-form-section-title">Product page</p>
               <p className="mb-3 text-xs text-gray-500">Title, label, image, and category — shown at the top of the detail page.</p>
               <div className="space-y-3">
-                <Field label="Title *" value={editingProduct.title} onChange={(v) => setEditingProduct({ ...editingProduct, title: v })} />
+                <Field
+                  label="Title *"
+                  value={editingProduct.title}
+                  onChange={(v) => {
+                    const isNew = !originalSlug
+                    setEditingProduct({
+                      ...editingProduct,
+                      title: v,
+                      slug: isNew ? slugify(v) : editingProduct.slug,
+                    })
+                  }}
+                />
                 <Field
                   label="Label"
                   hint="Short tag under the title — e.g. Heavy Equipment, Road Machinery"
@@ -852,7 +921,32 @@ export default function DashboardApp({
                     })
                   }
                 />
-                <Field label="Slug" value={editingProduct.slug} onChange={(v) => setEditingProduct({ ...editingProduct, slug: v })} />
+                <div>
+                  <Field
+                    label="SEO Slug *"
+                    hint="The clean, SEO-friendly URL slug for this product (e.g. hydraulic-pump-assemblies). Auto-generated from title, or customize with lowercase letters and hyphens."
+                    value={editingProduct.slug}
+                    onChange={(v) => setEditingProduct({ ...editingProduct, slug: slugify(v) })}
+                  />
+                  <div className="mt-1 flex items-center justify-between text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded px-2.5 py-1.5 font-mono">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-gray-400 font-sans font-semibold">SEO URL:</span>
+                      <span className="text-emerald-700 font-medium truncate">
+                        /products/{editingProduct.slug || 'product-slug'}
+                      </span>
+                    </div>
+                    {editingProduct.slug && (
+                      <a
+                        href={`/products/${editingProduct.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline font-sans text-[11px] whitespace-nowrap ml-2"
+                      >
+                        Preview ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -903,6 +997,14 @@ export default function DashboardApp({
             </div>
 
             <div className="dashboard-form-section">
+              <p className="dashboard-form-section-title">Technical specifications</p>
+              <SpecificationsEditor
+                items={editingProduct.specifications}
+                onChange={(specifications) => setEditingProduct({ ...editingProduct, specifications })}
+              />
+            </div>
+
+            <div className="dashboard-form-section">
               <p className="dashboard-form-section-title">Applications</p>
               <PointListEditor
                 label="Use cases"
@@ -948,8 +1050,44 @@ export default function DashboardApp({
             <div className="dashboard-form-section">
               <p className="dashboard-form-section-title">Basic info</p>
               <div className="space-y-3">
-                <Field label="Title" value={editingService.title} onChange={(v) => setEditingService({ ...editingService, title: v })} />
-                <Field label="Slug" value={editingService.slug} onChange={(v) => setEditingService({ ...editingService, slug: v })} />
+                <Field
+                  label="Title *"
+                  value={editingService.title}
+                  onChange={(v) => {
+                    const isNew = !originalSlug
+                    setEditingService({
+                      ...editingService,
+                      title: v,
+                      slug: isNew ? slugify(v) : editingService.slug,
+                    })
+                  }}
+                />
+                <div>
+                  <Field
+                    label="SEO Slug *"
+                    hint="The clean, SEO-friendly URL slug for this service."
+                    value={editingService.slug}
+                    onChange={(v) => setEditingService({ ...editingService, slug: slugify(v) })}
+                  />
+                  <div className="mt-1 flex items-center justify-between text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded px-2.5 py-1.5 font-mono">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-gray-400 font-sans font-semibold">SEO URL:</span>
+                      <span className="text-emerald-700 font-medium truncate">
+                        /services/{editingService.slug || 'service-slug'}
+                      </span>
+                    </div>
+                    {editingService.slug && (
+                      <a
+                        href={`/services/${editingService.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline font-sans text-[11px] whitespace-nowrap ml-2"
+                      >
+                        Preview ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Category</label>
                   <select
@@ -1118,8 +1256,44 @@ export default function DashboardApp({
             <div className="dashboard-form-section">
               <p className="dashboard-form-section-title">Basic info</p>
               <div className="space-y-3">
-                <Field label="Title" value={editingBlog.title} onChange={(v) => setEditingBlog({ ...editingBlog, title: v })} />
-                <Field label="Slug" value={editingBlog.slug} onChange={(v) => setEditingBlog({ ...editingBlog, slug: v })} />
+                <Field
+                  label="Title *"
+                  value={editingBlog.title}
+                  onChange={(v) => {
+                    const isNew = !originalSlug
+                    setEditingBlog({
+                      ...editingBlog,
+                      title: v,
+                      slug: isNew ? slugify(v) : editingBlog.slug,
+                    })
+                  }}
+                />
+                <div>
+                  <Field
+                    label="SEO Slug *"
+                    hint="The clean, SEO-friendly URL slug for this blog post."
+                    value={editingBlog.slug}
+                    onChange={(v) => setEditingBlog({ ...editingBlog, slug: slugify(v) })}
+                  />
+                  <div className="mt-1 flex items-center justify-between text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded px-2.5 py-1.5 font-mono">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="text-gray-400 font-sans font-semibold">SEO URL:</span>
+                      <span className="text-emerald-700 font-medium truncate">
+                        /blog/{editingBlog.slug || 'post-slug'}
+                      </span>
+                    </div>
+                    {editingBlog.slug && (
+                      <a
+                        href={`/blog/${editingBlog.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline font-sans text-[11px] whitespace-nowrap ml-2"
+                      >
+                        Preview ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
                 <ImageUrlField
                   label="Blog image"
                   imagesOnly

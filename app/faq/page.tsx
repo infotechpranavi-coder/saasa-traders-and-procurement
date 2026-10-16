@@ -6,7 +6,12 @@ import { COMPANY_NAME } from '@/lib/brand'
 
 export const metadata: Metadata = {
   title: `FAQ Centre - ${COMPANY_NAME}`,
-  description: `Answers to common questions about procurement, machinery parts, shipping, pricing, and support from ${COMPANY_NAME}.`,
+  description: `Answers to common questions about international procurement, machinery parts, shipping, pricing, and support from ${COMPANY_NAME}.`,
+  openGraph: {
+    title: `Frequently Asked Questions - ${COMPANY_NAME}`,
+    description:
+      'Everything you need to know about ordering machinery parts, international shipping, payment terms, and OEM sourcing.',
+  },
 }
 
 export default function FaqPage() {

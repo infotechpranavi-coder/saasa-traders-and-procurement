@@ -5,6 +5,9 @@ export type NavbarVariant = 'default' | 'hero'
 export interface NavSubItem {
   label: string
   href: string
+  image?: string
+  description?: string
+  badge?: string
   children?: NavSubItem[]
 }
 

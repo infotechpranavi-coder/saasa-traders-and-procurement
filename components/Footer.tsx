@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight, MapPin, Phone, Mail } from 'lucide-react'
 import BrandLogo from './BrandLogo'
-import { COMPANY_NAME, COMPANY_ADDRESS, COMPANY_EMAILS, COMPANY_PHONES, COMPANY_DESCRIPTION, SOCIAL_LINKS } from '@/lib/brand'
-import { FOOTER_QUICK_LINKS, FOOTER_SERVICES } from '@/lib/site-content'
+import { COMPANY_NAME, COMPANY_DESCRIPTION, OFFICES, SOCIAL_LINKS } from '@/lib/brand'
+import { FOOTER_QUICK_LINKS } from '@/lib/site-content'
 import BrochureDownloadButton from './BrochureDownloadButton'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import type { CmsData } from '@/types/cms'
@@ -33,18 +33,6 @@ export default function Footer() {
       active = false
     }
   }, [])
-
-  const footerServices =
-    cms?.services
-      .filter((s) => s.showInFooter)
-      .map((s) => ({ label: s.title, href: `/services/${s.slug}` })) ?? []
-
-  const footerProductCategories =
-    cms?.categories
-      .filter((c) => c.showInFooter && (c.type === 'product' || c.type === 'both'))
-      .map((c) => ({ label: c.name, href: `/products/category/${c.id}` })) ?? []
-
-  const serviceLinks = footerServices.length > 0 ? footerServices : FOOTER_SERVICES
 
   const subscribeNewsletter = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -155,13 +143,13 @@ export default function Footer() {
 
       <div className="relative py-16">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-10">
-            <div className="reveal">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
+            <div className="lg:col-span-5 reveal">
               <Link href="/" className="flex flex-col items-start gap-2 mb-5">
                 <BrandLogo className="brand-logo brand-logo--nav" />
                 <span className="footer-brand-name text-white">{COMPANY_NAME}</span>
               </Link>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">{COMPANY_DESCRIPTION}</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-md">{COMPANY_DESCRIPTION}</p>
               <div className="flex gap-3">
                 {SOCIAL_LINKS.map((social) => (
                   <a
@@ -178,92 +166,73 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="reveal delay-100">
-              <h4 className="mb-2">Quick Links</h4>
+            <div className="lg:col-span-3 reveal delay-100">
+              <h4 className="mb-2 text-white font-bold text-base">Quick Links</h4>
               <div className="w-8 h-1 bg-primary mb-5" />
-              {FOOTER_QUICK_LINKS.map((item) =>
-                'external' in item && item.external ? (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
-                  >
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
-                  >
-                    {item.label}
-                  </Link>
-                ),
-              )}
-            </div>
-
-            <div className="reveal delay-200">
-              <h4 className="mb-2">Our Services</h4>
-              <div className="w-8 h-1 bg-primary mb-5" />
-              {serviceLinks.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
-                >
-                  {item.label}
-                </Link>
-              ))}
-
-              {footerProductCategories.length > 0 && (
-                <>
-                  <h4 className="mb-2 mt-8">Product Categories</h4>
-                  <div className="w-8 h-1 bg-primary mb-5" />
-                  {footerProductCategories.map((item) => (
+              <div className="space-y-1">
+                {FOOTER_QUICK_LINKS.map((item) =>
+                  'external' in item && item.external ? (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
                     <Link
-                      key={item.href}
+                      key={item.label}
                       href={item.href}
                       className="block text-gray-400 hover:text-primary text-sm py-1.5 hover:translate-x-1 transition-all"
                     >
                       {item.label}
                     </Link>
-                  ))}
-                </>
-              )}
+                  ),
+                )}
+              </div>
             </div>
 
-            <div className="reveal delay-300">
-              <h4 className="mb-2">Contact Us</h4>
+            <div className="lg:col-span-4 reveal delay-200">
+              <h4 className="mb-2 text-white font-bold text-base">Our Offices</h4>
               <div className="w-8 h-1 bg-primary mb-5" />
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 text-sm text-gray-400">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
-                  <span>{COMPANY_ADDRESS}</span>
-                </div>
-                {COMPANY_EMAILS.map((email) => (
-                  <a
-                    key={email}
-                    href={`mailto:${email}`}
-                    className="flex items-center gap-3 text-sm text-gray-400 hover:text-primary transition-colors"
-                  >
-                    <Mail className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
-                    <span>{email}</span>
-                  </a>
-                ))}
-                {COMPANY_PHONES.map((phone) => (
-                  <a
-                    key={phone.tel}
-                    href={`tel:${phone.tel}`}
-                    className="flex items-center gap-3 text-sm text-gray-400 hover:text-primary transition-colors"
-                  >
-                    <Phone className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
-                    <span>{phone.display}</span>
-                  </a>
+              <div className="space-y-4">
+                {OFFICES.map((office) => (
+                  <div key={office.name} className="border-b border-gray-800/80 pb-3 last:border-b-0 last:pb-0">
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1.5">{office.name}</p>
+                    <div className="space-y-1.5 text-xs text-gray-400">
+                      <div className="flex items-start gap-2.5">
+                        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
+                        <span>{office.address}</span>
+                      </div>
+                      <a
+                        href={`mailto:${office.email}`}
+                        className="flex items-center gap-2.5 hover:text-primary transition-colors truncate"
+                      >
+                        <Mail className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
+                        <span className="truncate">{office.email}</span>
+                      </a>
+                      <a
+                        href={`tel:${office.phoneTel}`}
+                        className="flex items-center gap-2.5 font-medium hover:text-primary transition-colors"
+                      >
+                        <Phone className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
+                        <span>{office.phone}</span>
+                      </a>
+                      {office.additionalPhone && (
+                        <a
+                          href={`tel:${office.additionalPhoneTel}`}
+                          className="flex items-center gap-2.5 font-medium hover:text-primary transition-colors pl-6 text-gray-500 hover:text-primary"
+                        >
+                          <span>{office.additionalPhone}</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
-              <BrochureDownloadButton brochure={cms?.brochure} variant="inline" className="mt-6 w-full justify-center border-white/20 bg-white/5 text-white hover:bg-white hover:text-[#0d1b2a]" />
+              <BrochureDownloadButton brochure={cms?.brochure} variant="inline" className="mt-5 w-full justify-center border-white/20 bg-white/5 text-white hover:bg-white hover:text-[#0d1b2a]" />
               <Link
                 href="/contact"
                 className="mt-3 inline-flex w-full items-center justify-center bg-white text-dark font-bold text-sm px-6 py-2 rounded-full hover:bg-primary hover:text-white transition-all"

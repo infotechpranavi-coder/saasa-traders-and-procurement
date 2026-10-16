@@ -12,20 +12,26 @@ import { SITE_IMAGES } from '@/lib/site-content'
 const tabs = ['Our Mission', 'Our Vision', 'Our History'] as const
 type TabKey = (typeof tabs)[number]
 
+const tabImages: Record<TabKey, { src: string; alt: string }> = {
+  'Our Mission': { src: SITE_IMAGES.about.tab, alt: 'Heavy machinery and equipment procurement' },
+  'Our Vision': { src: SITE_IMAGES.about.fmcgProducts, alt: 'FMCG and consumer goods trading' },
+  'Our History': { src: SITE_IMAGES.about.fmcg, alt: 'Global trading and commodity supply chain' },
+}
+
 const tabContent: Record<TabKey, string> = {
   'Our Mission':
-    'To connect contractors, miners, fleet operators, and industrial businesses with reliable equipment, genuine parts, and trading partners — delivering procurement solutions that keep projects moving.',
+    'To connect businesses across Africa and the Middle East with quality products, reliable machinery, and dependable trading support that helps them grow, operate efficiently, and meet their commitments on time.',
   'Our Vision':
-    'To be Africa’s most trusted B2E procurement and trading company for construction machinery, vehicles, mining equipment, and industrial products.',
+    'To become the most trusted multi-sector trading partner for Africa and the Middle East, recognised for transparent dealing, product quality, and service that businesses can rely on year after year.',
   'Our History':
-    'SAASA B2E TRADES has grown from a regional trading firm into a procurement partner serving construction, mining, transport, and energy sectors with equipment supply and parts sourcing across global markets.',
+    'SAASA B2E Group began with a focus on business consulting, recruitment, and company formation services for clients across Africa and the Middle East. Over more than seven years of working closely with businesses in these markets, we saw a common challenge: companies found it difficult to source quality products and equipment at fair prices with reliable delivery. SAASA B2E Trades was established to solve this, drawing on our supplier network in India, our trade base in Dubai, and our registered office in Yaoundé, Cameroon.',
 }
 
 function ExperienceRibbon() {
   return (
     <div className="about-ribbon absolute left-0 top-5 z-20 sm:top-6">
       <div className="about-ribbon-fold" aria-hidden />
-      <div className="about-ribbon-body">25+ Years Experience</div>
+      <div className="about-ribbon-body">7+ Years Experience</div>
     </div>
   )
 }
@@ -63,15 +69,19 @@ function AboutCollage() {
     <div className="about-collage reveal-left">
       <div className="about-collage-rays" aria-hidden />
 
-      {/* Bottom-left — truck / transport scene */}
-      <div className="absolute bottom-0 left-0 z-[1] h-[46%] w-[78%] overflow-hidden rounded-[28px] shadow-[0_16px_40px_rgba(0,0,0,0.14)]">
+      {/* Bottom-left — FMCG wholesale trading & packaged goods scene */}
+      <div className="absolute bottom-0 left-0 z-[1] h-[48%] w-[78%] overflow-hidden rounded-[28px] shadow-[0_16px_40px_rgba(0,0,0,0.14)] group">
         <CmsImage
-          src={SITE_IMAGES.about.secondary}
-          alt="Road roller on construction site"
+          src={SITE_IMAGES.about.fmcg}
+          alt="Wholesale FMCG products and food commodities"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           sizes="420px"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <span className="absolute bottom-3 left-4 text-[10px] font-bold uppercase tracking-wider text-white bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-white/20">
+          FMCG &amp; Commodities
+        </span>
       </div>
 
       {/* Foreground orange container — bottom-left overlap */}
@@ -88,25 +98,29 @@ function AboutCollage() {
         </div>
       </div>
 
-      {/* Top-right — main portrait */}
-      <div className="absolute right-0 top-0 z-[2] h-[74%] w-[58%] overflow-hidden rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.16)]">
+      {/* Top-right — main portrait: Construction & Earthmoving Machinery */}
+      <div className="absolute right-0 top-0 z-[2] h-[74%] w-[58%] overflow-hidden rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.16)] group">
         <CmsImage
           src={SITE_IMAGES.about.main}
           alt="JCB excavator and earthmoving equipment"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           sizes="320px"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+        <span className="absolute bottom-3 right-4 text-[10px] font-bold uppercase tracking-wider text-white bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-white/20">
+          Heavy Machinery
+        </span>
         <ExperienceRibbon />
       </div>
 
-      {/* Bottom-right — circular port inset */}
-      <div className="absolute bottom-[4%] right-0 z-[3] h-[112px] w-[112px] overflow-hidden rounded-full border-[5px] border-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] sm:h-[128px] sm:w-[128px] lg:h-[118px] lg:w-[118px] xl:h-[138px] xl:w-[138px]">
+      {/* Bottom-right — circular inset: Packaged FMCG consumer goods */}
+      <div className="absolute bottom-[4%] right-0 z-[3] h-[112px] w-[112px] overflow-hidden rounded-full border-[5px] border-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] sm:h-[128px] sm:w-[128px] lg:h-[118px] lg:w-[118px] xl:h-[138px] xl:w-[138px] group">
         <CmsImage
-          src={SITE_IMAGES.about.accent}
-          alt="Drum mix asphalt plant"
+          src={SITE_IMAGES.about.fmcgProducts}
+          alt="Packaged FMCG consumer goods"
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="138px"
         />
       </div>
@@ -139,12 +153,11 @@ export default function About() {
             </div>
 
             <h2 className="hp-title mb-5 max-w-[560px] break-words">
-              Your partner for equipment procurement and industrial trading.
+              Trading &amp; Procurement Division of SAASA B2E Group
             </h2>
 
             <p className="hp-lead mb-7 max-w-[560px] break-words">
-              From construction machinery and spare parts to trucks, buses, mining equipment, and power systems —
-              we source, trade, and deliver the products your operation depends on.
+              SAASA B2E Trades is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment to businesses, distributors, contractors, and institutions across Africa and the Middle East. Our role is to find the right products, verify their quality, and deliver them to your doorstep with complete documentation and support.
             </p>
 
             <div className="mb-7 flex min-w-0 flex-wrap gap-2 sm:gap-2.5">
@@ -162,13 +175,19 @@ export default function About() {
 
             <div className="mb-6 flex min-w-0 gap-3 border-t border-gray-200 pt-6 sm:gap-4">
               <div className="relative h-[80px] w-[112px] shrink-0 overflow-hidden rounded-[14px] shadow-md sm:h-[92px] sm:w-[140px]">
-                <CmsImage src={SITE_IMAGES.about.tab} alt="Bitumen spreader" fill className="object-cover" sizes="140px" />
+                <CmsImage
+                  src={tabImages[activeTab].src}
+                  alt={tabImages[activeTab].alt}
+                  fill
+                  className="object-cover transition-opacity duration-300"
+                  sizes="140px"
+                />
               </div>
               <p className="hp-body min-w-0 flex-1">{tabContent[activeTab]}</p>
             </div>
 
             <p className="hp-emphasis mb-8 break-words">
-              We manage supplier selection, import coordination, and delivery so your team can focus on the project.
+              Every order follows a clear process: sourcing from verified manufacturers, pre-dispatch quality checks, export documentation, shipping, customs clearance, and after-sales support.
             </p>
 
             <div className="flex min-w-0 flex-wrap items-center gap-4 sm:gap-5">

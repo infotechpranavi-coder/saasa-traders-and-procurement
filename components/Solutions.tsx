@@ -11,7 +11,7 @@ const features: { icon: LogisticsIconName; title: string; desc: string }[] = [
   { icon: 'package', title: 'Equipment Procurement', desc: 'Source construction, mining, and industrial machinery from verified global suppliers.' },
   { icon: 'cargo', title: 'Parts & Components', desc: 'Genuine and aftermarket parts for excavators, loaders, cranes, and road equipment.' },
   { icon: 'globe', title: 'Global Sourcing', desc: 'Cross-border trading with documentation, compliance, and delivery coordination.' },
-  { icon: 'refresh', title: 'Repeat Supply', desc: 'Ongoing procurement support so your fleets and projects stay supplied.' },
+  { icon: 'warehouse', title: 'FMCG Import & Export', desc: 'Food, beverages, packaged consumer goods, and edible oils for distributors and retail chains.' },
 ]
 
 function TradeBadge() {
@@ -69,22 +69,22 @@ function SolutionsVisual() {
       {/* Orange rounded frame behind images */}
       <div className="solution-frame" aria-hidden />
 
-      {/* Port / ship — top left */}
+      {/* FMCG products — top left */}
       <div className="absolute left-0 top-0 z-[2] h-[52%] w-[64%] overflow-hidden rounded-[18px] shadow-[0_14px_36px_rgba(0,0,0,0.14)]">
         <CmsImage
           src={SITE_IMAGES.solutions.primary}
-          alt="Drum mix plant equipment"
+          alt="FMCG products and packaged goods trading"
           fill
           className="object-cover object-center"
           sizes="300px"
         />
       </div>
 
-      {/* Truck — bottom right, overlapping */}
+      {/* Heavy construction machinery — bottom right, overlapping */}
       <div className="absolute bottom-0 right-0 z-[3] h-[70%] w-[50%] overflow-hidden rounded-[18px] border-[5px] border-white shadow-[0_18px_42px_rgba(0,0,0,0.18)]">
         <CmsImage
           src={SITE_IMAGES.solutions.secondary}
-          alt="JCB construction machinery"
+          alt="Heavy construction machinery and equipment procurement"
           fill
           className="object-cover object-center"
           sizes="240px"
@@ -121,7 +121,7 @@ export default function Solutions() {
 
           <div className="reveal-right">
             <h2 className="hp-title mb-8">
-              Why businesses choose SAASA B2E for procurement &amp; trading
+              Why Businesses Choose SAASA B2E TRADES for Procurement &amp; Trading
             </h2>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-2 sm:gap-y-4">

@@ -10,6 +10,8 @@ interface ServicesCatalogProps {
 }
 
 export default function ServicesCatalog({ services, categories }: ServicesCatalogProps) {
+  const visibleCategories = categories.filter((cat) => services.some((s) => s.categoryId === cat.id))
+
   return (
     <>
       <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
@@ -19,10 +21,10 @@ export default function ServicesCatalog({ services, categories }: ServicesCatalo
         >
           All Services
         </Link>
-        {categories.map((cat) => (
+        {visibleCategories.map((cat) => (
           <Link
             key={cat.id}
-            href={`/services/category/${cat.id}`}
+            href={`/services/${cat.id}`}
             className="rounded-full border border-gray-200 bg-[#f4f5f7] px-4 py-1.5 text-xs font-semibold text-gray-600 transition hover:border-primary hover:text-primary"
           >
             {cat.name}

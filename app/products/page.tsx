@@ -10,16 +10,26 @@ import { SectionLabelIcon } from '../../components/icons/LogisticsIcons'
 import { COMPANY_NAME } from '@/lib/brand'
 import { getProductCategories, getProducts } from '@/lib/cms'
 
-export const metadata: Metadata = { title: `Products - ${COMPANY_NAME}` }
+export const metadata: Metadata = {
+  title: `Our Products - Heavy Machinery & Spare Parts - ${COMPANY_NAME}`,
+  description:
+    `Explore genuine construction machinery parts, excavator spares, bulldozer tracks, powertrain hydraulics, and heavy equipment components supplied worldwide by ${COMPANY_NAME}.`,
+  openGraph: {
+    title: `Heavy Machinery Parts & Equipment - ${COMPANY_NAME}`,
+    description:
+      'Global supply of genuine parts for excavators, loaders, bulldozers, cranes, and road construction equipment.',
+  },
+}
 export const dynamic = 'force-dynamic'
 
 export default async function ProductsPage({ searchParams }: { searchParams: { category?: string } }) {
   if (searchParams.category) {
-    redirect(`/products/category/${searchParams.category}`)
+    redirect(`/products/${searchParams.category}`)
   }
 
   const products = await getProducts()
   const categories = await getProductCategories()
+  const visibleCategories = categories.filter((c) => products.some((p) => p.categoryId === c.id))
 
   return (
     <PageLayout>
@@ -40,8 +50,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
           </div>
 
           <Suspense fallback={<div className="py-12 text-center text-sm text-gray-500">Loading products…</div>}>
-            <ProductsBrowseLayout categories={categories}>
-              <ProductsCatalog products={products} categories={categories} />
+            <ProductsBrowseLayout categories={visibleCategories}>
+              <ProductsCatalog products={products} categories={visibleCategories} />
             </ProductsBrowseLayout>
           </Suspense>
         </div>

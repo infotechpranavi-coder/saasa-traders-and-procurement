@@ -10,9 +10,11 @@ interface ProductsCatalogProps {
 }
 
 export default function ProductsCatalog({ products, categories }: ProductsCatalogProps) {
+  const visibleCategories = categories.filter((cat) => products.some((p) => p.categoryId === cat.id))
+
   return (
     <>
-      {categories.length > 0 && (
+      {visibleCategories.length > 0 && (
         <div className="products-mobile-cats mb-8 flex flex-wrap items-center justify-center gap-2 lg:hidden">
           <Link
             href="/products"
@@ -20,10 +22,10 @@ export default function ProductsCatalog({ products, categories }: ProductsCatalo
           >
             All Products
           </Link>
-          {categories.map((cat) => (
+          {visibleCategories.map((cat) => (
             <Link
               key={cat.id}
-              href={`/products/category/${cat.id}`}
+              href={`/products/${cat.id}`}
               className="rounded-full border border-gray-200 bg-[#f4f5f7] px-4 py-1.5 text-xs font-semibold text-gray-600 transition hover:border-primary hover:text-primary"
             >
               {cat.name}
@@ -32,7 +34,7 @@ export default function ProductsCatalog({ products, categories }: ProductsCatalo
         </div>
       )}
 
-      <ProductGrid products={products} categories={categories} emptyMessage="No products listed yet." />
+      <ProductGrid products={products} categories={visibleCategories} emptyMessage="No products listed yet." />
     </>
   )
 }

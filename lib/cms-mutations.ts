@@ -6,7 +6,7 @@ import { normalizeProductImageFields } from '@/lib/product-images'
 import { normalizeProductCompanies } from '@/lib/product-companies'
 import { removeProductFromBrandLinks, syncProductBrandLinks } from '@/lib/product-brand-links'
 import { getBrandCategoryIds } from '@/lib/brand-categories'
-import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, Service, BrochureFile, SiteSettings } from '@/types/cms'
+import type { BlogPost, Brand, BrandCategory, Category, CategoryType, CmsData, CustomerReview, HeroBanner, PortfolioProject, Product, ProductSpecItem, Service, BrochureFile, SiteSettings } from '@/types/cms'
 import { normalizeSiteSettings } from '@/lib/site-settings'
 
 export type CmsActionResult<T = undefined> =
@@ -33,12 +33,38 @@ async function persistCmsOnly(cms: CmsData): Promise<CmsActionResult> {
   }
 }
 
+function normalizeProductSpecifications(specifications?: ProductSpecItem[], specs?: string[]): ProductSpecItem[] {
+  if (Array.isArray(specifications) && specifications.length > 0) {
+    const list = specifications
+      .map((s) => ({ name: s.name?.trim() || '', value: s.value?.trim() || '' }))
+      .filter((s) => s.name || s.value)
+    if (list.length > 0) return list
+  }
+  if (Array.isArray(specs) && specs.length > 0) {
+    return specs
+      .map((item) => {
+        const idx = item.indexOf(':')
+        if (idx > -1) {
+          return { name: item.slice(0, idx).trim(), value: item.slice(idx + 1).trim() }
+        }
+        return { name: 'Specification', value: item.trim() }
+      })
+      .filter((s) => s.value)
+  }
+  return []
+}
+
 function normalizeProduct(body: Product, fallbackSlug?: string): Product | null {
   const title = body.title?.trim()
   if (!title) return null
 
   const slug = body.slug?.trim() ? slugify(body.slug) : fallbackSlug || slugify(title)
   const { image, images } = normalizeProductImageFields(body.image, body.images)
+  const specifications = normalizeProductSpecifications(body.specifications, body.specs)
+  const specs =
+    specifications.length > 0
+      ? specifications.map((s) => (s.name && s.value ? `${s.name}: ${s.value}` : s.name || s.value))
+      : (body.specs ?? []).map((s) => s.trim()).filter(Boolean)
 
   return {
     ...body,
@@ -48,7 +74,8 @@ function normalizeProduct(body: Product, fallbackSlug?: string): Product | null 
     image,
     images,
     desc: body.desc?.trim() || '',
-    specs: body.specs ?? [],
+    specs,
+    specifications,
     overview: body.overview ?? [],
     features: body.features ?? [],
     applications: body.applications ?? [],

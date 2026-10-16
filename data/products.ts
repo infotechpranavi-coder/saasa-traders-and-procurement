@@ -26,6 +26,7 @@ export const productCategories = [
 
 /** Maps product slug → category id for seed/CMS migration */
 export const productCategoryMap: Record<string, string> = {
+  'develon-excavator': 'excavators',
   'hydraulic-pump-assemblies': 'excavators',
   'undercarriage-track-chains': 'bulldozers',
   'loader-bucket-teeth-adapters': 'wheel-loaders',

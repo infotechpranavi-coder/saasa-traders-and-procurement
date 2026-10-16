@@ -51,13 +51,19 @@ export default function ProductCatalogSidebar({
     setExpandedId((current) => (current === categoryId ? null : categoryId))
   }
 
-  if (categories.length === 0) return null
+  const visibleCategories = useMemo(() => {
+    return categories.filter(
+      (c) => (productsByCategory.get(c.id)?.length ?? 0) > 0 || c.id === activeCategoryId,
+    )
+  }, [categories, productsByCategory, activeCategoryId])
+
+  if (visibleCategories.length === 0) return null
 
   return (
     <aside className="category-detail-sidebar product-catalog-sidebar" aria-label="Browse products by category">
       <div className="product-catalog-sidebar-card">
         <ul className="product-catalog-list">
-          {categories.map((category) => {
+          {visibleCategories.map((category) => {
             const categoryProducts = productsByCategory.get(category.id) ?? []
             const isActiveCategory = activeCategoryId === category.id
             const isExpanded = expandedId === category.id
@@ -72,7 +78,7 @@ export default function ProductCatalogSidebar({
                 >
                   <div className="product-catalog-category-row">
                     <Link
-                      href={`/products/category/${category.id}`}
+                      href={`/products/${category.id}`}
                       className="product-catalog-category-link"
                     >
                       <span className="product-catalog-thumb">

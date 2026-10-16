@@ -4,23 +4,31 @@ import { MAIN_SAASA_SITE_LABEL, MAIN_SAASA_SITE_URL } from '@/lib/brand'
 
 function buildCategoryMenu(
   categories: CmsData['categories'],
-  items: { slug: string; title: string; categoryId?: string }[],
+  items: { slug: string; title: string; categoryId?: string; image?: string; desc?: string; summary?: string }[],
   basePath: 'products' | 'services',
 ): NavSubItem[] {
   const menu: NavSubItem[] = [{ label: `View all ${basePath}`, href: `/${basePath}` }]
 
   for (const category of categories) {
-    const subItems = items
+    const subItems: NavSubItem[] = items
       .filter((item) => item.categoryId === category.id)
       .map((item) => ({
         label: item.title,
         href: `/${basePath}/${item.slug}`,
+        image: item.image,
+        description: item.desc || item.summary,
       }))
+
+    // Hide categories that have no products or services until items are added
+    if (subItems.length === 0) continue
 
     menu.push({
       label: category.name,
-      href: `/${basePath}/category/${category.id}`,
-      children: subItems.length > 0 ? subItems : undefined,
+      href: `/${basePath}/${category.id}`,
+      image: category.image || subItems[0]?.image,
+      description: category.description,
+      badge: `${subItems.length} ${subItems.length === 1 ? (basePath === 'products' ? 'product' : 'service') : (basePath === 'products' ? 'products' : 'services')}`,
+      children: subItems,
     })
   }
 
@@ -28,15 +36,46 @@ function buildCategoryMenu(
 }
 
 export function buildNavItems(cms: CmsData | null): NavItem[] {
-  const productCategories = cms?.categories.filter((c) => c.type === 'product' || c.type === 'both') ?? []
-  const serviceCategories = cms?.categories.filter((c) => c.type === 'service' || c.type === 'both') ?? []
+  const products = cms?.products ?? []
+  const services = cms?.services ?? []
+
+  // Only show categories in navigation if they have at least one product or service
+  const productCategories = (cms?.categories.filter((c) => c.type === 'product' || c.type === 'both') ?? []).filter(
+    (c) => products.some((p) => p.categoryId === c.id),
+  )
+  const serviceCategories = (cms?.categories.filter((c) => c.type === 'service' || c.type === 'both') ?? []).filter(
+    (c) => services.some((s) => s.categoryId === c.id),
+  )
+
+  const brandSubItems: NavSubItem[] =
+    cms?.brands && cms.brands.length > 0
+      ? cms.brands.map((b) => ({
+          label: b.name,
+          href: `/products/brands/${b.slug}`,
+        }))
+      : [
+          { label: 'Caterpillar', href: '/products/brands' },
+          { label: 'Komatsu', href: '/products/brands' },
+          { label: 'JCB', href: '/products/brands' },
+          { label: 'Shantui', href: '/products/brands' },
+          { label: 'Develon', href: '/products/brands' },
+          { label: 'Volvo', href: '/products/brands' },
+          { label: 'Himalaya', href: '/products/brands' },
+          { label: 'Sany', href: '/products/brands' },
+        ]
 
   const productChildren: NavSubItem[] = [
     { label: 'View all products', href: '/products' },
-    { label: 'Strong Brands', href: '/products/brands' },
-    ...buildCategoryMenu(productCategories, cms?.products ?? [], 'products').slice(1),
+    {
+      label: 'Strong Brands',
+      href: '/products/brands',
+      badge: 'OEM Brands',
+      description: 'Explore leading equipment manufacturers, global brand partners, and genuine OEM products.',
+      children: brandSubItems,
+    },
+    ...buildCategoryMenu(productCategories, products, 'products').slice(1),
   ]
-  const serviceChildren = buildCategoryMenu(serviceCategories, cms?.services ?? [], 'services')
+  const serviceChildren = buildCategoryMenu(serviceCategories, services, 'services')
 
   return [
     { label: 'Home', href: '/', hasDropdown: false },

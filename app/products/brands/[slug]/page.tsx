@@ -18,7 +18,18 @@ export const dynamic = 'force-dynamic'
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const brand = await getBrandBySlug(params.slug)
   if (!brand) return { title: `Brand Not Found - ${COMPANY_NAME}` }
-  return { title: `${brand.name} - ${COMPANY_NAME} Strong Brands` }
+  const desc =
+    brand.description?.trim() ||
+    `Browse genuine ${brand.name} construction machinery, equipment parts, and commercial vehicles supplied by ${COMPANY_NAME}.`
+  return {
+    title: `${brand.name} Heavy Machinery & Equipment - ${COMPANY_NAME}`,
+    description: desc,
+    openGraph: {
+      title: `${brand.name} - ${COMPANY_NAME}`,
+      description: desc,
+      images: brand.image ? [brand.image] : undefined,
+    },
+  }
 }
 
 export default async function BrandDetailPage({ params }: { params: { slug: string } }) {

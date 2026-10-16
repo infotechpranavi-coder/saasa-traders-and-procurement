@@ -14,6 +14,33 @@ const nextConfig = {
       { protocol: 'https', hostname: 'res.cloudinary.com', pathname: '/**' },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/statsic/:path*',
+        destination: '/static/:path*',
+      },
+    ]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/products/category/:id',
+        destination: '/products/:id',
+        permanent: true,
+      },
+      {
+        source: '/services/category/:id',
+        destination: '/services/:id',
+        permanent: true,
+      },
+      {
+        source: '/products/hydraulic-pump-assemblies',
+        destination: '/products/develon-excavator',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig

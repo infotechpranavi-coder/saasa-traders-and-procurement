@@ -7,37 +7,44 @@ const steps: { num: string; icon: LogisticsIconName; title: string; desc: string
   {
     num: '01',
     icon: 'quote',
-    title: 'Share Requirements',
-    desc: 'Tell us the equipment, parts, or products you need — including specs, quantities, and delivery timelines.',
+    title: 'Requirement & Quotation',
+    desc: 'We understand your requirements, source suitable options from trusted manufacturers, and share detailed quotations and specifications.',
   },
   {
     num: '02',
     icon: 'package',
-    title: 'Source & Procure',
-    desc: 'We identify suppliers, negotiate terms, and manage trading documentation for a transparent procurement process.',
+    title: 'Inspection & Customs',
+    desc: 'Our team manages quality checks before dispatch, export documentation, containerized shipping, and customs clearance.',
   },
   {
     num: '03',
     icon: 'truck',
-    title: 'Deliver & Support',
-    desc: 'Equipment and parts are shipped to your site with ongoing after-sales support and repeat supply when you need it.',
+    title: 'Delivery & After-Sales',
+    desc: 'Doorstep delivery with ongoing support for installation coordination, access to genuine spare parts, and repeat supply.',
   },
 ]
 
-export default function Process() {
+export default function Process({
+  className = 'py-20 bg-[#f8fafc] border-t border-gray-100 overflow-hidden',
+}: {
+  className?: string
+} = {}) {
   const { ref } = useScrollReveal()
 
   return (
-    <section ref={ref} className="py-20 bg-white overflow-hidden">
+    <section ref={ref} className={className}>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-14 reveal">
+        <div className="text-center mb-14 reveal max-w-3xl mx-auto">
           <div className="section-label justify-center mb-3">
             <SectionLabelIcon className="text-primary" />
             HOW WE WORK
           </div>
-          <h2 className="hp-title hp-title--center">
-            A Simple Procurement Process
+          <h2 className="hp-title hp-title--center mb-4">
+            Every Order Follows a Clear Process
           </h2>
+          <p className="hp-body text-center text-gray-600">
+            We understand your requirements, source suitable options from trusted manufacturers and suppliers, share detailed quotations and specifications, and manage quality inspection, export documentation, shipping, and customs clearance. After delivery, we continue to support you with installation coordination, spare parts, and repeat supply.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-12 relative">

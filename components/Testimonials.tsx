@@ -1,8 +1,6 @@
 'use client'
 
 import { UserRound } from 'lucide-react'
-import CmsImage from './CmsImage'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
 import type { CustomerReview } from '@/types/cms'
 
@@ -23,14 +21,15 @@ function StarRating() {
 }
 
 export default function Testimonials({ reviews }: TestimonialsProps) {
-  const { ref } = useScrollReveal()
-
   if (!reviews.length) return null
 
+  // Ensure only three cards are displayed in the client feedback section
+  const displayReviews = reviews.slice(0, 3)
+
   return (
-    <section ref={ref} className="testimonials-section py-20 md:py-24">
+    <section className="testimonials-section py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12 md:mb-14 reveal">
+        <div className="text-center mb-12 md:mb-14">
           <div className="section-label justify-center mb-3">
             <SectionLabelIcon className="text-primary" />
             CLIENT FEEDBACK
@@ -39,10 +38,10 @@ export default function Testimonials({ reviews }: TestimonialsProps) {
         </div>
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 md:gap-7 lg:gap-9">
-          {reviews.map((testimonial, index) => (
-            <article key={testimonial.slug} className={`reveal delay-${(index % 3) + 1}00`}>
-              <div className="testimonial-bubble-wrap">
-                <div className="testimonial-card">
+          {displayReviews.map((testimonial) => (
+            <article key={testimonial.slug} className="flex flex-col">
+              <div className="testimonial-bubble-wrap flex-1 flex flex-col">
+                <div className="testimonial-card flex-1">
                   <span className="testimonial-watermark" aria-hidden>
                     &ldquo;
                   </span>
@@ -60,20 +59,10 @@ export default function Testimonials({ reviews }: TestimonialsProps) {
               </div>
 
               <div className="testimonial-author">
-                <div className="testimonial-avatar relative overflow-hidden">
-                  {testimonial.image?.trim() ? (
-                    <CmsImage
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  ) : (
-                    <div className="testimonial-avatar-fallback" aria-hidden>
-                      <UserRound className="testimonial-avatar-icon" strokeWidth={1.8} />
-                    </div>
-                  )}
+                <div className="testimonial-avatar relative overflow-hidden flex items-center justify-center">
+                  <div className="testimonial-avatar-fallback flex items-center justify-center bg-orange-50/80 rounded-full w-full h-full">
+                    <UserRound className="w-8 h-8 text-primary" strokeWidth={1.8} />
+                  </div>
                 </div>
                 <div>
                   <div className="testimonial-name">{testimonial.name}</div>

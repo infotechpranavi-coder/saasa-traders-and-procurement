@@ -1,10 +1,10 @@
 import type { HeroStatSetting, SiteSettings } from '@/types/cms'
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
-  establishedYear: 2016,
+  establishedYear: 2019,
   heroStats: [
     { label: 'PRODUCT LINES', value: '150+', type: 'manual' },
-    { label: 'YEARS', value: '', type: 'years_since' },
+    { label: 'YEARS', value: '7+', type: 'manual' },
     { label: 'CLIENTS', value: '2K+', type: 'manual' },
   ],
 }

@@ -67,6 +67,11 @@ export function resolveCmsImage(src?: string): string {
 }
 
 const STATIC_FALLBACKS: Record<string, string> = {
+  '/static/jcb.jpg': CONSTRUCTION_PHOTOS.excavatorOrange,
+  '/static/batchmix.jpeg': CONSTRUCTION_PHOTOS.constructionSite,
+  '/static/road roller.jpg': CONSTRUCTION_PHOTOS.constructionWorkers,
+  '/static/drum mix.jpeg': CONSTRUCTION_PHOTOS.crane,
+  '/static/bitumen soreder.jpg': CONSTRUCTION_PHOTOS.miningTruck,
   '/statsic/jcb.jpg': CONSTRUCTION_PHOTOS.excavatorOrange,
   '/statsic/batchmix.jpeg': CONSTRUCTION_PHOTOS.constructionSite,
   '/statsic/road roller.jpg': CONSTRUCTION_PHOTOS.constructionWorkers,

@@ -1,24 +1,28 @@
 'use client'
 
-import { COMPANY_EMAIL, COMPANY_ADDRESS, COMPANY_PHONE, COMPANY_PHONE_TEL, SOCIAL_LINKS } from '@/lib/brand'
+import { INDIA_OFFICE, CAMEROON_OFFICE, SOCIAL_LINKS } from '@/lib/brand'
 import type { SocialName } from '@/types'
 
 export default function Topbar() {
   return (
     <div className="hero-topbar relative z-[60] bg-primary text-white text-[13px] py-2.5 px-4 lg:px-8">
       <div className="max-w-[1400px] mx-auto flex flex-wrap items-center justify-between gap-y-2 gap-x-6">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
-          <a href={`tel:${COMPANY_PHONE_TEL}`} className="flex items-center gap-2 hover:opacity-85 transition-opacity whitespace-nowrap">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+          <a href={`tel:${INDIA_OFFICE.phoneTel}`} className="flex items-center gap-1.5 hover:opacity-85 transition-opacity whitespace-nowrap">
             <PhoneIcon />
-            Phone: {COMPANY_PHONE}
+            <span className="font-semibold text-white/90">India:</span> {INDIA_OFFICE.phone}
           </a>
-          <a href={`mailto:${COMPANY_EMAIL}`} className="flex items-center gap-2 hover:opacity-85 transition-opacity whitespace-nowrap">
+          <a href={`tel:${CAMEROON_OFFICE.phoneTel}`} className="flex items-center gap-1.5 hover:opacity-85 transition-opacity whitespace-nowrap">
+            <PhoneIcon />
+            <span className="font-semibold text-white/90">Cameroon:</span> {CAMEROON_OFFICE.phone}
+          </a>
+          <a href={`mailto:${INDIA_OFFICE.email}`} className="flex items-center gap-1.5 hover:opacity-85 transition-opacity whitespace-nowrap">
             <MailIcon />
-            Email: {COMPANY_EMAIL}
+            {INDIA_OFFICE.email}
           </a>
-          <span className="flex items-center gap-2 whitespace-nowrap">
+          <span className="hidden xl:flex items-center gap-1.5 whitespace-nowrap opacity-90">
             <PinIcon />
-            {COMPANY_ADDRESS}
+            Hisar, India &bull; Yaoundé, Cameroon
           </span>
         </div>
         <div className="flex items-center gap-3">

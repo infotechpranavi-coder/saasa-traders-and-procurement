@@ -72,7 +72,7 @@ export default function SettingsDashboardSection({ cms, setCms, showMsg }: Setti
               <h2 className="dashboard-page-title">Site settings</h2>
               <p className="dashboard-page-desc">
                 Control the three stats at the bottom of the homepage hero. Set your establishment year so the
-                years stat updates automatically (e.g. 2016 → 10+ in 2026).
+                years stat updates automatically (e.g. 2019 → 7+ in 2026).
               </p>
             </div>
             <button type="submit" className="btn-primary dashboard-page-header__action" disabled={saving}>
@@ -95,7 +95,7 @@ export default function SettingsDashboardSection({ cms, setCms, showMsg }: Setti
             <div className="dashboard-settings-year-row">
               <Field
                 label="Year founded"
-                hint="Used when a stat is set to auto-calculate years. Match EST 2016 in hero badges."
+                hint="Used when a stat is set to auto-calculate years. Matches 7+ years of experience across the site."
               >
                 <input
                   type="number"

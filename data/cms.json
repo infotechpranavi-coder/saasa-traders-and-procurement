@@ -69,38 +69,227 @@
       "id": "mining",
       "name": "Mining & Quarrying",
       "type": "service"
+    },
+    {
+      "id": "bitumen-sprayers",
+      "name": "Bitumen Sprayers",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "bitumen-storage-equipment",
+      "name": "Bitumen Storage Equipment",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "asphalt-drum-mix-plants",
+      "name": "Asphalt Drum Mix Plants",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "bitumen-processing-equipment",
+      "name": "Bitumen Processing Equipment",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "concrete-batching-plants",
+      "name": "Concrete Batching Plants",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "wet-mix-plants",
+      "name": "Wet Mix Plants",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "road-cleaning-equipment",
+      "name": "Road Cleaning Equipment",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "asphalt-pavers",
+      "name": "Asphalt Pavers",
+      "type": "product",
+      "description": "",
+      "image": "",
+      "showInFooter": false
+    },
+    {
+      "id": "fmcg-products",
+      "name": "FMCG Products",
+      "type": "service",
+      "description": "Food, beverages, personal care, household, and packaged consumer goods for distributors, wholesalers, and retail chains.",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80",
+      "showInFooter": true
+    },
+    {
+      "id": "textile",
+      "name": "Textile",
+      "type": "service",
+      "description": "International trading and supply chain procurement for woven fabrics, industrial textiles, yarn, and ready-made commercial garments.",
+      "image": "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1200&q=80",
+      "showInFooter": true
+    },
+    {
+      "id": "pharmaceutical-machines",
+      "name": "Pharmaceutical Machines",
+      "type": "service",
+      "description": "Tablet presses, capsule filling machines, blister packing lines, liquid filling systems, and allied processing equipment for pharmaceutical manufacturers and packaging units.",
+      "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
+      "showInFooter": true
+    },
+    {
+      "id": "it-equipment",
+      "name": "IT Equipment",
+      "type": "service",
+      "description": "Laptops, desktops, servers, networking hardware, printers, and peripherals for offices, schools, hospitals, and government institutions.",
+      "image": "https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=1200&q=80",
+      "showInFooter": true
     }
   ],
-  "brandCategories": [],
-  "brands": [],
+  "brandCategories": [
+    {
+      "id": "a",
+      "name": "Wheel Loaders"
+    },
+    {
+      "id": "bitumen-sprayers",
+      "name": "Bitumen Sprayers"
+    },
+    {
+      "id": "bitumen-storage-tanks",
+      "name": "Bitumen Storage Tanks"
+    },
+    {
+      "id": "bitumen-drum-decanters",
+      "name": "Bitumen Drum Decanters"
+    },
+    {
+      "id": "drum-mix-plants",
+      "name": "Drum Mix Plants"
+    },
+    {
+      "id": "counterflow-drum-mix-plants",
+      "name": "Counterflow Drum Mix Plants"
+    },
+    {
+      "id": "drum-mix-plants-with-rap-system",
+      "name": "Drum Mix Plants with RAP System"
+    },
+    {
+      "id": "mobile-portable-drum-mix-plants",
+      "name": "Mobile / Portable Drum Mix Plants"
+    },
+    {
+      "id": "concrete-batching-plants-rmc-plants",
+      "name": "Concrete Batching Plants (RMC Plants)"
+    },
+    {
+      "id": "batch-mix-plants",
+      "name": "Batch Mix Plants"
+    },
+    {
+      "id": "wet-mix-plants",
+      "name": "Wet Mix Plants"
+    },
+    {
+      "id": "mobile-wet-mix-plants",
+      "name": "Mobile Wet Mix Plants"
+    },
+    {
+      "id": "asphalt-pavers-wmm-pavers",
+      "name": "Asphalt Pavers / WMM Pavers"
+    },
+    {
+      "id": "bitumen-pressure-distributors",
+      "name": "Bitumen Pressure Distributors"
+    },
+    {
+      "id": "road-broomers",
+      "name": "Road Broomers"
+    }
+  ],
+  "brands": [
+    {
+      "slug": "sa",
+      "name": "Shantui",
+      "categoryId": "a",
+      "description": "Shantui Products",
+      "image": "",
+      "equipment": [],
+      "listedProducts": [],
+      "productSlugs": [
+        "shantui-l58k-b5-wheel-loader"
+      ]
+    },
+    {
+      "slug": "himalaya-engineering-company",
+      "name": "Himalaya Engineering Company",
+      "categoryId": "bitumen-sprayers",
+      "description": "",
+      "image": "",
+      "equipment": [],
+      "listedProducts": [],
+      "productSlugs": [
+        "himalaya-trolley-mounted-bitumen-sprayer"
+      ]
+    }
+  ],
   "products": [
     {
-      "slug": "hydraulic-pump-assemblies",
-      "title": "Hydraulic Pump Assemblies",
-      "label": "Excavator Parts",
+      "slug": "develon-excavator",
+      "title": "Develon Excavator",
+      "label": "Excavator",
       "categoryId": "excavators",
-      "image": "/statsic/jcb.jpg",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784113288/traders_website/images/1784113288368-DX225-LC-2-.jpg",
       "desc": "High-pressure hydraulic pumps and valve blocks for excavators and backhoes. Engineered for long duty cycles on heavy construction sites.",
       "specs": [
         "CAT · Komatsu · JCB",
         "OEM & aftermarket"
       ],
       "overview": [
-        "SAASA B2E TRADES supplies complete hydraulic pump assemblies and valve blocks for excavators, backhoes, and tracked loaders used on demanding construction sites.",
-        "Our parts are sourced from certified manufacturers and tested to meet OEM pressure ratings, ensuring reliable boom, arm, and swing circuit performance."
+        "The Develon Excavator is engineered to deliver exceptional digging power, fuel efficiency, and reliable performance for demanding construction, mining, and infrastructure projects. Built with advanced hydraulic technology, a powerful engine, and a reinforced undercarriage, it ensures maximum productivity, precise control, and long-lasting durability across a wide range of job site conditions.",
+        "Designed for operator comfort and operational efficiency, the Develon Excavator features smooth hydraulic performance, high breakout force, and versatile attachment compatibility for excavation, trenching, demolition, and material handling. Its robust construction and low maintenance requirements make it a dependable solution for contractors seeking high-performance earthmoving equipment."
       ],
       "features": [
-        "High-pressure rated for continuous duty cycles",
-        "Compatible with major excavator brands",
-        "OEM and cost-effective aftermarket options",
-        "Pre-shipment pressure testing available",
-        "Export documentation and packaging support"
+        "Advanced hydraulic system",
+        "Powerful engine",
+        "Heavy-duty undercarriage",
+        "Spacious operator cabin"
       ],
       "applications": [
         "Earthmoving",
-        "Demolition",
-        "Utility trenching",
-        "Port handling"
+        "Excavation",
+        "Trenching",
+        "Mining Operations",
+        "Road Construction"
+      ],
+      "showOnHomepage": true,
+      "companies": [],
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784113288/traders_website/images/1784113288368-DX225-LC-2-.jpg",
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784113318/traders_website/images/1784113318543-DX220-LCA-2M-1-.jpg",
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784113304/traders_website/images/1784113303737-DX225-LC-1-.jpg"
       ]
     },
     {
@@ -108,8 +297,7 @@
       "title": "Undercarriage Track Chains",
       "label": "Bulldozer Parts",
       "categoryId": "bulldozers",
-      "image": "/statsic/jcb.jpg",
-      "desc": "Track chains, sprockets, idlers, and rollers for bulldozers and tracked excavators. Heat-treated steel for abrasion resistance.",
+      "image": "https://imgs.search.brave.com/CWM8Xo0ErxXJbHhjFPWpsgEHyfsnpwqQIl8eqPuXoAg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFy/YWVuZ2luZWVyaW5n/c3VwcGxpZXMuY29t/L2Nkbi9zaG9wL2Zp/bGVzL1RyYWNrX0No/YWluXy1fVm9sdm9f/RUMyMTBfRXhjYXZh/dG9yLndlYnA_dj0x/Nzc3NzMyODY2Jndp/ZHRoPTgwMA",
       "specs": [
         "D6 · D8 · PC200 series",
         "Export-ready packaging"
@@ -130,15 +318,20 @@
         "Site grading",
         "Quarry extraction",
         "Land reclamation"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/CWM8Xo0ErxXJbHhjFPWpsgEHyfsnpwqQIl8eqPuXoAg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFy/YWVuZ2luZWVyaW5n/c3VwcGxpZXMuY29t/L2Nkbi9zaG9wL2Zp/bGVzL1RyYWNrX0No/YWluXy1fVm9sdm9f/RUMyMTBfRXhjYXZh/dG9yLndlYnA_dj0x/Nzc3NzMyODY2Jndp/ZHRoPTgwMA"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "loader-bucket-teeth-adapters",
       "title": "Loader Bucket Teeth & Adapters",
       "label": "Wheel Loader Parts",
       "categoryId": "wheel-loaders",
-      "image": "/statsic/jcb.jpg",
-      "desc": "Replaceable bucket teeth, adapters, and cutting edges for wheel loaders and front-end loaders used in quarry and site work.",
+      "image": "https://imgs.search.brave.com/V2nMF4LAXCo1x0iLqgLuRwBr1evjVjoiej928Mx1xD8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly81Lmlt/aW1nLmNvbS9kYXRh/NS9TRUxMRVIvRGVm/YXVsdC8yMDI0LzUv/NDE2NjI3OTk5L0lY/L0dJL0VTLzE1MzUz/NzYwMC9idWNrZXQt/dGVldGgtNTAweDUw/MC5wbmc",
       "specs": [
         "Forged alloy steel",
         "Quick-fit adapters"
@@ -159,15 +352,21 @@
         "Aggregate yards",
         "Material stockpiling",
         "Road base handling"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/V2nMF4LAXCo1x0iLqgLuRwBr1evjVjoiej928Mx1xD8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly81Lmlt/aW1nLmNvbS9kYXRh/NS9TRUxMRVIvRGVm/YXVsdC8yMDI0LzUv/NDE2NjI3OTk5L0lY/L0dJL0VTLzE1MzUz/NzYwMC9idWNrZXQt/dGVldGgtNTAweDUw/MC5wbmc",
+        "https://imgs.search.brave.com/-O1Em4nF8IN4eyP8DpDORJqQiId2uWOsMiOkZNWGmpE/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9iZGl3/ZWFycGFydHMuY29t/L2Nkbi9zaG9wL2Zp/bGVzL0wyNTIwTi0y/QUhfNV8xLmpwZz92/PTE3MjYwNDQzNjUm/d2lkdGg9Mzg0MA"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "crane-wire-rope-sheaves",
       "title": "Crane Wire Rope & Sheaves",
       "label": "Crane Components",
       "categoryId": "cranes",
-      "image": "/statsic/drum mix.jpeg",
-      "desc": "Wire ropes, hook blocks, sheave assemblies, and safety latches for tower cranes and mobile cranes on high-rise projects.",
+      "image": "https://imgs.search.brave.com/lUqr00tLcliSRzm6fIQ4W7FJ2qDw0MWTvVByP5jx5kc/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNTMx/NjkxNDA0L3Bob3Rv/L2NhYmxlLWNvaWwu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTBTeWNweHV0QXZr/b0otT3BmWmhsaDRs/YXpsQjZ2QjdkTEs5/REVPd1JOZGM9",
       "specs": [
         "Mobile & tower cranes",
         "Load-tested certified"
@@ -188,15 +387,21 @@
         "Infrastructure lifting",
         "Industrial plant erection",
         "Port crane maintenance"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/lUqr00tLcliSRzm6fIQ4W7FJ2qDw0MWTvVByP5jx5kc/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNTMx/NjkxNDA0L3Bob3Rv/L2NhYmxlLWNvaWwu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTBTeWNweHV0QXZr/b0otT3BmWmhsaDRs/YXpsQjZ2QjdkTEs5/REVPd1JOZGM9",
+        "https://imgs.search.brave.com/VVHgFnMppSUWkja5wMDwoIPZ_zpnmcDUPCMzSw-XT2g/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/Z2xvcnljcmFuZS5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjQvMDkvcHVsbGV5/LTEtMTAyNHg2ODMu/d2VicA"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "diesel-engine-overhaul-kits",
       "title": "Diesel Engine Overhaul Kits",
       "label": "Engine Parts",
       "categoryId": "engine-parts",
-      "image": "/statsic/batchmix.jpeg",
-      "desc": "Piston kits, gaskets, liners, and turbocharger parts for diesel engines powering excavators, loaders, and dump trucks.",
+      "image": "https://imgs.search.brave.com/cK_QjwLO4sXVfWji_xVJMECc7dAy9goAWh51z4W8Gtc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuZGllc2VscHJv/LmNvbS9tZWRpYS9j/YXRhbG9nL3Byb2R1/Y3QvY2FjaGUvMS9z/bWFsbF9pbWFnZS8z/MzV4L2FmMDk3Mjc4/YzVkYjQ3NjdiMGZl/OWJiOTJmZTIxNjkw/L2QvZS9kZXRyb2l0/X2RpZXNlbF82djky/X2luZnJhbWVfa2l0/c19yZWJ1aWxkaW5n/X2VuZ2luZV9vdmVy/aGF1bF9jcm9zc19o/ZWFkX3Bpc3Rvbl90/dXJib19hcmZlcmNv/b2xlZF9pZms2djky/dGFfZGllc2VscHJv/XzFfMS5qcGc",
       "specs": [
         "Cummins · Deutz · Perkins",
         "Full gasket sets"
@@ -217,15 +422,20 @@
         "Field overhauls",
         "Rental fleet maintenance",
         "Mining equipment rebuilds"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/cK_QjwLO4sXVfWji_xVJMECc7dAy9goAWh51z4W8Gtc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuZGllc2VscHJv/LmNvbS9tZWRpYS9j/YXRhbG9nL3Byb2R1/Y3QvY2FjaGUvMS9z/bWFsbF9pbWFnZS8z/MzV4L2FmMDk3Mjc4/YzVkYjQ3NjdiMGZl/OWJiOTJmZTIxNjkw/L2QvZS9kZXRyb2l0/X2RpZXNlbF82djky/X2luZnJhbWVfa2l0/c19yZWJ1aWxkaW5n/X2VuZ2luZV9vdmVy/aGF1bF9jcm9zc19o/ZWFkX3Bpc3Rvbl90/dXJib19hcmZlcmNv/b2xlZF9pZms2djky/dGFfZGllc2VscHJv/XzFfMS5qcGc"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "hydraulic-cylinder-seal-kits",
       "title": "Hydraulic Cylinder Seal Kits",
       "label": "Hydraulic Parts",
       "categoryId": "powertrain-hydraulics",
-      "image": "/statsic/bitumen soreder.jpg",
-      "desc": "Seal kits, rod wipers, and cylinder repair parts for boom, arm, and bucket cylinders across all major machinery brands.",
+      "image": "https://imgs.search.brave.com/VotSy3_0PkWmzTHKvN83PWhMpglazpNjEC7wl7XVOQw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90aWlt/Zy50aXN0YXRpYy5j/b20vZnAvMS8wMDgv/ODYyL3J1YmJlci1l/eGNhdmF0b3ItaHlk/cmF1bGljLWN5bGlu/ZGVyLXNlYWwta2l0/cy05NjkuanBn",
       "specs": [
         "NBR · PU · Viton options",
         "Bulk order available"
@@ -246,15 +456,20 @@
         "On-site cylinder repair",
         "Fleet preventive maintenance",
         "Rental equipment turnaround"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/VotSy3_0PkWmzTHKvN83PWhMpglazpNjEC7wl7XVOQw/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90aWlt/Zy50aXN0YXRpYy5j/b20vZnAvMS8wMDgv/ODYyL3J1YmJlci1l/eGNhdmF0b3ItaHlk/cmF1bGljLWN5bGlu/ZGVyLXNlYWwta2l0/cy05NjkuanBn"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "concrete-mixer-drum-liners",
       "title": "Concrete Mixer Drum Liners",
       "label": "Concrete Equipment",
       "categoryId": "concrete-mixers",
-      "image": "/statsic/batchmix.jpeg",
-      "desc": "Wear-resistant drum liners, mixing blades, and discharge chute parts for transit mixers and stationary batch plants.",
+      "image": "https://imgs.search.brave.com/9mqBPV6jBEYQ1LvC3nELI8Q_ioCkczK9o5U4JBzz51A/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMud2l4c3RhdGlj/LmNvbS9tZWRpYS84/ZjM1NDZfMGMwNzFm/YjA5YTI4NGQxMzg1/NGVlNTRhMDhiNWIz/OWV-bXYyLmpwZy92/MS9maWxsL3dfMTc3/LGhfMTc3LHFfOTAs/ZW5jX2F2aWYscXVh/bGl0eV9hdXRvLzhm/MzU0Nl8wYzA3MWZi/MDlhMjg0ZDEzODU0/ZWU1NGEwOGI1YjM5/ZX5tdjIuanBn",
       "specs": [
         "Transit & stationary mixers",
         "Custom fabrication"
@@ -275,15 +490,20 @@
         "Precast batch plants",
         "Infrastructure pours",
         "Drum refurbishing workshops"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/9mqBPV6jBEYQ1LvC3nELI8Q_ioCkczK9o5U4JBzz51A/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMud2l4c3RhdGlj/LmNvbS9tZWRpYS84/ZjM1NDZfMGMwNzFm/YjA5YTI4NGQxMzg1/NGVlNTRhMDhiNWIz/OWV-bXYyLmpwZy92/MS9maWxsL3dfMTc3/LGhfMTc3LHFfOTAs/ZW5jX2F2aWYscXVh/bGl0eV9hdXRvLzhm/MzU0Nl8wYzA3MWZi/MDlhMjg0ZDEzODU0/ZWU1NGEwOGI1YjM5/ZX5tdjIuanBn"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "road-roller-drum-kits",
       "title": "Road Roller Drum Kits",
       "label": "Compaction Parts",
       "categoryId": "road-rollers",
-      "image": "/statsic/road roller.jpg",
-      "desc": "Vibration drum assemblies, bearing kits, and scraper blades for single and double drum rollers on road construction.",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877254/traders_website/products/1782877243979-road-roller.jpg",
       "specs": [
         "Smooth & padfoot drums",
         "Field service support"
@@ -304,15 +524,20 @@
         "Airfield paving",
         "Sub-base compaction",
         "Site preparation"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877254/traders_website/products/1782877243979-road-roller.jpg"
+      ],
+      "companies": [],
+      "desc": ""
     },
     {
       "slug": "transmission-gearbox-parts",
       "title": "Transmission & Gearbox Parts",
       "label": "Powertrain",
       "categoryId": "powertrain-hydraulics",
-      "image": "/statsic/drum mix.jpeg",
-      "desc": "Clutch plates, torque converters, planetary gears, and final drive components for loaders, dozers, and graders.",
+      "image": "https://imgs.search.brave.com/Q4xGOp0p2Bq0Al_wIGTFClRtRgjMAwss1QR-pebiRcU/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTU3/NjE3MzgwL3Bob3Rv/L3RyYW5zbWlzc2lv/bi1nZWFycy5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9OFl1/UXRzeFRhbkRVdTlu/NkMxSmduV05sOE5h/V25aSzBvQUtJRTVu/RmN5az0",
       "specs": [
         "ZF · Allison · Dana",
         "Reman & new stock"
@@ -333,14 +558,552 @@
         "Dozer drivetrain repair",
         "Grader transmission service",
         "Fleet exchange programs"
-      ]
+      ],
+      "showOnHomepage": false,
+      "images": [
+        "https://imgs.search.brave.com/Q4xGOp0p2Bq0Al_wIGTFClRtRgjMAwss1QR-pebiRcU/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTU3/NjE3MzgwL3Bob3Rv/L3RyYW5zbWlzc2lv/bi1nZWFycy5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9OFl1/UXRzeFRhbkRVdTlu/NkMxSmduV05sOE5h/V25aSzBvQUtJRTVu/RmN5az0"
+      ],
+      "companies": [],
+      "desc": ""
+    },
+    {
+      "slug": "shantui-l58k-b5-wheel-loader",
+      "title": "Shantui L58K-B5 Wheel Loader",
+      "label": "Wheel Loader",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784011988/traders_website/images/1784011983956-l58k-25.png",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784011988/traders_website/images/1784011983956-l58k-25.png",
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784012017/traders_website/images/1784012016348-l58k-25-int1.png",
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784011976/traders_website/images/1784011973554-l58k-25-int2.png"
+      ],
+      "desc": "dfsvgsdvg",
+      "specs": [],
+      "overview": [
+        "SAASA B2E TRADES supplies high-performance wheel loaders designed for demanding material handling, construction, mining, and quarry operations. Built with powerful engines, high-capacity buckets, and advanced hydraulic systems, our wheel loaders deliver exceptional loading efficiency, fuel economy, and reliable performance across a wide range of applications.",
+        "Engineered for productivity and operator comfort, our wheel loaders feature robust construction, smooth transmission systems, excellent maneuverability, and durable components that ensure long service life with minimal maintenance. Available in multiple configurations, our machines are ideal for heavy-duty loading and earthmoving operations."
+      ],
+      "features": [
+        "Powerful engine for maximum loading performance",
+        "Heavy-duty hydraulic system for smooth operation",
+        "Large bucket capacity for improved productivity",
+        "Durable chassis designed for demanding job sites",
+        "Comfortable operator cabin with ergonomic controls"
+      ],
+      "applications": [
+        "Material Handling",
+        "Construction Projects",
+        "Mining Operations",
+        "Quarrying",
+        "Aggregate Loading",
+        "Infrastructure Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "wheel-loaders"
+    },
+    {
+      "slug": "shantui-sd16-bulldozer",
+      "title": "Shantui SD16 Bulldozer",
+      "label": "Bulldozer",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784012732/traders_website/images/1784012728115-sd16.png",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784012732/traders_website/images/1784012728115-sd16.png",
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784012749/traders_website/images/1784012747859-sd16-ints1.png",
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784012754/traders_website/images/1784012753532-sd16-ints2.png"
+      ],
+      "desc": "d",
+      "specs": [],
+      "overview": [
+        "SAASA B2E TRADES offers powerful bulldozers engineered for heavy-duty earthmoving, land clearing, grading, and mining applications. Designed with advanced powertrain technology, efficient hydraulic systems, and durable undercarriage components, our bulldozers deliver outstanding traction, pushing power, and operational reliability in the toughest working environments.",
+        "Built for maximum productivity and operator efficiency, our bulldozers feature high-performance engines, precision blade control, rugged construction, and low maintenance requirements. They are an ideal solution for contractors, infrastructure projects, mining operations, and large-scale site development."
+      ],
+      "features": [
+        "High-performance engine with excellent pushing power",
+        "Durable undercarriage for demanding terrain",
+        "Precision blade control for accurate grading",
+        "Reliable hydraulic system for heavy-duty operation",
+        "Comfortable cabin designed for extended working hours"
+      ],
+      "applications": [
+        "Earthmoving",
+        "Land Clearing",
+        "Road Construction",
+        "Mining",
+        "Site Preparation",
+        "Infrastructure Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "bulldozers"
+    },
+    {
+      "slug": "himalaya-trolley-mounted-bitumen-sprayer",
+      "title": "Himalaya Trolley Mounted Bitumen Sprayer",
+      "label": "Bitumen Sprayer",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784108135/traders_website/images/1784108133328-Bitumen-Trolley-Sprayer.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784108135/traders_website/images/1784108133328-Bitumen-Trolley-Sprayer.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Trolley Mounted Bitumen Sprayer is engineered for efficient and uniform bitumen application in road construction and maintenance projects. Designed for portability and ease of operation, this machine delivers consistent spray coverage, helping improve pavement quality while reducing material wastage. Its rugged construction ensures reliable performance in demanding job site conditions.",
+        "Built using high-quality components, the trolley-mounted sprayer offers excellent mobility, simple operation, and low maintenance requirements. It is suitable for contractors, municipal projects, and highway authorities seeking a dependable solution for surface dressing, tack coating, and road repair applications."
+      ],
+      "features": [
+        "Uniform and controlled bitumen spray distribution",
+        "Heavy-duty trolley-mounted design for easy transportation",
+        "High-quality pumping system for reliable performance",
+        "Durable construction for long service life",
+        "Suitable for road construction and maintenance projects"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Road Maintenance",
+        "Surface Dressing",
+        "Tack Coat Application",
+        "Rural Road Projects",
+        "Infrastructure Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "bitumen-sprayers"
+    },
+    {
+      "slug": "himalaya-bitumen-storage-tank",
+      "title": "Himalaya Bitumen Storage Tank",
+      "label": "Storage Tank",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784108312/traders_website/images/1784108308242-Bitumen-Tank.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784108312/traders_website/images/1784108308242-Bitumen-Tank.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Bitumen Storage Tank is designed for the safe storage and temperature maintenance of bitumen used in road construction and asphalt production. Manufactured with robust steel construction and efficient insulation, it helps preserve material quality while minimizing heat loss and operational costs.",
+        "Ideal for asphalt plants and infrastructure projects, the tank provides reliable storage capacity, easy maintenance, and long-term durability. Its efficient heating system ensures a continuous supply of ready-to-use bitumen, supporting uninterrupted production and improved operational efficiency."
+      ],
+      "features": [
+        "Heavy-duty insulated steel construction",
+        "Efficient bitumen heating and temperature retention",
+        "Corrosion-resistant and durable design",
+        "Available in multiple storage capacities",
+        "Suitable for continuous industrial operation"
+      ],
+      "applications": [
+        "Asphalt Plants",
+        "Road Construction",
+        "Bitumen Storage",
+        "Infrastructure Projects",
+        "Industrial Facilities",
+        "Highway Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "bitumen-storage-equipment"
+    },
+    {
+      "slug": "himalaya-counterflow-drum-mix-plant",
+      "title": "Himalaya Counterflow Drum Mix Plant",
+      "label": "Drum Mix Plant",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784108866/traders_website/images/1784108862492-Counterflow-Drum-Mix-Plant.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784108866/traders_website/images/1784108862492-Counterflow-Drum-Mix-Plant.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Counterflow Drum Mix Plant is designed to produce high-quality asphalt mixtures with improved fuel efficiency and reduced emissions. Featuring advanced counterflow technology, the plant ensures efficient drying, accurate mixing, and consistent output for medium and large-scale road construction projects.",
+        "Engineered for high productivity and reliable performance, the plant offers precise control over asphalt production while minimizing material wastage. Its robust construction and automated operation make it an ideal choice for contractors handling highways, airports, and infrastructure developments."
+      ],
+      "features": [
+        "Advanced counterflow mixing technology",
+        "High-capacity asphalt production",
+        "Fuel-efficient burner system",
+        "Automated control for consistent quality",
+        "Rugged construction for continuous operation"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Expressway Projects",
+        "Airport Runways",
+        "Road Infrastructure",
+        "Municipal Road Development",
+        "Asphalt Production"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "asphalt-drum-mix-plants"
+    },
+    {
+      "slug": "himalaya-bitumen-drum-decanter",
+      "title": "Himalaya Bitumen Drum Decanter",
+      "label": "Bitumen Drum Decanter",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109129/traders_website/images/1784109128676-Bitumen-Drum-Decanter.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109129/traders_website/images/1784109128676-Bitumen-Drum-Decanter.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Bitumen Drum Decanter is designed for efficient melting and recovery of bitumen stored in drums. The machine provides controlled heating to ensure uniform melting while preserving the quality of the bitumen for further use in asphalt production and road construction.",
+        "Built for continuous industrial operation, the drum decanter offers high productivity, energy-efficient performance, and reliable operation. Its robust design reduces manual handling, improves workplace safety, and helps maximize bitumen recovery with minimal wastage."
+      ],
+      "features": [
+        "Efficient drum melting system",
+        "Uniform and controlled heating process",
+        "High bitumen recovery efficiency",
+        "Heavy-duty industrial construction",
+        "Low maintenance and energy-efficient operation"
+      ],
+      "applications": [
+        "Asphalt Plants",
+        "Road Construction",
+        "Bitumen Processing",
+        "Infrastructure Projects",
+        "Industrial Bitumen Handling",
+        "Highway Maintenance"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "bitumen-processing-equipment"
+    },
+    {
+      "slug": "himalaya-mobile-portable-drum-mix-plant",
+      "title": "Himalaya Mobile / Portable Drum Mix Plant",
+      "label": "Drum Mix Plant",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109275/traders_website/images/1784109273840-mobileportable-Drum-Mix-plant.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109275/traders_website/images/1784109273840-mobileportable-Drum-Mix-plant.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Mobile / Portable Drum Mix Plant is designed for contractors who require high-quality asphalt production with the flexibility of easy transportation and quick installation. Its compact, modular design allows rapid deployment across multiple project sites while maintaining consistent asphalt output and operational efficiency.",
+        "Engineered for reliable performance, the plant combines advanced mixing technology, fuel-efficient operation, and user-friendly controls to deliver superior asphalt quality. It is an ideal solution for highway construction, rural road development, and infrastructure projects where mobility and productivity are essential."
+      ],
+      "features": [
+        "Portable and modular plant design",
+        "Quick installation and relocation",
+        "High-quality asphalt production",
+        "Fuel-efficient burner system",
+        "Low maintenance and reliable operation"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Rural Road Projects",
+        "Municipal Roads",
+        "Infrastructure Development",
+        "Contractor Projects",
+        "Temporary Asphalt Plants"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "asphalt-drum-mix-plants"
+    },
+    {
+      "slug": "himalaya-drum-mix-plant-with-rap-system",
+      "title": "Himalaya Drum Mix Plant with RAP System",
+      "label": "Drum Mix Plant with RAP System",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109499/traders_website/images/1784109497455-Drum-Mix-Plant-with-RAP-system.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109499/traders_website/images/1784109497455-Drum-Mix-Plant-with-RAP-system.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Drum Mix Plant with RAP System is engineered to produce premium asphalt mixes while incorporating Reclaimed Asphalt Pavement (RAP) for sustainable and cost-effective road construction. The integrated RAP system reduces material consumption, minimizes environmental impact, and enhances overall production efficiency without compromising asphalt quality.",
+        "Built for continuous heavy-duty operation, the plant offers precise temperature control, consistent mixing performance, and advanced automation, making it an excellent choice for modern infrastructure and highway development projects."
+      ],
+      "features": [
+        "Integrated RAP recycling system",
+        "High-capacity asphalt production",
+        "Energy-efficient operation",
+        "Automated production controls",
+        "Durable industrial construction"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Asphalt Recycling Projects",
+        "Road Rehabilitation",
+        "Infrastructure Development",
+        "Municipal Roads",
+        "Expressway Construction"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "asphalt-drum-mix-plants"
+    },
+    {
+      "slug": "himalaya-ready-mix-concrete-plant-rmc-plant",
+      "title": "Himalaya Ready Mix Concrete Plant (RMC Plant)",
+      "label": "RMC Plant",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109965/traders_website/images/1784109964779-Ready-Mix-Concrete-Plant-Cement-Mixing-Plant-.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784109965/traders_website/images/1784109964779-Ready-Mix-Concrete-Plant-Cement-Mixing-Plant-.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Ready Mix Concrete Plant (RMC Plant) is designed to produce high-quality concrete with exceptional consistency and efficiency for residential, commercial, and infrastructure projects. Equipped with precision batching systems and advanced mixing technology, the plant ensures accurate proportioning of raw materials for superior concrete quality.",
+        "Its robust construction, automated controls, and high production capacity make it suitable for continuous operation while reducing material wastage and improving overall project productivity."
+      ],
+      "features": [
+        "Fully automated batching system",
+        "Accurate material weighing and mixing",
+        "High production capacity",
+        "Consistent concrete quality",
+        "Durable and low-maintenance construction"
+      ],
+      "applications": [
+        "Commercial Construction",
+        "Residential Projects",
+        "Infrastructure Development",
+        "Bridges and Flyovers",
+        "Industrial Projects",
+        "Ready Mix Concrete Production"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "concrete-batching-plants"
+    },
+    {
+      "slug": "himalaya-mobile-wet-mix-plant",
+      "title": "Himalaya Mobile Wet Mix Plant",
+      "label": "Wet Mix Plant",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110213/traders_website/images/1784110213545-Mobile-Wet-Mix-Plant.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110213/traders_website/images/1784110213545-Mobile-Wet-Mix-Plant.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Mobile Wet Mix Plant is a compact and efficient solution for producing high-quality wet mix material used in road base and sub-base construction. Designed for easy transportation and quick setup, it enables contractors to produce consistent wet mix directly at project sites, reducing transportation costs and improving operational efficiency.",
+        "Its reliable mixing system, rugged construction, and user-friendly controls make it suitable for continuous operation across diverse construction environments."
+      ],
+      "features": [
+        "Mobile and compact design",
+        "Uniform wet mix production",
+        "Quick installation and relocation",
+        "Heavy-duty construction",
+        "Efficient material handling system"
+      ],
+      "applications": [
+        "Road Base Construction",
+        "Highway Projects",
+        "Airport Infrastructure",
+        "Rural Roads",
+        "Industrial Roads",
+        "Infrastructure Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "wet-mix-plants"
+    },
+    {
+      "slug": "himalaya-batch-mix-plant",
+      "title": "Himalaya Batch Mix Plant",
+      "label": "Batch Mix Plant",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110343/traders_website/images/1784110342625-Batch-Mix-Plant.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110343/traders_website/images/1784110342625-Batch-Mix-Plant.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Batch Mix Plant is engineered for precision asphalt production, delivering consistent and high-quality hot mix asphalt for modern road construction projects. Advanced batching technology ensures accurate proportioning of aggregates, bitumen, and fillers, resulting in superior pavement quality and long-lasting road surfaces.",
+        "Designed for large-scale production, the plant features efficient automation, reliable performance, and low operating costs, making it suitable for contractors and infrastructure developers."
+      ],
+      "features": [
+        "Precision batch mixing technology",
+        "Consistent asphalt quality",
+        "High production efficiency",
+        "Automated plant controls",
+        "Robust industrial construction"
+      ],
+      "applications": [
+        "Expressways",
+        "Highways",
+        "Airport Runways",
+        "Smart City Roads",
+        "Infrastructure Projects",
+        "Municipal Road Construction"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "concrete-batching-plants"
+    },
+    {
+      "slug": "himalaya-drum-mix-plant",
+      "title": "Himalaya Drum Mix Plant",
+      "label": "Drum Mix Plant",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110491/traders_website/images/1784110491255-Drum-Mix-Plant.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110491/traders_website/images/1784110491255-Drum-Mix-Plant.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Drum Mix Plant is built to deliver continuous and efficient asphalt production for road construction and infrastructure development. Its advanced drying and mixing system ensures uniform asphalt quality while maximizing productivity and minimizing fuel consumption.",
+        "With reliable performance, durable construction, and easy operation, the plant is an ideal solution for contractors handling projects of various scales."
+      ],
+      "features": [
+        "Fuel-efficient operation",
+        "Heavy-duty drum mixing system",
+        "Automated controls",
+        "Long service life",
+        "Continuous asphalt production"
+      ],
+      "applications": [
+        "Road Construction",
+        "Highway Projects",
+        "Expressways",
+        "Industrial Roads",
+        "Municipal Roads",
+        "Infrastructure Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "asphalt-drum-mix-plants"
+    },
+    {
+      "slug": "himalaya-wet-mix-plant",
+      "title": "Himalaya Wet Mix Plant",
+      "label": "",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110702/traders_website/images/1784110701650-Wet-Mix-Plant.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784110702/traders_website/images/1784110701650-Wet-Mix-Plant.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Wet Mix Plant is designed to produce uniform wet mix material for road construction with high efficiency and consistent quality. Featuring precision material feeding and advanced mixing technology, it ensures reliable performance while meeting the demands of modern infrastructure projects.",
+        "Its durable construction and low maintenance requirements make it a dependable solution for continuous production in highway, airport, and industrial road projects."
+      ],
+      "features": [
+        "Uniform wet mix production",
+        "Precision material batching",
+        "Continuous operation capability",
+        "Rugged industrial construction",
+        "Low operating costs"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Road Base Preparation",
+        "Airport Projects",
+        "Industrial Roads",
+        "Infrastructure Development",
+        "Public Works"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "wet-mix-plants"
+    },
+    {
+      "slug": "himalaya-hydraulic-mechanical-road-broomer",
+      "title": "Himalaya Hydraulic / Mechanical Road Broomer",
+      "label": "Road Broomer",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784111058/traders_website/images/1784111056715-HydraulicMechanical-Broomer-Road-Cleaner-.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784111058/traders_website/images/1784111056715-HydraulicMechanical-Broomer-Road-Cleaner-.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Hydraulic / Mechanical Road Broomer is designed for efficient road cleaning and debris removal across highways, urban roads, airports, and industrial facilities. Its heavy-duty sweeping mechanism effectively removes dust, loose aggregates, and construction waste, ensuring cleaner and safer road surfaces.",
+        "Built with durable components and easy-to-operate controls, the broomer offers reliable performance, minimal maintenance, and excellent cleaning efficiency for contractors and municipal authorities."
+      ],
+      "features": [
+        "Hydraulic and mechanical sweeping options",
+        "High-efficiency debris removal",
+        "Heavy-duty construction",
+        "Easy operation and maintenance",
+        "Suitable for various road conditions"
+      ],
+      "applications": [
+        "Highway Cleaning",
+        "Road Maintenance",
+        "Airport Runways",
+        "Industrial Facilities",
+        "Municipal Roads",
+        "Infrastructure Projects"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "road-cleaning-equipment"
+    },
+    {
+      "slug": "himalaya-bitumen-pressure-distributor",
+      "title": "Himalaya Bitumen Pressure Distributor",
+      "label": "Bitumen Pressure Distributor",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784111539/traders_website/images/1784111536173-Bitumen-Pressure-Distributor.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784111539/traders_website/images/1784111536173-Bitumen-Pressure-Distributor.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Bitumen Pressure Distributor is engineered for accurate and uniform spraying of hot bitumen during road construction and maintenance operations. Featuring a precision spraying system and advanced heating mechanism, it ensures consistent bitumen application for improved pavement bonding and long-lasting road performance.",
+        "Its robust design, efficient pumping system, and easy operation make it suitable for large-scale highway projects, municipal roads, and infrastructure development."
+      ],
+      "features": [
+        "Precision pressure spraying system",
+        "Uniform bitumen application",
+        "Efficient heating and pumping mechanism",
+        "Durable heavy-duty construction",
+        "Easy operation and maintenance"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Surface Dressing",
+        "Tack Coat Application",
+        "Prime Coat Works",
+        "Road Maintenance",
+        "Infrastructure Development"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "bitumen-sprayers"
+    },
+    {
+      "slug": "himalaya-asphalt-wmm-paver-finisher",
+      "title": "Himalaya Asphalt / WMM Paver Finisher",
+      "label": "Asphalt Paver Finisher",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784111759/traders_website/images/1784111757052-AsphaltWMM-Paver.jpg",
+      "images": [
+        "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784111759/traders_website/images/1784111757052-AsphaltWMM-Paver.jpg"
+      ],
+      "desc": "",
+      "specs": [],
+      "overview": [
+        "The Himalaya Asphalt / WMM Paver Finisher is designed to deliver smooth, accurate, and uniform paving for asphalt and Wet Mix Macadam (WMM) applications. Equipped with advanced paving technology, it ensures excellent surface finish, precise material distribution, and high operational efficiency for modern road construction projects.",
+        "Built for demanding construction environments, the paver offers reliable performance, operator comfort, and consistent paving quality, making it an ideal choice for highways, airports, and urban infrastructure projects."
+      ],
+      "features": [
+        "Precision asphalt and WMM paving",
+        "Uniform material distribution",
+        "High paving efficiency",
+        "Durable and reliable construction",
+        "Operator-friendly controls"
+      ],
+      "applications": [
+        "Highway Construction",
+        "Expressways",
+        "Airport Runways",
+        "Urban Roads",
+        "Smart City Infrastructure",
+        "Industrial Road Projects"
+      ],
+      "companies": [],
+      "showOnHomepage": true,
+      "categoryId": "asphalt-pavers"
     }
   ],
   "services": [
     {
       "slug": "construction-equipment",
       "title": "Construction equipment, Earthmoving, Industrial, and Port",
-      "image": "/statsic/jcb.jpg",
+      "image": "/static/jcb.jpg",
       "summary": "Supply, sourcing, and logistics for excavators, loaders, dozers, and port-handling equipment used on major construction and industrial projects.",
       "overview": [
         "SAASA B2E TRADES supports contractors, rental fleets, and industrial operators with construction equipment supply and spare parts logistics across earthmoving, industrial, and port applications.",
@@ -358,12 +1121,15 @@
         "Industrial plants",
         "Port terminals",
         "Infrastructure projects"
-      ]
+      ],
+      "showOnHomepage": true,
+      "categoryId": "construction",
+      "showInFooter": true
     },
     {
       "slug": "trucks-transport",
       "title": "Trucks for Transport and Distribution of Materials",
-      "image": "/statsic/batchmix.jpeg",
+      "image": "/static/batchmix.jpeg",
       "summary": "Heavy-duty trucks and distribution fleets for moving construction materials, aggregates, and bulk goods across regional and international routes.",
       "overview": [
         "We help material producers and logistics companies source trucks built for transport and distribution of construction materials, aggregates, and bulk cargo.",
@@ -381,12 +1147,15 @@
         "Building materials",
         "Bulk cargo",
         "Regional freight"
-      ]
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true,
+      "categoryId": "transport"
     },
     {
       "slug": "buses-transport",
       "title": "Buses for people transport companies",
-      "image": "/statsic/road roller.jpg",
+      "image": "/static/road roller.jpg",
       "summary": "Coach and transit buses for passenger transport operators, including procurement support and aftermarket parts for fleet maintenance.",
       "overview": [
         "SAASA B2E TRADES works with people transport companies to source modern coach and transit buses suited to intercity, tourism, and corporate shuttle operations.",
@@ -404,12 +1173,15 @@
         "Tourism operators",
         "Corporate shuttles",
         "Private charter fleets"
-      ]
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true,
+      "categoryId": "transport"
     },
     {
       "slug": "energy-engines-generators",
       "title": "Energy | Engines and Generators",
-      "image": "/statsic/drum mix.jpeg",
+      "image": "/static/drum mix.jpeg",
       "summary": "Industrial engines, generator sets, and power system components for construction sites, mines, and remote operations.",
       "overview": [
         "Our energy division covers industrial diesel engines, generator sets, and supporting components for construction sites, mining camps, and remote power needs.",
@@ -427,12 +1199,15 @@
         "Mining operations",
         "Remote facilities",
         "Industrial backup power"
-      ]
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true,
+      "categoryId": "energy"
     },
     {
       "slug": "mining-quarrying",
       "title": "Mining and Quarrying equipment",
-      "image": "/statsic/bitumen soreder.jpg",
+      "image": "/static/bitumen soreder.jpg",
       "summary": "Heavy mining trucks, excavators, and wear parts for open-pit mining and quarry extraction operations worldwide.",
       "overview": [
         "SAASA B2E TRADES supplies mining and quarrying equipment including ultra-class haul trucks, large excavators, and high-wear components for extraction operations.",
@@ -450,100 +1225,397 @@
         "Aggregate quarries",
         "Mineral extraction",
         "Bulk material processing"
-      ]
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true,
+      "categoryId": "mining"
+    },
+    {
+      "slug": "packaged-foods-beverages-supply",
+      "title": "Packaged Foods & Beverages Supply",
+      "categoryId": "fmcg-products",
+      "image": "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Bulk procurement and container-load supply of branded packaged foods, beverages, canned goods, and confectionery for wholesale distributors.",
+      "overview": [
+        "SAASA B2E TRADES coordinates multi-container procurement and international shipping of high-demand consumer packaged foods, carbonated & non-carbonated beverages, biscuits, and canned provisions.",
+        "We link commercial supermarkets, institutional importers, and regional wholesalers with certified global manufacturers, ensuring batch inspection, long shelf lives, and seamless import clearance."
+      ],
+      "capabilities": [
+        "Full container-load (FCL) packaged food supply",
+        "Branded and private-label beverage sourcing",
+        "Batch testing and expiry verification",
+        "Port-to-warehouse multi-modal transit",
+        "Phytosanitary & import documentation support"
+      ],
+      "industries": [
+        "Retail Supermarkets",
+        "Wholesale Distributors",
+        "Hospitality & Hotels",
+        "Food Service Operators"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "bulk-commodities-cooking-oils",
+      "title": "Bulk Agricultural Commodities & Cooking Oils",
+      "categoryId": "fmcg-products",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Import and export of bulk refined cooking oils, edible vegetable oils, rice, sugar, wheat flour, and essential food commodities.",
+      "overview": [
+        "We specialize in high-volume trading of agricultural staples and refined edible oils (palm oil, sunflower oil, soybean oil) packaged in drums, flexitanks, and retail-ready consumer tins.",
+        "Our team manages mill-to-port logistics, quality sampling, weight certificates, and maritime freight to deliver stable commodity flows across emerging and established international markets."
+      ],
+      "capabilities": [
+        "Bulk refined edible oil in flexitanks & drums",
+        "Long-grain rice, cane sugar & refined flour",
+        "SGS/Bureau Veritas quality inspections",
+        "CIF & FOB commercial maritime contracts",
+        "Customs clearance & tariff optimization"
+      ],
+      "industries": [
+        "Food Processing Plants",
+        "National Food Distributors",
+        "Institutional Caterers",
+        "Government Procurement"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "personal-care-hygiene-cleaning",
+      "title": "Personal Care, Hygiene & Cleaning Products",
+      "categoryId": "fmcg-products",
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Procurement of institutional and consumer personal hygiene goods, detergents, soaps, disinfectants, and sanitization products.",
+      "overview": [
+        "SAASA B2E TRADES supplies commercial distributors and healthcare networks with personal hygiene essentials, antibacterial soaps, laundry detergents, surface disinfectants, and paper products.",
+        "We contract directly with certified personal care manufacturers, guaranteeing stringent formulation compliance, competitive wholesale pricing, and consolidated container dispatch."
+      ],
+      "capabilities": [
+        "Institutional cleaning chemical procurement",
+        "Consumer soaps, detergents & toiletries",
+        "Consolidated multi-SKU container loading",
+        "MSDS and chemical compliance verification",
+        "Regular replenishment scheduling"
+      ],
+      "industries": [
+        "Healthcare Facilities",
+        "Hospitality Chains",
+        "Commercial Retailers",
+        "Facility Management Companies"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "fabric-sourcing-industrial-textiles",
+      "title": "Fabric Sourcing & Industrial Textiles",
+      "categoryId": "textile",
+      "image": "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Global procurement of raw cotton, synthetic yarns, blended fabrics, denim, canvas, and heavy-duty industrial technical textiles.",
+      "overview": [
+        "Our textile procurement division connects fabric converters, garment manufacturers, and industrial users with premier weaving and spinning mills across India and global production hubs.",
+        "From fine cotton poplin and denim to high-tensile technical canvas and geotextiles, we ensure consistent GSM, colorfastness, and weave density across all production runs."
+      ],
+      "capabilities": [
+        "Raw cotton, poly-cotton blends & specialty weaves",
+        "Industrial heavy canvas and geotextiles",
+        "Lab-dip approval and colorfastness testing",
+        "Mill-direct pricing and containerized roll shipping",
+        "Batch traceability and tensile certification"
+      ],
+      "industries": [
+        "Garment Manufacturing",
+        "Upholstery & Furnishing",
+        "Industrial Filtration",
+        "Packaging & Tarpaulins"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "ready-made-garments-uniforms",
+      "title": "Ready-Made Garments & Uniforms Trading",
+      "categoryId": "textile",
+      "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Bulk sourcing of corporate workwear, industrial safety uniforms, high-visibility apparel, casual apparel, and institutional clothing.",
+      "overview": [
+        "SAASA B2E TRADES provides complete turnkey manufacturing and procurement for enterprise workwear, flame-retardant coveralls, high-visibility construction clothing, and corporate staff uniforms.",
+        "We handle pattern making, sample approvals, custom embroidery, heavy-duty stitching inspection, and containerized dispatch directly to your operational hubs."
+      ],
+      "capabilities": [
+        "High-visibility and fire-retardant workwear (PPE)",
+        "Corporate uniforms, shirts & formal trousers",
+        "Custom branding, embroidery & reflective tapes",
+        "Strict size-run quality assurance",
+        "Direct-to-enterprise bulk container delivery"
+      ],
+      "industries": [
+        "Mining & Construction Contractors",
+        "Transport & Logistics Fleets",
+        "Corporate Organizations",
+        "Security & Hospitality"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "yarn-home-textiles-supply",
+      "title": "Yarn & Home Textiles Supply",
+      "categoryId": "textile",
+      "image": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Sourcing cotton yarn, polyester filaments, bed linens, towels, and institutional hospitality textiles for commercial buyers.",
+      "overview": [
+        "We supply commercial hospitality projects, hospitals, and retail brands with premium combed cotton yarns, institutional bed linens, bath towels, and thermal blankets.",
+        "Our products meet rigorous commercial laundering standards, maintaining softness, dimensional stability, and fiber durability across extended wash cycles."
+      ],
+      "capabilities": [
+        "Carded, combed & blended knitting/weaving yarn",
+        "Institutional 200–400 thread-count bed linens",
+        "High-absorbency ring-spun terry towels",
+        "Hypoallergenic commercial bedding accessories",
+        "Export palletizing & moisture-proof wrapping"
+      ],
+      "industries": [
+        "Hotels & Luxury Resorts",
+        "Hospital Networks",
+        "Textile Converters",
+        "Home Goods Retailers"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "tablet-capsule-processing-machinery",
+      "title": "Tablet & Capsule Processing Machinery",
+      "categoryId": "pharmaceutical-machines",
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Sourcing rotary tablet presses, capsule filling machines, fluid bed dryers, granulators, and coating equipment for pharmaceutical labs.",
+      "overview": [
+        "SAASA B2E TRADES procures certified cGMP pharmaceutical manufacturing machinery including rotary tablet compression machines, automatic hard gelatin capsule fillers, and high-shear granulators.",
+        "We collaborate with precision engineering manufacturers in India and worldwide, delivering robust stainless steel (SS 316L) machinery with full qualification documentation (FAT, SAT, IQ, OQ)."
+      ],
+      "capabilities": [
+        "High-speed rotary tablet presses & multi-tooling",
+        "Automatic capsule filling & powder dosing lines",
+        "Fluid bed processors (FBP) & rapid mixer granulators",
+        "Auto-coater machines with perforated pans",
+        "Complete IQ/OQ/PQ validation protocol support"
+      ],
+      "industries": [
+        "Pharmaceutical Formulations",
+        "Nutraceutical Production",
+        "Research & Development Labs",
+        "Contract Manufacturing Organizations (CMO)"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "blister-packing-secondary-packaging",
+      "title": "Blister Packing & Secondary Packaging Lines",
+      "categoryId": "pharmaceutical-machines",
+      "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Automatic ALU-ALU / PVC blister packaging machines, cartoning machines, induction sealers, and serialization track-and-trace lines.",
+      "overview": [
+        "We supply complete turnkey packaging lines engineered for pharmaceutical solid dosage forms, including rotary thermoforming blister machines, cold-forming ALU-ALU equipment, and continuous-motion cartoners.",
+        "Every line is designed for rapid changeovers, integrated optical vision inspection, and pharmaceutical serialization for regulatory tracking."
+      ],
+      "capabilities": [
+        "Rotary blister packing (ALU-ALU & PVC-PVDC)",
+        "Automatic horizontal cartoning machines with leaflet feeders",
+        "Optical vision inspection for missing or damaged pills",
+        "Track-and-trace 2D barcode serialization systems",
+        "End-of-line case packing & palletizing"
+      ],
+      "industries": [
+        "Pharmaceutical Packaging",
+        "Medical Device Manufacturing",
+        "Nutraceutical Packagers",
+        "Export Packaging Facilities"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "liquid-filling-cleanroom-systems",
+      "title": "Liquid Filling, Bottling & Cleanroom Systems",
+      "categoryId": "pharmaceutical-machines",
+      "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Sterile vial filling, syrup bottling lines, ampoule sealing machines, and modular cleanroom HVAC and laminar flow filtration units.",
+      "overview": [
+        "Our pharmaceutical engineering portfolio covers aseptic liquid filling systems, ultrasonic bottle washing machines, rotary capping units, and modular cleanroom wall/ceiling partitions.",
+        "We assist manufacturers with ISO Class 5 to Class 8 cleanroom infrastructure, laminar air flow (LAF) hoods, and HEPA HVAC equipment engineered for zero-contamination sterile operations."
+      ],
+      "capabilities": [
+        "Sterile vial & ampoule washing, filling & sealing lines",
+        "Oral liquid & syrup bottling, measuring cup placing & capping",
+        "Modular cleanroom sandwich panels & flush doors",
+        "HVAC air handling units (AHU) with HEPA filtration",
+        "Purified water generation & WFI distribution components"
+      ],
+      "industries": [
+        "Sterile Injectables Manufacturing",
+        "Syrup & Suspension Plants",
+        "Biotechnology Labs",
+        "Hospital Cleanrooms"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "it-enterprise-computing",
+      "title": "Enterprise Laptops, Desktops & Server Hardware",
+      "categoryId": "it-equipment",
+      "image": "https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Laptops, desktops, workstations, and high-performance server hardware for corporate offices, schools, hospitals, and government institutions.",
+      "overview": [
+        "SAASA B2E TRADES handles bulk procurement and international shipping of tier-1 branded laptops, desktop computers, workstations, and enterprise rack servers.",
+        "We work directly with authorized distributors and manufacturers, coordinating warranty coverage, hardware pre-configurations, OS licensing, and secure palletized delivery across Africa and the Middle East."
+      ],
+      "capabilities": [
+        "Commercial laptops, business ultrabooks & rugged PCs",
+        "Enterprise 1U/2U/4U rack & blade server platforms",
+        "Institutional bulk procurement for schools & hospitals",
+        "Pre-shipment hardware diagnostic testing & packaging",
+        "Air and maritime consolidated container transport"
+      ],
+      "industries": [
+        "Corporate Enterprises",
+        "Educational Institutions",
+        "Hospital Networks",
+        "Government Agencies"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "it-networking-infrastructure",
+      "title": "Networking Hardware, Data Center & Structured Cabling",
+      "categoryId": "it-equipment",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Enterprise network switches, core routers, unified firewalls, server racks, and structured fiber/copper cabling components.",
+      "overview": [
+        "We supply complete network infrastructure hardware engineered for reliable corporate connectivity, campus networks, data centers, and multi-branch enterprises.",
+        "Our catalog includes managed PoE switches, high-throughput gateway routers, next-generation firewalls, server cabinets, and certified Cat6/fiber optical cabling."
+      ],
+      "capabilities": [
+        "Managed Layer-2 / Layer-3 enterprise switches",
+        "Enterprise edge routers & cybersecurity firewalls",
+        "Server racks, PDU units & uninterruptible power supplies (UPS)",
+        "Fiber optic patch cords & bulk structured cabling",
+        "Turnkey institutional procurement bills of materials (BOM)"
+      ],
+      "industries": [
+        "Telecommunications & ISPs",
+        "Banking & Financial Institutions",
+        "Data Centers",
+        "Smart Building Projects"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "it-office-printers-peripherals",
+      "title": "Office Printers, Scanners & Institutional Peripherals",
+      "categoryId": "it-equipment",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Multi-function laser printers, heavy-duty document scanners, barcode scanners, genuine consumables, and IT peripherals.",
+      "overview": [
+        "From departmental laser multi-function printers and high-speed document scanners to point-of-sale peripherals and monitors, we supply all institutional computing peripherals.",
+        "We ensure continuous supply contracts for genuine replacement toners, imaging drums, and essential peripherals to keep office workflows uninterrupted."
+      ],
+      "capabilities": [
+        "Heavy-duty multi-function network printers & copiers",
+        "High-speed batch document & flatbed scanners",
+        "Industrial barcode scanners & thermal label printers",
+        "OEM toner cartridges & consumable replenishments",
+        "Monitors, docking stations & ergonomic peripherals"
+      ],
+      "industries": [
+        "Office Headquarters",
+        "Healthcare Records",
+        "Logistics Warehouses",
+        "Financial Institutions"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
+    },
+    {
+      "slug": "pickups-passenger-vehicles",
+      "title": "Pickups, 4x4 Fleet & Passenger Vehicles",
+      "categoryId": "transport",
+      "image": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80",
+      "summary": "Double-cabin pickups, rugged 4x4 work trucks, and commercial passenger vehicles for logistics operators and corporate fleets.",
+      "overview": [
+        "SAASA B2E TRADES coordinates fleet procurement for commercial double-cab pickups, off-road 4x4 exploration vehicles, utility vans, and corporate passenger transport.",
+        "We handle tropicalized specifications, heavy-duty suspension packages, vehicle export documentation, and roll-on/roll-off (RoRo) or containerized maritime shipping."
+      ],
+      "capabilities": [
+        "Single & double-cabin 4x4 diesel pickups",
+        "Corporate passenger utility vehicles & SUVs",
+        "Mining & field-duty tropicalized vehicle packages",
+        "RoRo & containerized vehicle export clearance",
+        "Fleet spare parts kits & maintenance consumables"
+      ],
+      "industries": [
+        "Mining & Exploration Sites",
+        "Construction Contractors",
+        "Field Logistics & Security",
+        "Corporate Fleets"
+      ],
+      "showOnHomepage": true,
+      "showInFooter": true
     }
   ],
   "blogs": [
     {
-      "slug": "offered-coverage-flexibility",
-      "title": "Offered Coverage Flexibility in logistic Exports & Imports",
-      "image": "/images/blog/featured-air.jpg",
-      "date": "07 Nov, 2025",
-      "author": "Adam Smith",
-      "cat": "Logistics",
-      "excerpt": "Flexible export and import coverage for modern supply chains.",
+      "slug": "construction-machinery-procurement-africa",
+      "title": "Heavy Construction Machinery Sourcing: Procurement Guide for African Projects",
+      "image": "/static/drum-mix.jpeg",
+      "date": "14 Oct, 2026",
+      "author": "SAASA B2E TRADES",
+      "cat": "Construction Machinery",
+      "excerpt": "Strategic sourcing of crawler excavators, motor graders, asphalt plants, and heavy earthmoving machinery for African roadworks, mining operations, and civil infrastructure projects.",
       "body": [
-        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
-        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
-        "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
+        "Infrastructure expansion and mining extraction across Central and West Africa require heavy equipment engineered to withstand extreme ambient temperatures, abrasive soils, and demanding duty cycles. From hydraulic crawler excavators and motor graders to stationary asphalt drum mix and wet mix plants, acquiring certified machinery at competitive capital expenditure is the foundation of project profitability.",
+        "One of the critical challenges faced by project managers and civil contractors is navigating international equipment supply markets. Sourcing directly from certified manufacturers in India and international equipment hubs requires rigorous pre-shipment inspection. Hydraulic pressure benchmarks, engine diagnostics, undercarriage metallurgy, and emissions standard compliance must be verified before machinery departs the port of origin.",
+        "Logistics planning is equally vital. Heavy machinery requires specialized sea freight arrangements — including Roll-on/Roll-off (RoRo) for wheeled machinery and flat-rack container stowage for crawler excavators and modular batching plants. Working with a dedicated procurement specialist like SAASA B2E Trades ensures that freight handling, marine insurance, and customs clearance through regional hubs like the Port of Douala or Mombasa proceed without demurrage delays.",
+        "Beyond equipment commissioning, long-term project continuity depends on lifecycle spare parts availability. Sourcing machines with readily accessible undercarriage parts, hydraulic filter kits, seal assemblies, and engine rebuild components prevents costly job site downtime. Establishing scheduled spares replenishment from day one guarantees continuous fleet uptime across road construction, quarrying, and civil engineering sites."
       ],
-      "featured": false
+      "featured": true
     },
     {
-      "slug": "advantages-digital-supply",
-      "title": "The Advantages of a Digital Supply Strategy",
-      "image": "/images/blog/digital-supply.jpg",
-      "date": "07 Nov, 2025",
-      "author": "Adam Smith",
-      "cat": "Technology",
-      "excerpt": "How digital tools improve visibility and control across your network.",
+      "slug": "fmcg-products-wholesale-trading-africa",
+      "title": "Cross-Border FMCG & Wholesale Food Trading: A Practical Sourcing Guide",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80",
+      "date": "08 Oct, 2026",
+      "author": "SAASA B2E TRADES",
+      "cat": "FMCG Products",
+      "excerpt": "How distributors, wholesalers, and retail supermarket chains across Africa procure packaged consumer goods, bulk cooking oils, and food commodities with verified pre-shipment quality inspection.",
       "body": [
-        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
-        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
-        "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
+        "Rapid urbanization and rising consumer demand across Africa are driving significant growth in the consumer packaged goods and wholesale food sectors. For distributors and retail supermarket operators, maintaining consistent inventory of branded food items, non-perishable provisions, and bulk cooking oils requires resilient international trade partnerships.",
+        "Bulk agricultural commodities — such as refined palm olein, sunflower oil, long-grain parboiled rice, and refined cane sugar — require disciplined quality verification. Reputable trading partners coordinate third-party pre-shipment inspections through agencies like SGS or Bureau Veritas, verifying FFA (free fatty acid) levels, moisture content, peroxide values, and phytosanitary certificates before loading.",
+        "Packaging format plays a major role in shipping economy. While retail-ready bottled cooking oils and bagged provisions cater directly to consumer shelves, bulk food processors benefit from flexitank container shipments or 200-liter drum loading, which maximize container volumetric capacity and reduce per-liter freight costs.",
+        "With established regional bases in Dubai (UAE), India, and Yaoundé (Cameroon), SAASA B2E Trades assists importers with consolidated multi-SKU container loading, harmonized tariff code classification, and CEMAC import compliance, ensuring commercial consignments arrive on time and intact."
       ],
-      "featured": false
+      "highlight": true
     },
     {
-      "slug": "get-hired-supply-chain",
-      "title": "How To Get Hired In Supply Chain & Logistics?",
-      "image": "/images/blog/supply-chain.jpg",
-      "date": "07 Nov, 2025",
-      "author": "Adam Smith",
-      "cat": "Career",
-      "excerpt": "Career paths and skills for logistics professionals.",
+      "slug": "pharmaceutical-industrial-machinery-procurement",
+      "title": "Turnkey Pharmaceutical & Industrial Equipment Procurement for Emerging Markets",
+      "image": "/static/pharmaceutical-machine.jpg",
+      "date": "28 Sep, 2026",
+      "author": "SAASA B2E TRADES",
+      "cat": "Equipment & Machine Procurement",
+      "excerpt": "A technical overview of turnkey machinery procurement — from cGMP tablet presses, blister packaging lines, and cleanrooms to institutional and industrial processing equipment.",
       "body": [
-        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
-        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
-        "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ],
-      "highlight": true,
-      "featured": false
-    },
-    {
-      "slug": "future-of-freight",
-      "title": "The Future of Road Freight in a Digital World",
-      "image": "/images/services/road.jpg",
-      "date": "15 Oct, 2025",
-      "author": "Sarah Chen",
-      "cat": "Freight",
-      "excerpt": "Road freight trends shaping the next decade.",
-      "body": [
-        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
-        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
-        "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ],
-      "featured": false
-    },
-    {
-      "slug": "green-logistics",
-      "title": "Green Logistics: Sustainable Transport Solutions",
-      "image": "/images/services/rail.jpg",
-      "date": "01 Oct, 2025",
-      "author": "James Wilson",
-      "cat": "Sustainability",
-      "excerpt": "Sustainable practices for greener logistics operations.",
-      "body": [
-        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
-        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
-        "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ],
-      "featured": false
-    },
-    {
-      "slug": "cold-chain-management",
-      "title": "Cold Chain Management Best Practices",
-      "image": "/images/services/sea.jpg",
-      "date": "20 Sep, 2025",
-      "author": "Priya Sharma",
-      "cat": "Warehousing",
-      "excerpt": "Keeping temperature-sensitive cargo safe end to end.",
-      "body": [
-        "Logistics continues to evolve with smarter routing, real-time visibility, and integrated supply chain platforms. SAASA B2E TRADES helps businesses stay ahead with reliable freight solutions across road, sea, air, and rail.",
-        "From optimizing export coverage to improving last-mile delivery accuracy, modern logistics teams need partners who combine technology with operational excellence. Our experts work with you to design solutions that scale with your business.",
-        "Contact our team to learn how SAASA B2E TRADES can support your next shipment, fleet expansion, or global trade initiative."
-      ],
-      "featured": false
+        "Industrial expansion and healthcare self-reliance in emerging economies demand high-specification manufacturing and processing equipment. However, setting up or modernizing solid dosage pharmaceutical facilities or industrial production units requires precision machinery manufactured in strict accordance with Current Good Manufacturing Practices (cGMP) and international quality standards.",
+        "From rotary tablet compression presses equipped with multi-tip punch tooling to automatic hard-gelatin capsule filling machines and liquid bottling systems, every contact part must be fabricated from high-grade stainless steel (SS 316L) with mirror-polished surfaces to eliminate cross-contamination risks and ensure seamless regulatory audits.",
+        "Downstream packaging automation is equally essential. Turnkey packaging lines integrating high-speed ALU-ALU or PVC/PVDC thermoforming blister packaging with automatic horizontal cartoners and 2D serialization track-and-trace systems ensure compliance and tamper-proof market presentation.",
+        "SAASA B2E Trades connects formulation manufacturers and industrial enterprises with accredited engineering manufacturers in India. We coordinate complete validation protocols — including Factory Acceptance Testing (FAT), Site Acceptance Testing (SAT), Installation Qualification (IQ), and Operational Qualification (OQ) — ensuring turnkey production reliability."
+      ]
     }
   ],
   "portfolio": [
@@ -551,7 +1623,7 @@
       "slug": "freight-fleet-expansion",
       "title": "Freight Fleet Expansion",
       "label": "Road Transport",
-      "image": "/images/services/road.jpg",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877256/traders_website/portfolio/1782877254270-road.jpg",
       "excerpt": "Scaled regional road freight capacity with modern fleet assets and route optimization.",
       "body": [
         "SAASA B2E TRADES supported a major freight operator with end-to-end procurement, delivery, and commissioning of new heavy-duty trucks for regional distribution.",
@@ -566,7 +1638,7 @@
       "slug": "electric-bus-fleet",
       "title": "Electric Bus Fleet Implementation",
       "label": "Transport",
-      "image": "/images/about/truck.jpg",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877255/traders_website/portfolio/1782877254264-truck.jpg",
       "excerpt": "Introduced electric buses for urban transit with charging infrastructure planning.",
       "body": [
         "We partnered with a municipal transport authority to source electric buses, charging systems, and maintenance support for a phased city rollout.",
@@ -581,7 +1653,7 @@
       "slug": "smart-port-management",
       "title": "Smart Port Management System",
       "label": "Port Logistics",
-      "image": "/images/solutions/port.jpg",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877255/traders_website/portfolio/1782877254266-port.jpg",
       "excerpt": "Port equipment and systems integration for smarter cargo handling operations.",
       "body": [
         "This engagement covered procurement of port-handling machinery, spare parts pipelines, and coordination with terminal operators for staged deployment.",
@@ -596,7 +1668,7 @@
       "slug": "container-ship-operations",
       "title": "Container Ship Operations",
       "label": "Sea Freight",
-      "image": "/images/services/sea.jpg",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877256/traders_website/portfolio/1782877254267-sea.jpg",
       "excerpt": "Marine logistics support for container operations and vessel readiness.",
       "body": [
         "We delivered marine equipment, spares, and technical supplies to support container vessel operations across key trade lanes.",
@@ -611,7 +1683,7 @@
       "slug": "cross-continental-rail-network",
       "title": "Cross-Continental Rail Network",
       "label": "Rail Freight",
-      "image": "/images/services/rail.jpg",
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1782877256/traders_website/portfolio/1782877254269-rail.jpg",
       "excerpt": "Rail freight equipment and rolling stock support for long-haul corridors.",
       "body": [
         "SAASA B2E TRADES supplied rail-compatible freight equipment and coordinated cross-border logistics for an expanding rail corridor.",
@@ -627,78 +1699,95 @@
     {
       "slug": "sarah-williams",
       "name": "Sarah Williams",
-      "role": "Procurement Manager",
-      "quote": "SAASA B2E TRADES sourced excavator hydraulic parts and undercarriage components for our fleet faster than our previous suppliers. Quotations were clear and deliveries arrived as promised.",
-      "image": "/images/products/hydraulic-pump.jpg"
+      "role": "Procurement Director, Infrastructure Group",
+      "quote": "SAASA B2E TRADES streamlined our equipment procurement with top-tier excavators, road pavers, and OEM spare parts. Their trade coordination, import clearance, and technical compliance gave our highway projects zero downtime.",
+      "image": "/images/testimonials/sarah.jpg"
     },
     {
-      "slug": "bessie-cooper",
-      "name": "Bessie Cooper",
-      "role": "Fleet Operations Director",
-      "quote": "We needed trucks and buses for a municipal rollout — their team handled supplier selection, import paperwork, and staged delivery across multiple depots professionally.",
-      "image": "/images/services/trucks.jpg"
+      "slug": "tariq-al-mansoor",
+      "name": "Tariq Al-Mansoor",
+      "role": "Managing Director, Saharan FMCG Distribution",
+      "quote": "We partner with SAASA B2E TRADES for bulk container shipments of refined edible oils, grains, and packaged consumer goods. Their export logistics, batch documentation, and trade reliability across African sea ports are exceptional.",
+      "image": "/images/testimonials/tariq.jpg"
     },
     {
       "slug": "jacob-jones",
       "name": "Jacob Jones",
-      "role": "Project Director",
-      "quote": "From mining equipment inquiries to repeat parts orders, SAASA B2E has become our go-to trading partner. Responsive support and reliable sourcing across categories.",
-      "image": "/images/services/mining.jpg"
-    },
-    {
-      "slug": "amadou-diallo",
-      "name": "Amadou Diallo",
-      "role": "Construction Site Manager",
-      "quote": "They supplied concrete mixers, road rollers, and spare parts for our highway project with consistent lead times. A dependable procurement partner for heavy machinery.",
-      "image": "/images/products/concrete-mixer.jpg"
-    },
-    {
-      "slug": "grace-mbeki",
-      "name": "Grace Mbeki",
-      "role": "Plant Superintendent",
-      "quote": "Crane parts, gearbox assemblies, and engine components were sourced to OEM specifications. Their team understands construction machinery requirements very well.",
-      "image": "/images/products/crane-parts.jpg"
-    },
-    {
-      "slug": "pierre-nguemba",
-      "name": "Pierre Nguemba",
-      "role": "Quarry Operations Lead",
-      "quote": "Bucket teeth, track chains, and compactor spares keep our quarry running. SAASA B2E coordinates suppliers and shipping so we spend less time chasing orders.",
-      "image": "/images/products/bucket-teeth.jpg"
+      "role": "Director of Fleet & Mining Operations",
+      "quote": "Whether we require heavy commercial transport trucks, quarry crushing assets, or recurring spares, SAASA B2E TRADES delivers genuine cross-border trading value with transparent landed pricing and end-to-end delivery.",
+      "image": "/images/testimonials/jacob.jpg"
     }
   ],
   "heroBanners": [
     {
-      "slug": "heavy-equipment",
+      "slug": "fmcg-consumer-commodities",
       "position": 1,
-      "image": "/statsic/batchmix.jpeg",
-      "badge": "EST. 2024 • PROCUREMENT & TRADING",
-      "title": "Heavy",
-      "titleAccent": "Equipment",
-      "subtitle": "Source construction machinery, earthmoving equipment, and industrial assets through a trusted B2E trading partner."
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1920&q=80",
+      "badge": "GLOBAL TRADING • FMCG & COMMODITIES",
+      "title": "FMCG & Food",
+      "titleAccent": "Commodities",
+      "subtitle": "Cross-border wholesale procurement for packaged foods, bulk edible oils, grains, and essential consumer goods across Africa and international corridors."
     },
     {
-      "slug": "earthmoving-machinery",
+      "slug": "it-equipment-institutional",
       "position": 2,
-      "image": "/statsic/jcb.jpg",
-      "badge": "EST. 2024 • FLEET SUPPLY",
-      "title": "Earthmoving",
-      "titleAccent": "Machinery",
-      "subtitle": "Procure excavators, loaders, dozers, cranes, and road-building equipment through a trusted B2E trading partner."
+      "image": "/static/it-equipment.jpg",
+      "badge": "GLOBAL SOURCING • ENTERPRISE IT",
+      "title": "IT Equipment",
+      "titleAccent": "& Hardware",
+      "subtitle": "Laptops, desktops, servers, networking hardware, printers, and peripherals for offices, schools, hospitals, and government institutions."
+    },
+    {
+      "slug": "pharmaceutical-machinery",
+      "position": 3,
+      "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1920&q=80",
+      "badge": "GMP EQUIPMENT • PHARMACEUTICAL TECH",
+      "title": "Pharmaceutical",
+      "titleAccent": "Machines & Tech",
+      "subtitle": "Turnkey procurement for tablet presses, automatic blister packing lines, liquid filling systems, and certified cleanroom processing units."
+    },
+    {
+      "slug": "heavy-equipment",
+      "position": 4,
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784113336/traders_website/images/1784113336117-DX225-LC-2-.jpg",
+      "badge": "7+ YEARS • INDUSTRIAL FLEET SUPPLY",
+      "title": "Heavy",
+      "titleAccent": "Equipment",
+      "subtitle": "Procure crawler excavators, wheel loaders, bulldozers, cranes, and specialized industrial assets through a trusted global trading partner."
     },
     {
       "slug": "machinery-parts",
-      "position": 3,
-      "image": "/statsic/road roller.jpg",
-      "badge": "EST. 2024 • GENUINE PARTS",
-      "title": "Machinery",
-      "titleAccent": "Parts",
-      "subtitle": "Genuine and aftermarket parts for excavators, loaders, cranes, and road-building equipment — supplied on time."
+      "position": 5,
+      "image": "https://res.cloudinary.com/dd8otkf7f/image/upload/v1784113095/traders_website/images/1784113095237-Bitumen-Pressure-Distributor.jpg",
+      "badge": "7+ YEARS • GENUINE OEM SPARES",
+      "title": "Machinery Parts",
+      "titleAccent": "& Hydraulics",
+      "subtitle": "OEM genuine filters, hydraulic pump assemblies, powertrain components, and undercarriage spares delivered to your site on schedule."
     }
   ],
   "brochure": {
-    "url": "/uploads/brochures/test-brochure.pdf",
-    "fileName": "test-brochure.pdf",
-    "uploadedAt": "2026-06-30T13:00:00.000Z"
+    "url": "https://res.cloudinary.com/dd8otkf7f/raw/upload/v1783327658/traders_website/catalogs/1783327647499-Bulldozer-SD16",
+    "fileName": "Bulldozer-SD16.pdf",
+    "uploadedAt": "2026-07-06T08:47:37.798Z"
+  },
+  "siteSettings": {
+    "establishedYear": 2019,
+    "heroStats": [
+      {
+        "label": "PRODUCT LINES",
+        "value": "150+",
+        "type": "manual"
+      },
+      {
+        "label": "YEARS",
+        "value": "7+",
+        "type": "manual"
+      },
+      {
+        "label": "CLIENTS",
+        "value": "2K+",
+        "type": "manual"
+      }
+    ]
   }
 }

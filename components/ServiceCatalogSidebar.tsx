@@ -51,13 +51,19 @@ export default function ServiceCatalogSidebar({
     setExpandedId((current) => (current === categoryId ? null : categoryId))
   }
 
-  if (categories.length === 0) return null
+  const visibleCategories = useMemo(() => {
+    return categories.filter(
+      (c) => (servicesByCategory.get(c.id)?.length ?? 0) > 0 || c.id === activeCategoryId,
+    )
+  }, [categories, servicesByCategory, activeCategoryId])
+
+  if (visibleCategories.length === 0) return null
 
   return (
     <aside className="category-detail-sidebar product-catalog-sidebar" aria-label="Browse services by category">
       <div className="product-catalog-sidebar-card">
         <ul className="product-catalog-list">
-          {categories.map((category) => {
+          {visibleCategories.map((category) => {
             const categoryServices = servicesByCategory.get(category.id) ?? []
             const isActiveCategory = activeCategoryId === category.id
             const isExpanded = expandedId === category.id
@@ -72,7 +78,7 @@ export default function ServiceCatalogSidebar({
                 >
                   <div className="product-catalog-category-row">
                     <Link
-                      href={`/services/category/${category.id}`}
+                      href={`/services/${category.id}`}
                       className="product-catalog-category-link"
                     >
                       <span className="product-catalog-thumb">

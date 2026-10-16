@@ -16,12 +16,16 @@ export async function POST(request: Request) {
 
     const name = body.name?.trim()
     const email = body.email?.trim()
+    const phone = body.phone?.trim()
 
     if (!name) {
       return Response.json({ ok: false, error: 'Name is required' }, { status: 400 })
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return Response.json({ ok: false, error: 'A valid email is required' }, { status: 400 })
+    }
+    if (!phone) {
+      return Response.json({ ok: false, error: 'Phone number is required' }, { status: 400 })
     }
 
     if (!isMongoConfigured()) {
@@ -34,9 +38,9 @@ export async function POST(request: Request) {
     const enquiry = await saveEnquiry({
       name,
       email,
-      phone: body.phone,
-      service: body.service,
-      message: body.message,
+      phone,
+      service: body.service?.trim(),
+      message: body.message?.trim(),
       type: 'contact',
       source: 'contact-form',
     })

@@ -167,7 +167,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   const brochure = cms?.brochure?.url ? cms.brochure : contextBrochure
 
   const solidNavContent = (
-    <div className="flex h-[72px] min-w-0 items-center justify-between gap-2 overflow-hidden px-4 sm:h-[80px] sm:gap-3 sm:px-5 lg:h-[88px] lg:px-6 xl:px-8">
+    <div className="flex h-[72px] min-w-0 items-center justify-between gap-2 overflow-visible px-4 sm:h-[80px] sm:gap-3 sm:px-5 lg:h-[88px] lg:px-6 xl:px-8">
       <NavContent
         navItems={navItems}
         brochure={brochure}
@@ -356,25 +356,28 @@ function NavContent({
 
   return (
     <>
-      <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-2.5 lg:gap-3">
-        <span className={`nav-logo-wrap ${floating ? 'min-w-[120px] sm:min-w-[140px] lg:min-w-[130px] xl:min-w-[170px]' : 'min-w-[110px] sm:min-w-[120px] lg:min-w-[130px] xl:min-w-[145px]'}`}>
+      <Link
+        href="/"
+        className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 lg:gap-3.5 group"
+        aria-label={COMPANY_NAME}
+      >
+        <span className="nav-logo-wrap shrink-0">
           <BrandLogo
             variant="nav"
             className={floating ? 'brand-logo brand-logo--hero' : 'brand-logo brand-logo--nav'}
             priority
           />
         </span>
-        <div className="hidden min-w-0 max-w-[108px] sm:block sm:max-w-[118px] 2xl:max-w-[128px]">
+        <div className="min-w-0 shrink-0">
           <span
-            className={`site-logo-text block text-[9px] sm:text-[10px] lg:text-[11px] leading-tight tracking-tight ${floating ? 'text-white' : 'text-[#0A0E1A]'}`}
+            className={`site-logo-text block font-black uppercase tracking-wide whitespace-nowrap text-sm sm:text-base lg:text-[18px] xl:text-[20px] 2xl:text-[22px] leading-none transition-colors ${
+              floating
+                ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]'
+                : 'text-[#0A0E1A]'
+            }`}
           >
             {COMPANY_NAME}
           </span>
-          <p
-            className={`hidden 2xl:block text-[7px] lg:text-[8px] tracking-[0.08em] font-medium mt-0.5 uppercase leading-tight ${floating ? 'text-white/55' : 'text-gray-500'}`}
-          >
-            {COMPANY_TAGLINE}
-          </p>
         </div>
       </Link>
 

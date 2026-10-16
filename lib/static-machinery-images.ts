@@ -1,16 +1,19 @@
 import type { CmsData } from '@/types/cms'
 
-/** Local construction machinery photos in /public/statsic */
+/** Local construction machinery photos in /public/static */
 export const STATIC_MACHINERY_IMAGES = {
-  batchMix: '/statsic/batchmix.jpeg',
-  bitumenSpreader: '/statsic/bitumen soreder.jpg',
-  drumMix: '/statsic/drum mix.jpeg',
-  jcb: '/statsic/jcb.jpg',
-  roadRoller: '/statsic/road roller.jpg',
+  batchMix: '/static/batchmix.jpeg',
+  bitumenSpreader: '/static/bitumen soreder.jpg',
+  drumMix: '/static/drum mix.jpeg',
+  jcb: '/static/jcb.jpg',
+  roadRoller: '/static/road roller.jpg',
+  fmcgWholesale: '/images/fmcg/fmcg-wholesale.jpg',
+  fmcgProducts: '/images/fmcg/fmcg-products.jpg',
 } as const
 
 /** Demo catalog product images */
 export const DEMO_PRODUCT_IMAGES: Record<string, string> = {
+  'develon-excavator': STATIC_MACHINERY_IMAGES.jcb,
   'hydraulic-pump-assemblies': STATIC_MACHINERY_IMAGES.jcb,
   'undercarriage-track-chains': STATIC_MACHINERY_IMAGES.jcb,
   'loader-bucket-teeth-adapters': STATIC_MACHINERY_IMAGES.jcb,
@@ -31,7 +34,7 @@ export const DEMO_SERVICE_IMAGES: Record<string, string> = {
   'mining-quarrying': STATIC_MACHINERY_IMAGES.bitumenSpreader,
 }
 
-/** Force demo seed products/services to /statsic photos and homepage expertise visibility. */
+/** Force demo seed products/services to /static photos and homepage expertise visibility. */
 export function applyDemoProductServiceSeed<T extends Pick<CmsData, 'products' | 'services'>>(data: T): T {
   return {
     ...data,
@@ -49,5 +52,5 @@ export function applyDemoProductServiceSeed<T extends Pick<CmsData, 'products' |
 }
 
 export function isStatsicImagePath(path: string): boolean {
-  return path.startsWith('/statsic/')
+  return path.startsWith('/static/') || path.startsWith('/statsic/')
 }

@@ -34,6 +34,11 @@ export interface Brand {
   productSlugs: string[]
 }
 
+export interface ProductSpecItem {
+  name: string
+  value: string
+}
+
 export interface Product {
   slug: string
   title: string
@@ -44,6 +49,7 @@ export interface Product {
   images?: string[]
   desc: string
   specs: string[]
+  specifications?: ProductSpecItem[]
   overview: string[]
   features: string[]
   applications: string[]
@@ -71,6 +77,7 @@ export interface HomepageExpertiseItem {
   image: string
   summary: string
   href: string
+  label?: string
 }
 
 export interface BlogPost {

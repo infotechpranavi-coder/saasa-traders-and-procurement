@@ -47,6 +47,38 @@ export function buildSeedCms(): CmsData {
   }))
 
   const serviceCategories: Category[] = [
+    {
+      id: 'fmcg-products',
+      name: 'FMCG Products',
+      type: 'service',
+      description: 'Wholesale international sourcing, container trading, and cross-border distribution of fast-moving consumer goods and food commodities.',
+      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80',
+      showInFooter: true,
+    },
+    {
+      id: 'textile',
+      name: 'Textile',
+      type: 'service',
+      description: 'International trading and supply chain procurement for woven fabrics, industrial textiles, yarn, and ready-made commercial garments.',
+      image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1200&q=80',
+      showInFooter: true,
+    },
+    {
+      id: 'pharmaceutical-machines',
+      name: 'Pharmaceutical Machines',
+      type: 'service',
+      description: 'Turnkey procurement, supply, and installation support for pharmaceutical processing machinery, packaging lines, and cleanroom equipment.',
+      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
+      showInFooter: true,
+    },
+    {
+      id: 'it-equipment',
+      name: 'IT Equipment',
+      type: 'service',
+      description: 'Laptops, desktops, servers, networking hardware, printers, and peripherals for offices, schools, hospitals, and government institutions.',
+      image: 'https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=1200&q=80',
+      showInFooter: true,
+    },
     { id: 'construction', name: 'Construction & Earthmoving', type: 'service' },
     { id: 'transport', name: 'Transport & Fleet', type: 'service' },
     { id: 'energy', name: 'Energy & Power', type: 'service' },
@@ -224,6 +256,7 @@ function mapHomepageProducts(products: Product[], onlyFlagged = true): HomepageE
     image: p.image,
     summary: p.desc,
     href: `/products/${p.slug}`,
+    label: p.label,
   }))
 }
 
@@ -236,6 +269,7 @@ function mapHomepageServices(services: Service[], onlyFlagged = true): HomepageE
     image: s.image,
     summary: s.summary,
     href: `/services/${s.slug}`,
+    label: 'Service',
   }))
 }
 
@@ -246,8 +280,11 @@ export async function getHomepageExpertiseItems(): Promise<HomepageExpertiseItem
 
   if (selected.length > 0) return selected
 
-  // No flags set — show first four services so the section is never empty.
-  return mapHomepageServices(cms.services.slice(0, 4), false)
+  // No flags set — show all products first, then services so product cards are in the slider
+  return [
+    ...mapHomepageProducts(cms.products, false),
+    ...mapHomepageServices(cms.services, false),
+  ]
 }
 
 export async function getPortfolioProjects(): Promise<PortfolioProject[]> {

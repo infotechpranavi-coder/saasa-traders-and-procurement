@@ -7,7 +7,16 @@ import { getBrandCategories, getBrands } from '@/lib/cms'
 
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: `Strong Brands - ${COMPANY_NAME}` }
+export const metadata: Metadata = {
+  title: `Strong OEM Machinery Brands - ${COMPANY_NAME}`,
+  description:
+    `Discover genuine heavy machinery & parts from leading global OEM brands — Caterpillar, Komatsu, JCB, Shantui, Develon, Volvo, Himalaya, and Sany — supplied by ${COMPANY_NAME}.`,
+  openGraph: {
+    title: `Strong OEM Machinery Brands - ${COMPANY_NAME}`,
+    description:
+      'Explore certified global equipment manufacturers, brand partnerships, and genuine machinery parts.',
+  },
+}
 export const dynamic = 'force-dynamic'
 
 export default async function StrongBrandsPage() {

@@ -3,7 +3,11 @@ import PageLayout from '../../components/PageLayout'
 import PageHero from '../../components/PageHero'
 import { COMPANY_NAME, COMPANY_EMAIL } from '@/lib/brand'
 
-export const metadata: Metadata = { title: `Privacy Policy - ${COMPANY_NAME}` }
+export const metadata: Metadata = {
+  title: `Privacy Policy - ${COMPANY_NAME}`,
+  description:
+    `Privacy policy of ${COMPANY_NAME} explaining how we collect, protect, and handle client information, quotations, and procurement data across our international trading platform.`,
+}
 
 export default function PrivacyPolicyPage() {
   return (

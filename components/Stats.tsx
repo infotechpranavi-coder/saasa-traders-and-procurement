@@ -8,7 +8,7 @@ import { SITE_IMAGES } from '@/lib/site-content'
 
 const stats = [
   { value: '150+', label: 'Products & Equipment Lines' },
-  { value: '25+', label: 'Years Trading Experience' },
+  { value: '7+', label: 'Years Trading Experience' },
   { value: '40+', label: 'Procurement Categories' },
 ]
 

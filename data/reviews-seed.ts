@@ -4,49 +4,25 @@ export const seedReviews: CustomerReview[] = [
   {
     slug: 'sarah-williams',
     name: 'Sarah Williams',
-    role: 'Procurement Manager',
+    role: 'Procurement Director, Infrastructure Group',
     quote:
-      'SAASA B2E TRADES sourced excavator hydraulic parts and undercarriage components for our fleet faster than our previous suppliers. Quotations were clear and deliveries arrived as promised.',
-    image: '/images/products/hydraulic-pump.jpg',
+      'SAASA B2E TRADES streamlined our equipment procurement with top-tier excavators, road pavers, and OEM spare parts. Their trade coordination, import clearance, and technical compliance gave our highway projects zero downtime.',
+    image: '/images/testimonials/sarah.jpg',
   },
   {
-    slug: 'bessie-cooper',
-    name: 'Bessie Cooper',
-    role: 'Fleet Operations Director',
+    slug: 'tariq-al-mansoor',
+    name: 'Tariq Al-Mansoor',
+    role: 'Managing Director, Saharan FMCG Distribution',
     quote:
-      'We needed trucks and buses for a municipal rollout — their team handled supplier selection, import paperwork, and staged delivery across multiple depots professionally.',
-    image: '/images/services/trucks.jpg',
+      'We partner with SAASA B2E TRADES for bulk container shipments of refined edible oils, grains, and packaged consumer goods. Their export logistics, batch documentation, and trade reliability across African sea ports are exceptional.',
+    image: '/images/testimonials/tariq.jpg',
   },
   {
     slug: 'jacob-jones',
     name: 'Jacob Jones',
-    role: 'Project Director',
+    role: 'Director of Fleet & Mining Operations',
     quote:
-      'From mining equipment inquiries to repeat parts orders, SAASA B2E has become our go-to trading partner. Responsive support and reliable sourcing across categories.',
-    image: '/images/services/mining.jpg',
-  },
-  {
-    slug: 'amadou-diallo',
-    name: 'Amadou Diallo',
-    role: 'Construction Site Manager',
-    quote:
-      'They supplied concrete mixers, road rollers, and spare parts for our highway project with consistent lead times. A dependable procurement partner for heavy machinery.',
-    image: '/images/products/concrete-mixer.jpg',
-  },
-  {
-    slug: 'grace-mbeki',
-    name: 'Grace Mbeki',
-    role: 'Plant Superintendent',
-    quote:
-      'Crane parts, gearbox assemblies, and engine components were sourced to OEM specifications. Their team understands construction machinery requirements very well.',
-    image: '/images/products/crane-parts.jpg',
-  },
-  {
-    slug: 'pierre-nguemba',
-    name: 'Pierre Nguemba',
-    role: 'Quarry Operations Lead',
-    quote:
-      'Bucket teeth, track chains, and compactor spares keep our quarry running. SAASA B2E coordinates suppliers and shipping so we spend less time chasing orders.',
-    image: '/images/products/bucket-teeth.jpg',
+      'Whether we require heavy commercial transport trucks, quarry crushing assets, or recurring spares, SAASA B2E TRADES delivers genuine cross-border trading value with transparent landed pricing and end-to-end delivery.',
+    image: '/images/testimonials/jacob.jpg',
   },
 ]

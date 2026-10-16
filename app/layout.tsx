@@ -4,6 +4,7 @@ import { COMPANY_NAME, COMPANY_DESCRIPTION } from '@/lib/brand'
 import { getBrochure } from '@/lib/cms'
 import { BrochureProvider } from '@/components/BrochureProvider'
 import FloatingContactButtons from '@/components/FloatingContactButtons'
+import MetaPixel from '@/components/MetaPixel'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <MetaPixel />
         <BrochureProvider initial={brochure}>
           {children}
           <FloatingContactButtons />

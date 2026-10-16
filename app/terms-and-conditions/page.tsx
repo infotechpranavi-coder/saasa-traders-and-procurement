@@ -3,7 +3,11 @@ import PageLayout from '../../components/PageLayout'
 import PageHero from '../../components/PageHero'
 import { COMPANY_NAME, COMPANY_EMAIL } from '@/lib/brand'
 
-export const metadata: Metadata = { title: `Terms & Conditions - ${COMPANY_NAME}` }
+export const metadata: Metadata = {
+  title: `Terms & Conditions - ${COMPANY_NAME}`,
+  description:
+    `Terms and conditions governing procurement agreements, quotations, machinery sales, international trading, and equipment delivery with ${COMPANY_NAME}.`,
+}
 
 export default function TermsAndConditionsPage() {
   return (

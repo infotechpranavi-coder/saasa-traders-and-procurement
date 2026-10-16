@@ -14,7 +14,7 @@ export default function CategorySidebar({
   activeCategoryId,
   backHref = '/products',
   backLabel = 'Products',
-  categoryBasePath = '/products/category',
+  categoryBasePath = '/products',
 }: CategorySidebarProps) {
   if (categories.length === 0) return null
 

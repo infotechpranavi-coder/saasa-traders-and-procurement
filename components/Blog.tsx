@@ -58,6 +58,11 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                 sizes="(max-width: 1024px) 100vw, 58vw"
                 priority
               />
+              {featured.cat && (
+                <span className="absolute top-4 left-4 rounded-full bg-white/95 backdrop-blur-sm px-3.5 py-1 text-xs font-bold text-primary shadow-sm tracking-wide uppercase">
+                  {featured.cat}
+                </span>
+              )}
             </Link>
 
             <BlogMeta author={featured.author} date={featured.date} />
@@ -70,6 +75,12 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                 <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
               </Link>
             </div>
+
+            {featured.excerpt && (
+              <p className="mt-3 text-sm leading-relaxed text-gray-600 line-clamp-2">
+                {featured.excerpt}
+              </p>
+            )}
           </article>
 
           <div className="blog-side-list">
@@ -86,10 +97,20 @@ export default function Blog({ posts }: { posts: BlogPost[] }) {
                 </Link>
 
                 <div className="blog-side-content">
+                  {post.cat && (
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-primary mb-1 inline-block">
+                      {post.cat}
+                    </span>
+                  )}
                   <BlogMeta author={post.author} date={post.date} />
                   <h3 className={`blog-side-title ${post.highlight ? 'blog-side-title--highlight' : ''}`}>
                     <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                   </h3>
+                  {post.excerpt && (
+                    <p className="mt-1.5 text-xs text-gray-500 line-clamp-2 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  )}
                 </div>
               </article>
             ))}

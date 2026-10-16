@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import ProductImageGallery from './ProductImageGallery'
-import type { ProductCompany } from '@/types/cms'
+import type { ProductCompany, ProductSpecItem } from '@/types/cms'
 
 interface DetailPageContentProps {
   image: string
@@ -13,6 +13,8 @@ interface DetailPageContentProps {
   secondaryTitle: string
   secondaryItems: string[]
   companies?: ProductCompany[]
+  specs?: string[]
+  specifications?: ProductSpecItem[]
   backHref: string
   backLabel: string
 }
@@ -28,9 +30,33 @@ export default function DetailPageContent({
   secondaryTitle,
   secondaryItems,
   companies = [],
+  specs = [],
+  specifications = [],
 }: DetailPageContentProps) {
   const galleryImages =
     images && images.length > 0 ? images : image.trim() ? [image] : []
+
+  // Resolve structured specifications (prioritizing named key-value specifications, fallback to legacy parsed specs)
+  const resolvedSpecs: ProductSpecItem[] =
+    specifications && specifications.length > 0
+      ? specifications.filter((s) => (s?.name && s.name.trim()) || (s?.value && s.value.trim()))
+      : specs && specs.length > 0
+        ? specs
+            .map((item, index) => {
+              const colonIndex = item.indexOf(':')
+              if (colonIndex > 0) {
+                return {
+                  name: item.slice(0, colonIndex).trim(),
+                  value: item.slice(colonIndex + 1).trim(),
+                }
+              }
+              return {
+                name: `Parameter ${index + 1}`,
+                value: item.trim(),
+              }
+            })
+            .filter((s) => s.value.length > 0)
+        : []
 
   return (
     <article className="product-detail-article">
@@ -53,6 +79,43 @@ export default function DetailPageContent({
                 </p>
               ))}
             </div>
+
+            {resolvedSpecs.length > 0 && (
+              <div className="product-detail-specs-section">
+                <div className="product-detail-specs-header">
+                  <div className="product-detail-specs-icon" aria-hidden="true">
+                    <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="product-detail-section-title" style={{ margin: 0 }}>
+                      Technical Specifications
+                    </h2>
+                    <p className="product-detail-specs-subtitle">
+                      Verified parameters, dimensions & operating specifications
+                    </p>
+                  </div>
+                </div>
+
+                <div className="product-specs-table-wrapper">
+                  <table className="product-specs-table">
+                    <tbody>
+                      {resolvedSpecs.map((spec, idx) => (
+                        <tr key={`${spec.name}-${idx}`} className="product-specs-row">
+                          <th scope="row" className="product-specs-name">
+                            {spec.name || 'Specification'}
+                          </th>
+                          <td className="product-specs-value">
+                            {spec.value}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
             {secondaryItems.length > 0 && (
               <div className="product-detail-applications">
