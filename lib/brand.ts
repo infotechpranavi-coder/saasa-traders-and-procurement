@@ -71,7 +71,7 @@ export const COMPANY_PHONE_TEL = COMPANY_PHONES[0].tel
 export const SOCIAL_LINKS = [
   {
     name: 'facebook' as const,
-    href: 'https://www.facebook.com/SAASAB2ETrades',
+    href: 'https://www.facebook.com/share/1J9WJ2MZJw/',
     label: 'Facebook',
   },
   {
