@@ -17,8 +17,8 @@ export interface OfficeLocation {
   city: string
   address: string
   email: string
-  phone: string
-  phoneTel: string
+  phone?: string
+  phoneTel?: string
   additionalPhone?: string
   additionalPhoneTel?: string
   additionalPhones?: { display: string; tel: string }[]
@@ -44,8 +44,6 @@ export const OFFICES: OfficeLocation[] = [
     city: 'Dubai',
     address: 'Dubai, United Arab Emirates',
     email: 'daanish@saasab2e.com',
-    phone: '+91 94676 94449',
-    phoneTel: '+919467694449',
   },
   {
     name: 'Cameroon Office',

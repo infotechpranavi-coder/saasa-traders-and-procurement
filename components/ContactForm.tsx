@@ -248,13 +248,15 @@ export default function ContactForm() {
                       <Mail className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
                       <span className="truncate">{office.email}</span>
                     </a>
-                    <a
-                      href={`tel:${office.phoneTel}`}
-                      className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#0d1b2a] hover:text-primary transition-colors"
-                    >
-                      <Phone className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
-                      <span>{office.phone}</span>
-                    </a>
+                    {office.phone && office.phoneTel ? (
+                      <a
+                        href={`tel:${office.phoneTel}`}
+                        className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#0d1b2a] hover:text-primary transition-colors"
+                      >
+                        <Phone className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
+                        <span>{office.phone}</span>
+                      </a>
+                    ) : null}
                     {office.additionalPhones && office.additionalPhones.length > 0 ? (
                       office.additionalPhones.map((addPhone) => (
                         <a
