@@ -11,6 +11,8 @@ export const LOGO_NAV_SRC = '/images/saasa-logo-nav.png'
 export const LOGO_ALT = `${COMPANY_NAME} logo`
 
 export const COMPANY_ADDRESS = 'Hisar, Haryana, India'
+export const SITE_URL = 'https://trades.saasab2e.com'
+export const SITE_DOMAIN = 'trades.saasab2e.com'
 
 export interface OfficeLocation {
   name: string

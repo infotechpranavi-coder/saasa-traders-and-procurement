@@ -10,7 +10,7 @@ import {
 
 export const dynamic = 'force-dynamic'
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://saasab2e.com'
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://trades.saasab2e.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, productCategories, services, serviceCategories, blogs, brands] = await Promise.all([

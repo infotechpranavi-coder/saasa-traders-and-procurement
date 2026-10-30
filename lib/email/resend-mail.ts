@@ -29,7 +29,7 @@ export function getEnquiryToEmail(): string {
 
 function siteBaseUrl(): string {
   const url = process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim()
-  return url ? url.replace(/\/$/, '') : 'http://localhost:3000'
+  return url ? url.replace(/\/$/, '') : 'https://trades.saasab2e.com'
 }
 
 function contentPath(alert: NewsletterContentAlert): string {
@@ -87,6 +87,7 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
     enquiry.service ? `Requirement: ${enquiry.service}` : null,
     enquiry.message ? `\nMessage:\n${enquiry.message}` : null,
     `\nSubmitted: ${formattedTime}`,
+    `\nDelivered directly from https://trades.saasab2e.com/`,
   ].filter(Boolean)
 
   const html = `<!DOCTYPE html>
@@ -267,7 +268,7 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
                 ${escapeHtml(COMPANY_NAME)} &bull; Global Heavy Machinery &amp; Equipment Procurement
               </p>
               <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.4;">
-                Delivered automatically to <strong>${escapeHtml(to)}</strong> from <a href="https://saasab2e.com" style="color:#ea580c;text-decoration:none;">saasab2e.com</a>.
+                Delivered directly to <strong>${escapeHtml(to)}</strong> from <a href="https://trades.saasab2e.com/" style="color:#ea580c;text-decoration:none;font-weight:600;">https://trades.saasab2e.com/</a>
               </p>
             </td>
           </tr>
