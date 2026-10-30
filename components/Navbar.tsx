@@ -358,10 +358,10 @@ function NavContent({
     <>
       <Link
         href="/"
-        className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 lg:gap-3.5 group select-none py-1"
+        className="flex min-w-0 shrink-0 flex-col items-start justify-center gap-0.5 sm:flex-row sm:items-center sm:gap-3 lg:gap-3.5 group select-none py-1"
         aria-label={COMPANY_NAME}
       >
-        <span className="nav-logo-wrap flex shrink-0 items-center justify-center">
+        <span className="nav-logo-wrap flex shrink-0 items-center justify-start">
           <BrandLogo
             variant="nav"
             className={floating ? 'brand-logo brand-logo--hero' : 'brand-logo brand-logo--nav'}
@@ -370,9 +370,9 @@ function NavContent({
         </span>
         <div className="min-w-0 flex items-center">
           <span
-            className={`site-logo-text block font-black uppercase tracking-wide whitespace-nowrap text-[14px] xs:text-[15px] sm:text-base lg:text-[16px] xl:text-[18px] 2xl:text-[20px] leading-none transition-colors ${
+            className={`site-logo-text block font-black uppercase tracking-wider whitespace-nowrap text-[10px] xs:text-[11px] sm:text-[15px] lg:text-[16px] xl:text-[18px] 2xl:text-[20px] leading-tight transition-colors ${
               floating
-                ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]'
+                ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]'
                 : 'text-[#0A0E1A]'
             }`}
           >
@@ -423,20 +423,20 @@ function NavContent({
       <div className="flex shrink-0 items-center lg:hidden">
         <button
           type="button"
-          className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all ${
+          className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl transition-all ${
             floating
-              ? 'text-white hover:bg-white/15 active:bg-white/25'
-              : 'text-[#0A0E1A] hover:bg-gray-100 active:bg-gray-200'
+              ? 'text-white bg-white/10 hover:bg-white/20 active:bg-white/30 border border-white/20 shadow-xs'
+              : 'text-[#0A0E1A] bg-gray-100/80 hover:bg-gray-200 active:bg-gray-300 border border-gray-200/60'
           }`}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
           aria-expanded={mobileOpen}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2.2}
+              strokeWidth={2.4}
               d={mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
             />
           </svg>
