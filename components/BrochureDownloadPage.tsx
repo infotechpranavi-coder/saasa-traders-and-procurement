@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Check, FileDown, Mail, MessageCircle } from 'lucide-react'
 import { SectionLabelIcon } from '@/components/icons/LogisticsIcons'
 import { brochurePage } from '@/lib/brochure-content'
-import { COMPANY_NAME, COMPANY_PHONE_TEL } from '@/lib/brand'
+import { COMPANY_NAME, WHATSAPP_NUMBER } from '@/lib/brand'
 import { brochureDownloadFilename } from '@/lib/brochure-filename'
 import type { BrochureFile } from '@/types/cms'
 
-const WHATSAPP_URL = `https://wa.me/${COMPANY_PHONE_TEL.replace(/\D/g, '')}?text=${encodeURIComponent(
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   'Hello, I just downloaded your product catalog and have a question.',
 )}`
 

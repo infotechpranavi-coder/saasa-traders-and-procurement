@@ -145,7 +145,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <span className="text-xs uppercase font-bold tracking-wider text-primary">Global Sourcing & Trade Solutions</span>
               <h3 className="text-2xl font-bold mt-2 mb-3 text-white">Need Procurement Support for Your Region?</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                SAASA B2E Trades provides end-to-end international sourcing, pre-shipment quality verification, multi-modal maritime logistics, and destination clearance across Africa and the Middle East.
+                SAASA B2E TRADES provides end-to-end international sourcing, pre-shipment quality verification, multi-modal maritime logistics, and destination clearance across Africa and the Middle East.
               </p>
               <Link href="/contact" className="btn-primary inline-flex items-center gap-2">
                 Speak With Our Trade Specialists <ArrowRight className="w-4 h-4" />

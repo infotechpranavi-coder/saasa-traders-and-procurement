@@ -3,7 +3,7 @@ export const COMPANY_LEGAL_NAME = 'SAASA B2E TRADES PVT. LTD.'
 export const COMPANY_SHORT = 'SAASA B2E'
 export const COMPANY_TAGLINE = 'Procurement & Trading for Industry'
 export const COMPANY_DESCRIPTION =
-  'SAASA B2E Trades is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment across Africa and the Middle East.'
+  'SAASA B2E TRADES is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment across Africa and the Middle East.'
 /** Full square asset (large transparent padding — avoid in navbar) */
 export const LOGO_SRC = '/images/saasa_trades_slogo-removebg-preview.png'
 /** Trimmed horizontal mark for navbar / footer */
@@ -21,6 +21,7 @@ export interface OfficeLocation {
   phoneTel: string
   additionalPhone?: string
   additionalPhoneTel?: string
+  additionalPhones?: { display: string; tel: string }[]
 }
 
 export const OFFICES: OfficeLocation[] = [
@@ -31,8 +32,12 @@ export const OFFICES: OfficeLocation[] = [
     email: 'info@saasab2e.com',
     phone: '+91 94676 94449',
     phoneTel: '+919467694449',
-    additionalPhone: '+91 70819 79741',
-    additionalPhoneTel: '+917081979741',
+    additionalPhone: '+91 90346 13782',
+    additionalPhoneTel: '+919034613782',
+    additionalPhones: [
+      { display: '+91 90346 13782', tel: '+919034613782' },
+      { display: '+91 70819 79741', tel: '+917081979741' },
+    ],
   },
   {
     name: 'UAE Trade Base',
@@ -61,12 +66,18 @@ export const COMPANY_EMAIL = COMPANY_EMAILS[0]
 
 export const COMPANY_PHONES = [
   { display: '+91 94676 94449', tel: '+919467694449' },
-  { display: '+237 6 83 57 76 76', tel: '+237683577676' },
+  { display: '+91 90346 13782', tel: '+919034613782' },
   { display: '+91 70819 79741', tel: '+917081979741' },
+  { display: '+237 6 83 57 76 76', tel: '+237683577676' },
 ] as const
 
 export const COMPANY_PHONE = COMPANY_PHONES[0].display
 export const COMPANY_PHONE_TEL = COMPANY_PHONES[0].tel
+
+/** Dedicated WhatsApp lead redirect phone number */
+export const WHATSAPP_PHONE = '+91 90346 13782'
+export const WHATSAPP_PHONE_TEL = '+919034613782'
+export const WHATSAPP_NUMBER = '919034613782'
 
 export const SOCIAL_LINKS = [
   {

@@ -235,14 +235,24 @@ export default function ContactForm() {
                       <Phone className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
                       <span>{office.phone}</span>
                     </a>
-                    {office.additionalPhone && (
+                    {office.additionalPhones && office.additionalPhones.length > 0 ? (
+                      office.additionalPhones.map((addPhone) => (
+                        <a
+                          key={addPhone.tel}
+                          href={`tel:${addPhone.tel}`}
+                          className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-500 hover:text-primary transition-colors pl-5.5"
+                        >
+                          <span>{addPhone.display}</span>
+                        </a>
+                      ))
+                    ) : office.additionalPhone ? (
                       <a
                         href={`tel:${office.additionalPhoneTel}`}
                         className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-500 hover:text-primary transition-colors pl-5.5"
                       >
                         <span>{office.additionalPhone}</span>
                       </a>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               ))}

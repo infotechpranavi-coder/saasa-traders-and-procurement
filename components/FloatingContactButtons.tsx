@@ -4,9 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { MessageSquare } from 'lucide-react'
 import BrochureDownloadButton from './BrochureDownloadButton'
-import { COMPANY_PHONE_TEL } from '@/lib/brand'
+import { WHATSAPP_NUMBER } from '@/lib/brand'
 
-const WHATSAPP_NUMBER = COMPANY_PHONE_TEL.replace(/\D/g, '')
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   'Hello, I would like to enquire about procurement and trading with SAASA B2E TRADES.',
 )}`

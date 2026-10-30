@@ -114,7 +114,7 @@ export default function AboutClient() {
                 Trading &amp; Procurement Division of SAASA B2E Group
               </h1>
               <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6 font-medium">
-                SAASA B2E Trades is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment to businesses, distributors, contractors, and institutions across Africa and the Middle East. Our role is to find the right products, verify their quality, and deliver them to your doorstep with complete documentation and support.
+                SAASA B2E TRADES is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment to businesses, distributors, contractors, and institutions across Africa and the Middle East. Our role is to find the right products, verify their quality, and deliver them to your doorstep with complete documentation and support.
               </p>
 
               {/* 3 Quick Stat Highlights */}
@@ -313,7 +313,7 @@ export default function AboutClient() {
                 </h3>
               </div>
               <p className="text-gray-600 text-sm sm:text-base max-w-xl leading-relaxed">
-                SAASA B2E Group began with a focus on business consulting, recruitment, and company formation. Over more than 7 years, we recognized that clients struggled to source quality products and machinery at fair prices with dependable delivery. SAASA B2E Trades was founded to bridge this gap.
+                SAASA B2E Group began with a focus on business consulting, recruitment, and company formation. Over more than 7 years, we recognized that clients struggled to source quality products and machinery at fair prices with dependable delivery. SAASA B2E TRADES was founded to bridge this gap.
               </p>
             </div>
 
@@ -432,7 +432,7 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* 4. Why Choose SAASA B2E Trades */}
+      {/* 4. Why Choose SAASA B2E TRADES */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
@@ -441,7 +441,7 @@ export default function AboutClient() {
               <span>THE SAASA ADVANTAGE</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0d1b2a] tracking-tight">
-              Why Choose SAASA B2E Trades
+              Why Choose SAASA B2E TRADES
             </h2>
             <p className="text-gray-600 text-base sm:text-lg mt-3">
               Built on transparency, local execution, and end-to-end supply chain reliability.

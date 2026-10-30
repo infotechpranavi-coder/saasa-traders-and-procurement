@@ -19,7 +19,7 @@ import {
   OFFICES,
   INDIA_OFFICE,
   CAMEROON_OFFICE,
-  COMPANY_PHONE_TEL,
+  WHATSAPP_NUMBER,
 } from '@/lib/brand'
 
 export default function ThankYouContent() {
@@ -27,8 +27,7 @@ export default function ThankYouContent() {
   const name = searchParams.get('name')?.trim() || ''
   const service = searchParams.get('service')?.trim() || ''
 
-  const whatsappPhone = COMPANY_PHONE_TEL.replace(/\D/g, '')
-  const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hello ${COMPANY_NAME}, I just submitted an enquiry on your website${name ? ` under the name ${name}` : ''}${service ? ` regarding ${service}` : ''}. Could you please follow up with me?`,
   )}`
 
@@ -188,6 +187,15 @@ export default function ThankYouContent() {
                   <Phone className="w-3.5 h-3.5 text-primary" />
                   <span>{INDIA_OFFICE.phone}</span>
                 </a>
+                {INDIA_OFFICE.additionalPhones?.map((addPhone) => (
+                  <a
+                    key={addPhone.tel}
+                    href={`tel:${addPhone.tel}`}
+                    className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors font-medium pl-5.5"
+                  >
+                    <span>{addPhone.display}</span>
+                  </a>
+                ))}
                 <a
                   href={`mailto:${INDIA_OFFICE.email}`}
                   className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors truncate"

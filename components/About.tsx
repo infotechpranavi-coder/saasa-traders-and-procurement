@@ -24,7 +24,7 @@ const tabContent: Record<TabKey, string> = {
   'Our Vision':
     'To become the most trusted multi-sector trading partner for Africa and the Middle East, recognised for transparent dealing, product quality, and service that businesses can rely on year after year.',
   'Our History':
-    'SAASA B2E Group began with a focus on business consulting, recruitment, and company formation services for clients across Africa and the Middle East. Over more than seven years of working closely with businesses in these markets, we saw a common challenge: companies found it difficult to source quality products and equipment at fair prices with reliable delivery. SAASA B2E Trades was established to solve this, drawing on our supplier network in India, our trade base in Dubai, and our registered office in Yaoundé, Cameroon.',
+    'SAASA B2E Group began with a focus on business consulting, recruitment, and company formation services for clients across Africa and the Middle East. Over more than seven years of working closely with businesses in these markets, we saw a common challenge: companies found it difficult to source quality products and equipment at fair prices with reliable delivery. SAASA B2E TRADES was established to solve this, drawing on our supplier network in India, our trade base in Dubai, and our registered office in Yaoundé, Cameroon.',
 }
 
 function ExperienceRibbon() {
@@ -157,7 +157,7 @@ export default function About() {
             </h2>
 
             <p className="hp-lead mb-7 max-w-[560px] break-words">
-              SAASA B2E Trades is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment to businesses, distributors, contractors, and institutions across Africa and the Middle East. Our role is to find the right products, verify their quality, and deliver them to your doorstep with complete documentation and support.
+              SAASA B2E TRADES is the trading and procurement division of SAASA B2E Group, a business consulting and international trade company with offices in India, the UAE, and Cameroon. We supply FMCG products, commercial and passenger vehicles, heavy machinery, pharmaceutical manufacturing machines, and IT equipment to businesses, distributors, contractors, and institutions across Africa and the Middle East. Our role is to find the right products, verify their quality, and deliver them to your doorstep with complete documentation and support.
             </p>
 
             <div className="mb-7 flex min-w-0 flex-wrap gap-2 sm:gap-2.5">

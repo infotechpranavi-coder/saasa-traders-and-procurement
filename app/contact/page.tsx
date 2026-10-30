@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `Contact ${COMPANY_NAME} - Global Procurement & Trade`,
     description:
-      'Direct phone lines, email support, quotation requests, and office locations in India (+91 94676 94449) and Cameroon (+237 6 83 57 76 76).',
+      'Direct phone lines, email support, quotation requests, and office locations in India (+91 94676 94449, +91 90346 13782) and Cameroon (+237 6 83 57 76 76).',
   },
 }
 
