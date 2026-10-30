@@ -62,7 +62,7 @@ export default function ContactForm() {
   
   // Thank-you confirmation popup modal states
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [redirectSeconds, setRedirectSeconds] = useState(3)
+  const [redirectSeconds, setRedirectSeconds] = useState(2)
   const [submittedName, setSubmittedName] = useState('')
   const [submittedService, setSubmittedService] = useState('')
 
@@ -127,7 +127,7 @@ export default function ContactForm() {
       setSubmittedName(nameVal)
       setSubmittedService(serviceVal)
       setShowSuccessModal(true)
-      setRedirectSeconds(3)
+      setRedirectSeconds(2)
       setFeedback({
         type: 'success',
         text: data.message || 'Thank you! Your enquiry has been received. Redirecting to confirmation page...',
@@ -149,68 +149,52 @@ export default function ContactForm() {
 
   return (
     <section className="py-20 bg-white relative">
-      {/* Success Confirmation Popup Modal */}
+      {/* Compact, Professional Submission Transition Modal */}
       {showSuccessModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-150"
           role="dialog"
           aria-modal="true"
           aria-labelledby="success-modal-title"
         >
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-gray-100 text-center relative animate-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-gray-100 text-center relative animate-in zoom-in-95 duration-150">
             {/* Close Button */}
             <button
               type="button"
               onClick={() => setShowSuccessModal(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-              aria-label="Close confirmation dialog"
+              className="absolute top-3.5 right-3.5 p-1 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              aria-label="Close dialog"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            {/* Success Icon & Properly Aligned Status */}
-            <div className="flex flex-col items-center justify-center mb-4">
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 mb-3 ring-8 ring-emerald-50/70">
-                <CheckCircle2 className="w-9 h-9" strokeWidth={2.4} />
-              </div>
-
-              <div className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100/90 text-emerald-800">
-                <Check className="w-3.5 h-3.5 text-emerald-700 stroke-[2.8]" />
-                <span>Enquiry Submitted</span>
-              </div>
+            {/* Compact Green Check Icon */}
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 mb-3 ring-6 ring-emerald-50/70">
+              <CheckCircle2 className="w-6 h-6" strokeWidth={2.4} />
             </div>
 
-            <h3 id="success-modal-title" className="text-2xl font-bold text-[#0d1b2a] mb-2">
-              Thank You{submittedName ? `, ${submittedName}` : ''}!
+            <h3 id="success-modal-title" className="text-lg font-bold text-[#0d1b2a] mb-1">
+              Enquiry Submitted
             </h3>
 
-            <p className="text-gray-600 text-sm leading-relaxed mb-6">
-              Your inquiry has been received. Our procurement desk will review your requirements and reach out within 24 hours.
+            <p className="text-gray-500 text-xs leading-relaxed mb-4">
+              Your requirement has been recorded successfully. Transferring to your confirmation summary...
             </p>
 
             {/* Countdown Badge */}
-            <div className="bg-orange-50 border border-orange-100 rounded-xl py-2 px-4 text-xs font-medium text-orange-800 mb-5">
-              Redirecting to confirmation page in <span className="font-bold text-primary">{redirectSeconds}s</span>...
+            <div className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-xs font-medium text-orange-800 mb-4">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />
+              <span>Redirecting in {redirectSeconds}s...</span>
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-2">
-              <button
-                type="button"
-                onClick={goToThankYouPage}
-                className="w-full btn-primary justify-center py-3 text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
-              >
-                View Confirmation Page Now
-                <ArrowUpRight className="w-4 h-4" strokeWidth={2.2} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowSuccessModal(false)}
-                className="w-full py-2.5 text-xs font-medium text-gray-500 hover:text-gray-800 transition-colors"
-              >
-                Stay on this page
-              </button>
-            </div>
+            {/* Action Button */}
+            <button
+              type="button"
+              onClick={goToThankYouPage}
+              className="w-full btn-primary justify-center py-2.5 text-xs font-semibold rounded-xl shadow-sm hover:shadow transition-all"
+            >
+              View Confirmation Page Now &rarr;
+            </button>
           </div>
         </div>
       )}

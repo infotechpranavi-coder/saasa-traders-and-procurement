@@ -358,19 +358,19 @@ function NavContent({
     <>
       <Link
         href="/"
-        className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 lg:gap-3.5 group"
+        className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 lg:gap-3.5 group select-none py-1"
         aria-label={COMPANY_NAME}
       >
-        <span className="nav-logo-wrap shrink-0">
+        <span className="nav-logo-wrap flex shrink-0 items-center justify-center">
           <BrandLogo
             variant="nav"
             className={floating ? 'brand-logo brand-logo--hero' : 'brand-logo brand-logo--nav'}
             priority
           />
         </span>
-        <div className="min-w-0 shrink-0">
+        <div className="min-w-0 flex items-center">
           <span
-            className={`site-logo-text block font-black uppercase tracking-wide whitespace-nowrap text-sm sm:text-base lg:text-[16px] xl:text-[18px] 2xl:text-[20px] leading-none transition-colors ${
+            className={`site-logo-text block font-black uppercase tracking-wide whitespace-nowrap text-[14px] xs:text-[15px] sm:text-base lg:text-[16px] xl:text-[18px] 2xl:text-[20px] leading-none transition-colors ${
               floating
                 ? 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]'
                 : 'text-[#0A0E1A]'
@@ -419,27 +419,26 @@ function NavContent({
         </Link>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1 lg:hidden">
-        <NavSearch
-          floating={floating}
-          compact
-          searchQuery={searchQuery}
-          searchLoading={searchLoading}
-          searchItems={searchItems}
-          showSuggestions={showSuggestions}
-          setShowSuggestions={setShowSuggestions}
-          onSearchChange={onSearchChange}
-          onSearchSubmit={onSearchSubmit}
-          onSearchSelect={onSearchSelect}
-        />
+      {/* Mobile Actions: Only Hamburger Button for tabs, No Search Button */}
+      <div className="flex shrink-0 items-center lg:hidden">
         <button
           type="button"
-          className={`p-2 ${floating ? 'text-white' : 'text-[#0A0E1A]'}`}
+          className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all ${
+            floating
+              ? 'text-white hover:bg-white/15 active:bg-white/25'
+              : 'text-[#0A0E1A] hover:bg-gray-100 active:bg-gray-200'
+          }`}
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={mobileOpen}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2.2}
+              d={mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
+            />
           </svg>
         </button>
       </div>

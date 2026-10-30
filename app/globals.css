@@ -91,13 +91,13 @@ h5 {
 }
 
 .brand-logo--nav {
-  height: 28px;
+  height: 32px;
   width: auto;
 }
 
 @media (min-width: 640px) {
   .brand-logo--nav {
-    height: 34px;
+    height: 35px;
   }
 }
 
@@ -108,13 +108,13 @@ h5 {
 }
 
 .brand-logo--hero {
-  height: 28px;
+  height: 32px;
   width: auto;
 }
 
 @media (min-width: 640px) {
   .brand-logo--hero {
-    height: 34px;
+    height: 35px;
   }
 }
 

@@ -44,6 +44,29 @@ function contentLabel(kind: NewsletterContentAlert['kind']): string {
   return 'Blog post'
 }
 
+function formatReadableDateTime(isoString: string): string {
+  try {
+    const d = new Date(isoString)
+    if (isNaN(d.getTime())) return isoString
+
+    const datePart = d.toLocaleDateString('en-GB', {
+      timeZone: 'Asia/Kolkata',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })
+    const timePart = d.toLocaleTimeString('en-US', {
+      timeZone: 'Asia/Kolkata',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    })
+    return `${datePart}, ${timePart} (IST)`
+  } catch {
+    return isoString
+  }
+}
+
 export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<boolean> {
   const resend = getResend()
   if (!resend) return false
@@ -51,6 +74,7 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
   const to = getEnquiryToEmail()
   const isBrochure = enquiry.type === 'brochure'
   const cleanPhone = enquiry.phone ? enquiry.phone.replace(/[^0-9]/g, '') : ''
+  const formattedTime = formatReadableDateTime(enquiry.createdAt)
   const subject = isBrochure
     ? `New catalog download request from ${enquiry.name}`
     : `New enquiry from ${enquiry.name}${enquiry.service ? ` [${enquiry.service}]` : ''}`
@@ -59,10 +83,10 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
     `Name: ${enquiry.name}`,
     enquiry.email ? `Email: ${enquiry.email}` : null,
     enquiry.phone ? `Phone: ${enquiry.phone}` : null,
-    enquiry.company ? `Company: ${enquiry.company}` : null,
+    enquiry.company?.trim() ? `Company: ${enquiry.company.trim()}` : null,
     enquiry.service ? `Requirement: ${enquiry.service}` : null,
     enquiry.message ? `\nMessage:\n${enquiry.message}` : null,
-    `\nSubmitted: ${enquiry.createdAt}`,
+    `\nSubmitted: ${formattedTime}`,
   ].filter(Boolean)
 
   const html = `<!DOCTYPE html>
@@ -70,188 +94,180 @@ export async function sendEnquiryNotification(enquiry: EnquiryRecord): Promise<b
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
   <title>${escapeHtml(subject)}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#1e293b;">
-  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f1f5f9;padding:32px 12px;">
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f1f5f9;padding:16px 8px;">
     <tr>
       <td align="center">
         <!-- Main Card -->
-        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:620px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #e2e8f0;">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width:580px;background-color:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #e2e8f0;">
           
           <!-- Brand Accent Strip -->
           <tr>
             <td style="height:5px;background:linear-gradient(90deg,#ea580c 0%,#f59e0b 50%,#0d1b2a 100%);"></td>
           </tr>
 
-          <!-- Brand Header -->
+          <!-- Mobile-Friendly Brand Header -->
           <tr>
-            <td style="background-color:#0d1b2a;padding:26px 32px;text-align:left;">
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td>
-                    <div style="font-size:20px;font-weight:800;letter-spacing:1.2px;color:#ffffff;text-transform:uppercase;">
-                      ${escapeHtml(COMPANY_NAME)}
-                    </div>
-                    <div style="font-size:12px;color:#94a3b8;margin-top:4px;letter-spacing:0.4px;">
-                      Global Machinery, Parts &amp; B2B Procurement Portal
-                    </div>
-                  </td>
-                  <td align="right" style="vertical-align:middle;">
-                    <span style="display:inline-block;background-color:rgba(234,88,12,0.18);color:#fb923c;border:1px solid rgba(251,146,60,0.35);padding:4px 10px;border-radius:9999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">
-                      ${isBrochure ? 'CATALOG LEAD' : 'WEBSITE LEAD'}
-                    </span>
-                  </td>
-                </tr>
-              </table>
+            <td style="background-color:#0d1b2a;padding:20px 20px 18px;text-align:left;">
+              <div style="margin-bottom:8px;">
+                <span style="display:inline-block;background-color:rgba(234,88,12,0.22);color:#fb923c;border:1px solid rgba(251,146,60,0.4);padding:3px 10px;border-radius:9999px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">
+                  ${isBrochure ? 'CATALOG LEAD' : 'WEBSITE LEAD'}
+                </span>
+              </div>
+              <div style="font-size:19px;font-weight:800;letter-spacing:1px;color:#ffffff;text-transform:uppercase;line-height:1.2;">
+                ${escapeHtml(COMPANY_NAME)}
+              </div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:4px;letter-spacing:0.3px;">
+                Global Machinery, Parts &amp; B2B Procurement Portal
+              </div>
             </td>
           </tr>
 
           <!-- Card Content Body -->
           <tr>
-            <td style="padding:32px;">
+            <td style="padding:20px 18px 24px;">
               <!-- Headline -->
-              <div style="margin-bottom:24px;">
-                <h1 style="margin:0 0 6px 0;font-size:22px;font-weight:800;color:#0f172a;line-height:1.3;">
+              <div style="margin-bottom:18px;">
+                <h1 style="margin:0 0 5px 0;font-size:20px;font-weight:800;color:#0f172a;line-height:1.3;">
                   ${isBrochure ? 'New Catalog Download Request' : `New Enquiry from ${escapeHtml(enquiry.name)}`}
                 </h1>
-                <p style="margin:0;font-size:14px;color:#64748b;line-height:1.5;">
-                  A new prospect has submitted their quotation &amp; procurement requirements through the website form.
+                <p style="margin:0;font-size:13px;color:#64748b;line-height:1.4;">
+                  Submitted through the website enquiry form. Details are summarized below:
                 </p>
               </div>
 
-              <!-- Structured Summary Table -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:24px;">
-                <!-- Row: Name -->
-                <tr style="background-color:#f8fafc;">
-                  <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#64748b;width:35%;border-bottom:1px solid #e2e8f0;">
+              <!-- Mobile-Optimized Stacked Card Layout -->
+              <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:18px;background-color:#ffffff;">
+                
+                <!-- Field: Contact Person -->
+                <div style="padding:12px 14px;border-bottom:1px solid #f1f5f9;background-color:#f8fafc;">
+                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:3px;">
                     Contact Person
-                  </td>
-                  <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#0f172a;border-bottom:1px solid #e2e8f0;">
+                  </div>
+                  <div style="font-size:15px;font-weight:700;color:#0f172a;">
                     ${escapeHtml(enquiry.name)}
-                  </td>
-                </tr>
+                  </div>
+                </div>
 
-                <!-- Row: Requirement / Product -->
-                <tr>
-                  <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#64748b;width:35%;border-bottom:1px solid #e2e8f0;">
+                <!-- Field: Requirement / Product -->
+                <div style="padding:12px 14px;border-bottom:1px solid #f1f5f9;background-color:#ffffff;">
+                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:4px;">
                     Requirement / Product
-                  </td>
-                  <td style="padding:12px 16px;font-size:14px;border-bottom:1px solid #e2e8f0;">
+                  </div>
+                  <div>
                     <span style="display:inline-block;background-color:#fff7ed;color:#c2410c;font-weight:700;padding:4px 10px;border-radius:6px;border:1px solid #fed7aa;font-size:13px;">
                       ${escapeHtml(enquiry.service || 'General Procurement Enquiry')}
                     </span>
-                  </td>
-                </tr>
+                  </div>
+                </div>
 
-                <!-- Row: Email -->
-                <tr style="background-color:#f8fafc;">
-                  <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#64748b;width:35%;border-bottom:1px solid #e2e8f0;">
-                    Email Address
-                  </td>
-                  <td style="padding:12px 16px;font-size:14px;border-bottom:1px solid #e2e8f0;">
-                    ${
-                      enquiry.email
-                        ? `<a href="mailto:${escapeHtml(enquiry.email)}" style="color:#ea580c;text-decoration:none;font-weight:600;">${escapeHtml(enquiry.email)}</a>`
-                        : '<span style="color:#94a3b8;">Not provided</span>'
-                    }
-                  </td>
-                </tr>
-
-                <!-- Row: Phone -->
-                <tr>
-                  <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#64748b;width:35%;border-bottom:1px solid #e2e8f0;">
+                <!-- Field: Phone / WhatsApp -->
+                <div style="padding:12px 14px;border-bottom:1px solid #f1f5f9;background-color:#f8fafc;">
+                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:3px;">
                     Phone / WhatsApp
-                  </td>
-                  <td style="padding:12px 16px;font-size:14px;border-bottom:1px solid #e2e8f0;">
+                  </div>
+                  <div style="font-size:15px;font-weight:700;color:#0f172a;">
                     ${
                       enquiry.phone
-                        ? `<a href="tel:${escapeHtml(enquiry.phone.replace(/[^0-9+]/g, ''))}" style="color:#0f172a;text-decoration:none;font-weight:600;">${escapeHtml(enquiry.phone)}</a>`
-                        : '<span style="color:#94a3b8;">Not provided</span>'
+                        ? `<a href="tel:${escapeHtml(enquiry.phone.replace(/[^0-9+]/g, ''))}" style="color:#0f172a;text-decoration:none;">${escapeHtml(enquiry.phone)}</a>`
+                        : '<span style="color:#94a3b8;font-weight:400;font-size:13px;">Not provided</span>'
                     }
-                  </td>
-                </tr>
+                  </div>
+                </div>
 
-                <!-- Row: Company -->
-                <tr style="background-color:#f8fafc;">
-                  <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#64748b;width:35%;border-bottom:1px solid #e2e8f0;">
-                    Company / Organization
-                  </td>
-                  <td style="padding:12px 16px;font-size:14px;color:#334155;border-bottom:1px solid #e2e8f0;">
+                <!-- Field: Email Address -->
+                <div style="padding:12px 14px;${enquiry.company?.trim() ? 'border-bottom:1px solid #f1f5f9;' : 'border-bottom:1px solid #f1f5f9;'}background-color:#ffffff;">
+                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:3px;">
+                    Email Address
+                  </div>
+                  <div style="font-size:14px;font-weight:600;">
                     ${
-                      enquiry.company
-                        ? escapeHtml(enquiry.company)
-                        : '<span style="color:#94a3b8;font-style:italic;">Not specified</span>'
+                      enquiry.email
+                        ? `<a href="mailto:${escapeHtml(enquiry.email)}" style="color:#ea580c;text-decoration:none;word-break:break-all;">${escapeHtml(enquiry.email)}</a>`
+                        : '<span style="color:#94a3b8;font-weight:400;font-size:13px;">Not provided</span>'
                     }
-                  </td>
-                </tr>
+                  </div>
+                </div>
 
-                <!-- Row: Submitted At -->
-                <tr>
-                  <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#64748b;width:35%;">
+                <!-- Field: Company (ONLY rendered if explicitly provided) -->
+                ${
+                  enquiry.company?.trim()
+                    ? `
+                <div style="padding:12px 14px;border-bottom:1px solid #f1f5f9;background-color:#f8fafc;">
+                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:3px;">
+                    Company
+                  </div>
+                  <div style="font-size:14px;color:#334155;font-weight:600;">
+                    ${escapeHtml(enquiry.company.trim())}
+                  </div>
+                </div>`
+                    : ''
+                }
+
+                <!-- Field: Submission Time (Simple & Global Format) -->
+                <div style="padding:12px 14px;background-color:#f8fafc;">
+                  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:3px;">
                     Submission Time
-                  </td>
-                  <td style="padding:12px 16px;font-size:13px;color:#475569;">
-                    ${escapeHtml(enquiry.createdAt)}
-                  </td>
-                </tr>
-              </table>
+                  </div>
+                  <div style="font-size:13px;color:#334155;font-weight:600;">
+                    ${escapeHtml(formattedTime)}
+                  </div>
+                </div>
+
+              </div>
 
               <!-- Customer Message Box (if provided) -->
               ${
                 enquiry.message
                   ? `
-              <div style="background-color:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #ea580c;border-radius:8px;padding:18px 20px;margin-bottom:28px;">
-                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#475569;margin-bottom:8px;">
+              <div style="background-color:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #ea580c;border-radius:10px;padding:14px 16px;margin-bottom:18px;">
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#475569;margin-bottom:6px;">
                   Customer Message &amp; Specifications:
                 </div>
-                <div style="font-size:14px;line-height:1.6;color:#1e293b;white-space:pre-wrap;">${escapeHtml(enquiry.message)}</div>
+                <div style="font-size:14px;line-height:1.55;color:#1e293b;white-space:pre-wrap;word-break:break-word;">${escapeHtml(enquiry.message)}</div>
               </div>`
                   : ''
               }
 
-              <!-- Direct Action Buttons -->
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:8px;">
-                <tr>
-                  <td align="center">
-                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        ${
-                          enquiry.email
-                            ? `
-                        <td align="center" style="border-radius:10px;background-color:#ea580c;padding:0 6px;">
-                          <a href="mailto:${escapeHtml(enquiry.email)}?subject=${encodeURIComponent(`Quotation & Details: ${enquiry.service || 'Your Enquiry'} - ${COMPANY_NAME}`)}" style="display:inline-block;padding:13px 22px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px;">
-                            Reply via Email &rarr;
-                          </a>
-                        </td>`
-                            : ''
-                        }
-                        ${
-                          cleanPhone
-                            ? `
-                        <td align="center" style="border-radius:10px;background-color:#16a34a;padding:0 6px;">
-                          <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hello ${enquiry.name}, thank you for contacting ${COMPANY_NAME} regarding ${enquiry.service || 'your requirement'}.`)}" target="_blank" style="display:inline-block;padding:13px 22px;font-size:14px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px;">
-                            Chat on WhatsApp &rarr;
-                          </a>
-                        </td>`
-                            : ''
-                        }
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+              <!-- Mobile-Friendly Full-Width Action Buttons -->
+              <div style="margin-top:14px;">
+                ${
+                  enquiry.email
+                    ? `
+                <div style="margin-bottom:10px;">
+                  <a href="mailto:${escapeHtml(enquiry.email)}?subject=${encodeURIComponent(`Quotation & Details: ${enquiry.service || 'Your Enquiry'} - ${COMPANY_NAME}`)}" style="display:block;width:100%;box-sizing:border-box;text-align:center;background-color:#ea580c;color:#ffffff;padding:13px 18px;font-size:14px;font-weight:700;text-decoration:none;border-radius:10px;letter-spacing:0.3px;">
+                    Reply via Email &rarr;
+                  </a>
+                </div>`
+                    : ''
+                }
+                ${
+                  cleanPhone
+                    ? `
+                <div>
+                  <a href="https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hello ${enquiry.name}, thank you for contacting ${COMPANY_NAME} regarding ${enquiry.service || 'your requirement'}.`)}" target="_blank" style="display:block;width:100%;box-sizing:border-box;text-align:center;background-color:#16a34a;color:#ffffff;padding:13px 18px;font-size:14px;font-weight:700;text-decoration:none;border-radius:10px;letter-spacing:0.3px;">
+                    Chat on WhatsApp &rarr;
+                  </a>
+                </div>`
+                    : ''
+                }
+              </div>
+
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:#f8fafc;border-top:1px solid #e2e8f0;padding:22px 32px;text-align:center;">
-              <p style="margin:0 0 6px 0;font-size:13px;font-weight:600;color:#0d1b2a;">
+            <td style="background-color:#f8fafc;border-top:1px solid #e2e8f0;padding:18px 20px;text-align:center;">
+              <p style="margin:0 0 5px 0;font-size:12px;font-weight:700;color:#0d1b2a;">
                 ${escapeHtml(COMPANY_NAME)} &bull; Global Heavy Machinery &amp; Equipment Procurement
               </p>
-              <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.5;">
-                This lead notification was automatically dispatched to <strong>${escapeHtml(to)}</strong> from your website inquiry portal at <a href="https://saasab2e.com" style="color:#ea580c;text-decoration:none;">saasab2e.com</a>.
+              <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.4;">
+                Delivered automatically to <strong>${escapeHtml(to)}</strong> from <a href="https://saasab2e.com" style="color:#ea580c;text-decoration:none;">saasab2e.com</a>.
               </p>
             </td>
           </tr>
