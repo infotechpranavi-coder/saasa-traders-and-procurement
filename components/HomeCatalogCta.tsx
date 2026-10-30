@@ -22,7 +22,7 @@ export default function HomeCatalogCta() {
               PRODUCT CATALOG
             </div>
             <h2 id="home-catalog-cta-title" className="hp-title home-catalog-cta__title">
-              Download our full product catalogue
+              Download our full product catalog
             </h2>
             <p className="hp-body home-catalog-cta__text">
               Browse equipment, parts, and trading ranges from {COMPANY_NAME}. Enter your email on

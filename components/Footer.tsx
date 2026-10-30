@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowUpRight, MapPin, Phone, Mail } from 'lucide-react'
+import { ArrowUpRight, MapPin, Phone, Mail, Clock } from 'lucide-react'
 import BrandLogo from './BrandLogo'
-import { COMPANY_NAME, COMPANY_DESCRIPTION, OFFICES, SOCIAL_LINKS } from '@/lib/brand'
+import { COMPANY_NAME, COMPANY_DESCRIPTION, OFFICES, SOCIAL_LINKS, OPENING_HOURS } from '@/lib/brand'
 import { FOOTER_QUICK_LINKS } from '@/lib/site-content'
 import BrochureDownloadButton from './BrochureDownloadButton'
 import { useScrollReveal } from '../hooks/useScrollReveal'
@@ -241,6 +241,10 @@ export default function Footer() {
                     </div>
                   </div>
                 ))}
+                <div className="pt-2 flex items-center gap-2.5 text-xs text-gray-400">
+                  <Clock className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2} />
+                  <span>Opening Hours: {OPENING_HOURS}</span>
+                </div>
               </div>
               <BrochureDownloadButton brochure={cms?.brochure} variant="inline" className="mt-5 w-full justify-center border-white/20 bg-white/5 text-white hover:bg-white hover:text-[#0d1b2a]" />
               <Link

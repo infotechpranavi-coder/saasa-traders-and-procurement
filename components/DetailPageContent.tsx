@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import ProductImageGallery from './ProductImageGallery'
 import type { ProductCompany, ProductSpecItem } from '@/types/cms'
+import { COMPANY_NAME, WHATSAPP_NUMBER } from '@/lib/brand'
 
 interface DetailPageContentProps {
   image: string
@@ -148,13 +149,26 @@ export default function DetailPageContent({
               </div>
             )}
 
-            <div className="product-detail-actions">
-              <Link href="/contact" className="btn-primary inline-flex text-sm">
-                Request Quote
+            <div className="product-detail-actions flex flex-wrap items-center gap-3">
+              <Link
+                href={`/contact?requirement=${encodeURIComponent(title)}`}
+                className="btn-primary inline-flex items-center gap-2 text-sm"
+              >
+                <span>Request Quote</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
                 </svg>
               </Link>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  `Hello ${COMPANY_NAME}, I would like to request quotation and specifications for: ${title}.`,
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-500/30 bg-emerald-50 text-emerald-800 text-sm font-semibold hover:bg-emerald-100/80 transition-colors"
+              >
+                <span>WhatsApp Quote</span>
+              </a>
             </div>
           </div>
 

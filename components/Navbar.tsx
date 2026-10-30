@@ -409,8 +409,8 @@ function NavContent({
         >
           {!searchOpen && (
             <>
-              <span className="nav-quote-btn-text">Request a Quote</span>
-              <span className="nav-quote-btn-text-short">Quote</span>
+              <span className="hidden xl:inline whitespace-nowrap">Request a Quote</span>
+              <span className="xl:hidden whitespace-nowrap">Quote</span>
             </>
           )}
           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

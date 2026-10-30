@@ -4,13 +4,13 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   CheckCircle2,
+  Check,
   Phone,
   Mail,
   ArrowRight,
   ShieldCheck,
   FileText,
   Clock,
-  Sparkles,
   MessageCircle,
 } from 'lucide-react'
 import { MetaPixelLeadTracker } from '@/components/MetaPixel'
@@ -20,6 +20,7 @@ import {
   INDIA_OFFICE,
   CAMEROON_OFFICE,
   WHATSAPP_NUMBER,
+  OPENING_HOURS,
 } from '@/lib/brand'
 
 export default function ThankYouContent() {
@@ -42,14 +43,16 @@ export default function ThankYouContent() {
           {/* Top subtle decorative gradient banner */}
           <div className="absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-r from-orange-500 via-amber-500 to-primary" />
 
-          {/* Animated Green Badge */}
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-50 text-emerald-600 mb-6 ring-8 ring-emerald-50/60 animate-bounce duration-1000">
-            <CheckCircle2 className="w-10 h-10" strokeWidth={2.4} />
-          </div>
+          {/* Centered Green Badge & Status with proper alignment */}
+          <div className="flex flex-col items-center justify-center mb-6">
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-emerald-50 text-emerald-600 mb-4 ring-8 ring-emerald-50/60 shadow-xs animate-bounce duration-1000">
+              <CheckCircle2 className="w-10 h-10" strokeWidth={2.4} />
+            </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100/70 text-emerald-800 mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Enquiry Successfully Submitted</span>
+            <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-emerald-100/80 text-emerald-800 border border-emerald-200/60 shadow-xs">
+              <Check className="w-4 h-4 text-emerald-700 stroke-[2.8]" />
+              <span>Enquiry Successfully Submitted</span>
+            </div>
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0d1b2a] tracking-tight mb-4">
@@ -168,7 +171,7 @@ export default function ThankYouContent() {
             </div>
             <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
               <Clock className="w-4 h-4 text-primary" />
-              <span>Mon – Sat: 9:00 AM – 7:00 PM</span>
+              <span>Opening Hours: {OPENING_HOURS}</span>
             </div>
           </div>
 

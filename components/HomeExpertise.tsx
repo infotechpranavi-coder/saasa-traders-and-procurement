@@ -288,9 +288,6 @@ export default function HomeExpertise({ items }: HomeExpertiseProps) {
               </div>
             ) : (
               <div className="home-expertise-progress-wrap" aria-label="Slider progress">
-                <span className="home-expertise-counter">
-                  {String(activeIndex + 1).padStart(2, '0')}
-                </span>
                 <div className="home-expertise-progress-track">
                   <div
                     className="home-expertise-progress-fill"
@@ -299,9 +296,6 @@ export default function HomeExpertise({ items }: HomeExpertiseProps) {
                     }}
                   />
                 </div>
-                <span className="home-expertise-counter">
-                  {String(items.length).padStart(2, '0')}
-                </span>
               </div>
             )
           )}

@@ -64,7 +64,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
             We source spare parts for all major construction machinery brands. Send us your model number or part code and
             our team will find it for you.
           </p>
-          <Link href="/contact" className="btn-primary inline-flex">
+          <Link href="/contact?requirement=Heavy%20Machinery%20Parts" className="btn-primary inline-flex">
             Enquire About Parts
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />

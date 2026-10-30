@@ -1492,8 +1492,9 @@ h5 {
 }
 
 .home-expertise-progress-track {
-  width: 9rem;
-  height: 0.35rem;
+  width: 14rem;
+  max-width: 80vw;
+  height: 0.4rem;
   border-radius: 9999px;
   background-color: #e2e8f0;
   overflow: hidden;

@@ -29,7 +29,7 @@ export const OFFICES: OfficeLocation[] = [
     name: 'India Office',
     city: 'Hisar, Haryana',
     address: 'Hisar, Haryana, India',
-    email: 'info@saasab2e.com',
+    email: 'daanish@saasab2e.com',
     phone: '+91 94676 94449',
     phoneTel: '+919467694449',
     additionalPhone: '+91 90346 13782',
@@ -43,7 +43,7 @@ export const OFFICES: OfficeLocation[] = [
     name: 'UAE Trade Base',
     city: 'Dubai',
     address: 'Dubai, United Arab Emirates',
-    email: 'info@saasab2e.com',
+    email: 'daanish@saasab2e.com',
     phone: '+91 94676 94449',
     phoneTel: '+919467694449',
   },
@@ -51,7 +51,7 @@ export const OFFICES: OfficeLocation[] = [
     name: 'Cameroon Office',
     city: 'Yaoundé',
     address: 'Yaoundé, Cameroon',
-    email: 'info@saasab2etrades.com',
+    email: 'daanish@saasab2e.com',
     phone: '+237 6 83 57 76 76',
     phoneTel: '+237683577676',
   },
@@ -61,7 +61,7 @@ export const INDIA_OFFICE = OFFICES[0]
 export const UAE_OFFICE = OFFICES[1]
 export const CAMEROON_OFFICE = OFFICES[2]
 
-export const COMPANY_EMAILS = ['info@saasab2e.com', 'info@saasab2etrades.com'] as const
+export const COMPANY_EMAILS = ['daanish@saasab2e.com'] as const
 export const COMPANY_EMAIL = COMPANY_EMAILS[0]
 
 export const COMPANY_PHONES = [
@@ -78,6 +78,9 @@ export const COMPANY_PHONE_TEL = COMPANY_PHONES[0].tel
 export const WHATSAPP_PHONE = '+91 90346 13782'
 export const WHATSAPP_PHONE_TEL = '+919034613782'
 export const WHATSAPP_NUMBER = '919034613782'
+
+/** Standardized company opening hours */
+export const OPENING_HOURS = 'Mon to Sat, 9AM to 7PM'
 
 export const SOCIAL_LINKS = [
   {

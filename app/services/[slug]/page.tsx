@@ -120,7 +120,7 @@ export default async function ServiceOrCategoryPage({ params }: { params: { slug
           <ServiceGrid
             services={services}
             emptyMessage="No services listed in this category yet."
-            emptyCtaHref="/contact"
+            emptyCtaHref={`/contact?requirement=${encodeURIComponent(category.name)}`}
             emptyCtaLabel="Contact Us"
           />
         </CategoryDetailLayout>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   ArrowUpRight,
@@ -10,14 +10,15 @@ import {
   Mail,
   Phone,
   CheckCircle2,
+  Check,
   X,
   Loader2,
-  Sparkles,
 } from 'lucide-react'
 import {
   OFFICES,
   COMPANY_LEGAL_NAME,
   SOCIAL_LINKS,
+  OPENING_HOURS,
 } from '@/lib/brand'
 import { CONTACT_SERVICE_OPTIONS } from '@/lib/site-content'
 import { SectionLabelIcon } from './icons/LogisticsIcons'
@@ -32,6 +33,7 @@ interface ContactFormFields {
 
 export default function ContactForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [form, setForm] = useState<ContactFormFields>({
     name: '',
     email: '',
@@ -41,6 +43,22 @@ export default function ContactForm() {
   })
   const [submitting, setSubmitting] = useState(false)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  // Automatically take requirement from product or service query param
+  useEffect(() => {
+    const req =
+      searchParams.get('requirement') ||
+      searchParams.get('service') ||
+      searchParams.get('product') ||
+      searchParams.get('item')
+    if (req?.trim()) {
+      const cleanReq = req.trim()
+      setForm((prev) => ({
+        ...prev,
+        service: cleanReq,
+      }))
+    }
+  }, [searchParams])
   
   // Thank-you confirmation popup modal states
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -127,7 +145,7 @@ export default function ContactForm() {
     router.push(thankYouUrl)
   }
 
-  const info = [{ icon: Clock, title: 'Working Hours', desc: 'Mon - Sat: 9AM - 7PM' }]
+  const info = [{ icon: Clock, title: 'Opening Hours', desc: OPENING_HOURS }]
 
   return (
     <section className="py-20 bg-white relative">
@@ -150,14 +168,16 @@ export default function ContactForm() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Success Icon */}
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 mb-4 ring-8 ring-emerald-50/70">
-              <CheckCircle2 className="w-9 h-9" strokeWidth={2.4} />
-            </div>
+            {/* Success Icon & Properly Aligned Status */}
+            <div className="flex flex-col items-center justify-center mb-4">
+              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 mb-3 ring-8 ring-emerald-50/70">
+                <CheckCircle2 className="w-9 h-9" strokeWidth={2.4} />
+              </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-3">
-              <Sparkles className="w-3 h-3" />
-              <span>Enquiry Submitted</span>
+              <div className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100/90 text-emerald-800">
+                <Check className="w-3.5 h-3.5 text-emerald-700 stroke-[2.8]" />
+                <span>Enquiry Submitted</span>
+              </div>
             </div>
 
             <h3 id="success-modal-title" className="text-2xl font-bold text-[#0d1b2a] mb-2">
@@ -344,6 +364,9 @@ export default function ContactForm() {
                     className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 transition-colors focus:border-primary focus:outline-none disabled:opacity-60"
                   >
                     <option value="">Select requirement</option>
+                    {form.service && !CONTACT_SERVICE_OPTIONS.includes(form.service as any) && (
+                      <option value={form.service}>{form.service}</option>
+                    )}
                     {CONTACT_SERVICE_OPTIONS.map((option) => (
                       <option key={option} value={option}>{option}</option>
                     ))}

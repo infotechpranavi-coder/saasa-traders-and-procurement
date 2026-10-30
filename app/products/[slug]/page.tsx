@@ -134,7 +134,7 @@ export default async function ProductOrCategoryPage({ params }: { params: { slug
             categories={categories}
             hideCategoryBadge
             emptyMessage="No products listed in this category yet."
-            emptyCtaHref="/contact"
+            emptyCtaHref={`/contact?requirement=${encodeURIComponent(category.name)}`}
             emptyCtaLabel="Request a Quote"
           />
         </CategoryDetailLayout>
